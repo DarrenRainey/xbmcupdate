@@ -5,21 +5,69 @@ using NLog;
 using System.Diagnostics;
 using System.Threading;
 using System.Configuration;
+using NLog.Config;
+using NLog.Targets;
+using System.IO;
 
 namespace XbmcUpdate.Runtime
 {
     static class Program
     {
-        static Logger logger = LogManager.GetCurrentClassLogger();
+        static Logger logger;
 
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
 
 
+        private static void SetupNlog()
+        {
+            try
+            {
+                try
+                {
+
+                    if( File.Exists( "nlog.config" ) )
+                    {
+                        File.Delete( "nlog.config" );
+                    }
+
+                }
+                catch
+                {
+
+                }
+
+                LoggingConfiguration config = new LoggingConfiguration();
+
+                FileTarget fileTargt = new FileTarget();
+                fileTargt.Layout = "${longdate}-${callsite}|${level}|${message} ${exception:format=ToString}";
+                fileTargt.FileName = "${basedir}\\logs\\${date:format=m}.log";
+
+
+
+                LoggingRule rule1 = new LoggingRule( "*", LogLevel.Trace, fileTargt );
+
+                config.AddTarget( "guiTarget", fileTargt );
+                config.LoggingRules.Add( rule1 );
+
+                LogManager.Configuration = config;
+            }
+            catch( Exception e )
+            {
+                System.Windows.Forms.MessageBox.Show( String.Format( "Fatal Logger Error.{0}{1}", Environment.NewLine, e.ToString() ), "XBMCUpdate Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                Application.Exit();
+            }
+        }
+
+
+
         [STAThread]
         static void Main( string[] args )
         {
+            SetupNlog();
+            logger = LogManager.GetCurrentClassLogger();
+
             bool tray = false;
             bool silentUpdate = false;
 

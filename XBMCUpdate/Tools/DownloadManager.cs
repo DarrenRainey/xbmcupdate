@@ -165,6 +165,7 @@ namespace XbmcUpdate.Tools
                     // When the above code has ended, close the streams
                     localStream.Close();
                     dlStream.Close();
+                    webResponse.Close();
                 }
             }
         }

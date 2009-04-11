@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="Tools\GuiNlogTarget.cs" />
     <Compile Include="UpdateAppContext.cs" />
     <Compile Include="UpdateGui.cs">
       <SubType>Form</SubType>
@@ -84,9 +85,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="nlog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <Compile Include="UpdateEngine\ReleaseManager.cs" />
     <Compile Include="Tools\DownloadManager.cs" />
     <Compile Include="Tools\Serilizer.cs" />
@@ -100,7 +98,6 @@
     <Content Include="Pics\logo.png" />
     <Content Include="Pics\app.ico" />
     <None Include="app.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Pics\install_blue.png" />
     <None Include="Pics\unzip_blue.png" />
