@@ -66,8 +66,8 @@ namespace XbmcUpdate.Runtime
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.tabPageLog = new System.Windows.Forms.TabPage();
-            this.ShutdownTimer = new System.Windows.Forms.Timer( this.components );
             this.rtxtLog = new System.Windows.Forms.RichTextBox();
+            this.ShutdownTimer = new System.Windows.Forms.Timer( this.components );
             this.grpXbmcPath.SuspendLayout();
             ( (System.ComponentModel.ISupportInitialize)( this.picInstall ) ).BeginInit();
             ( (System.ComponentModel.ISupportInitialize)( this.picDownload ) ).BeginInit();
@@ -225,6 +225,7 @@ namespace XbmcUpdate.Runtime
             this.tabPageUpdate.TabIndex = 0;
             this.tabPageUpdate.Text = "Update";
             this.tabPageUpdate.UseVisualStyleBackColor = true;
+            this.tabPageUpdate.Click += new System.EventHandler( this.tabPageUpdate_Click );
             // 
             // grpStatIcons
             // 
@@ -441,11 +442,6 @@ namespace XbmcUpdate.Runtime
             this.tabPageLog.Text = "Log";
             this.tabPageLog.UseVisualStyleBackColor = true;
             // 
-            // ShutdownTimer
-            // 
-            this.ShutdownTimer.Interval = 1000;
-            this.ShutdownTimer.Tick += new System.EventHandler( this.ShutdownTimer_Tick );
-            // 
             // rtxtLog
             // 
             this.rtxtLog.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -456,6 +452,11 @@ namespace XbmcUpdate.Runtime
             this.rtxtLog.TabIndex = 0;
             this.rtxtLog.Text = "";
             this.rtxtLog.TextChanged += new System.EventHandler( this.rtxtLog_TextChanged );
+            // 
+            // ShutdownTimer
+            // 
+            this.ShutdownTimer.Interval = 1000;
+            this.ShutdownTimer.Tick += new System.EventHandler( this.ShutdownTimer_Tick );
             // 
             // UpdateGui
             // 

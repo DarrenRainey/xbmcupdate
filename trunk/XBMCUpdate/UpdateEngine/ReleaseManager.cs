@@ -19,7 +19,9 @@ namespace XbmcUpdate.Managers
         {
 
             string strResponse = String.Empty;
-
+            WebResponse myWebResponse = null;
+            StreamReader readStream = null;
+            Stream ReceiveStream = null;
             try
             {
 
@@ -27,19 +29,16 @@ namespace XbmcUpdate.Managers
 
                 WebRequest myWebRequest = WebRequest.Create( strURL );
 
-                WebResponse myWebResponse = myWebRequest.GetResponse();
+                myWebResponse = myWebRequest.GetResponse();
 
-                Stream ReceiveStream = myWebResponse.GetResponseStream();
+                ReceiveStream = myWebResponse.GetResponseStream();
 
                 Encoding encode = System.Text.Encoding.GetEncoding( "utf-8" );
 
-                StreamReader readStream = new StreamReader( ReceiveStream, encode );
+                readStream = new StreamReader( ReceiveStream, encode );
 
                 strResponse = readStream.ReadToEnd();
 
-                readStream.Close();
-
-                myWebResponse.Close();
 
                 logger.Trace( "Successfully downloaded build list" );
 
@@ -54,6 +53,12 @@ namespace XbmcUpdate.Managers
                 logger.Fatal( "An error has occurred while downloading build list from the server. {0}", e.Message );
                 throw;
 
+            }
+            finally
+            {
+                myWebResponse.Close();
+                readStream.Close();
+                ReceiveStream.Close();
             }
 
             return strResponse;

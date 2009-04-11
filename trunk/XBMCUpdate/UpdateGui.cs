@@ -118,10 +118,8 @@ namespace XbmcUpdate.Runtime
 
         private void initNlog()
         {
-            LoggingConfiguration config = LogManager.Configuration;
-
             RichTextBoxTarget txtTarget = new RichTextBoxTarget();
-            config.AddTarget( "guiTarget", txtTarget );
+          
             txtTarget.Layout = "${message}";
 
             txtTarget.ControlName = rtxtLog.Name;
@@ -129,7 +127,9 @@ namespace XbmcUpdate.Runtime
             txtTarget.UseDefaultRowColoringRules = false;
 
             LoggingRule rule1 = new LoggingRule( "*", LogLevel.Trace, txtTarget );
-            config.LoggingRules.Add( rule1 );
+            
+            LogManager.Configuration.AddTarget( "guiTarget", txtTarget );
+            LogManager.Configuration.LoggingRules.Add( rule1 );
         }
 
 
@@ -165,7 +165,7 @@ namespace XbmcUpdate.Runtime
                 }
                 else
                 {
-                    lblStatus.Text = ( "Unable to detect XBMC Build. Latest build will be installed." );
+                    lblStatus.Text = ( "Unknown local build. Latest build will be installed." );
 
                 }
             }
@@ -207,6 +207,8 @@ namespace XbmcUpdate.Runtime
 
                 Settings.XbmcPath = txtXbmcPath.Text;
 
+                UpdateVersionStat();
+
                 result = true;
             }
 
@@ -222,9 +224,18 @@ namespace XbmcUpdate.Runtime
                 logger.Info( "XBMC Path has not been set." );
                 ChangeXbmcFolder();
             }
-            else
+            else if( !Directory.Exists( Settings.XbmcPath ) )
             {
-                Directory.CreateDirectory( Settings.XbmcPath );
+                logger.Info( "{0} Doesn't exists. Creating directory.", Settings.XbmcPath );
+
+                try
+                {
+                    Directory.CreateDirectory( Settings.XbmcPath );
+                }
+                catch( Exception e )
+                {
+                    logger.Error( "An error has occurred while creating xbmc folder. {0}", e.Message );
+                }
             }
 
             result = Directory.Exists( Settings.XbmcPath );
@@ -249,51 +260,54 @@ namespace XbmcUpdate.Runtime
         public void StartUpdate()
         {
             logger.Info( "Initiating Update." );
-            update = new UpdateManager();
 
-            picUpdateCheck.Image = XbmcUpdate.Runtime.Properties.Resources.feed_blue;
-            picDownload.Image = XbmcUpdate.Runtime.Properties.Resources.download_blue;
-            picUnzip.Image = XbmcUpdate.Runtime.Properties.Resources.unzip_blue;
-            picInstall.Image = XbmcUpdate.Runtime.Properties.Resources.install_blue;
-
-            if( ValidateXbmcPath() )
+            try
             {
-                if( update.CheckUpdate() )
+                picUpdateCheck.Image = XbmcUpdate.Runtime.Properties.Resources.feed_blue;
+                picDownload.Image = XbmcUpdate.Runtime.Properties.Resources.download_blue;
+                picUnzip.Image = XbmcUpdate.Runtime.Properties.Resources.unzip_blue;
+                picInstall.Image = XbmcUpdate.Runtime.Properties.Resources.install_blue;
+
+                if( ValidateXbmcPath() )
                 {
-
-                    UpdateEvenMessage( "Update Available. Build:" + update.OnlineBuildNumber );
-
-                    DialogResult dialogResult = DialogResult.Cancel;
-
-                    if( !SiletUpdate )
+                    if( update.CheckUpdate() )
                     {
-                        dialogResult = MessageBox.Show( "A new release of XBMC is available! Would you like to processed with installation?", "Update Available", MessageBoxButtons.YesNo, MessageBoxIcon.Question );
-                    }
 
-                    if( SiletUpdate || dialogResult == DialogResult.Yes )
-                    {
-                        update.InstallUpdatesAsync();
+                        UpdateEvenMessage( "Update Available. Build:" + update.OnlineBuildNumber );
+
+                        DialogResult dialogResult = DialogResult.Cancel;
+
+                        if( !SiletUpdate )
+                        {
+                            dialogResult = MessageBox.Show( "A new release of XBMC is available! Would you like to processed with installation?", "Update Available", MessageBoxButtons.YesNo, MessageBoxIcon.Question );
+                        }
+
+                        if( SiletUpdate || dialogResult == DialogResult.Yes )
+                        {
+                            update.InstallUpdatesAsync();
+                        }
+                        else
+                        {
+                            EnabledButtons();
+                        }
                     }
                     else
                     {
+                        lblStatus.Text = String.Format( "No update is necessary. Build Installed:{0}", update.CurrentBuildNumber );
                         EnabledButtons();
                     }
                 }
                 else
                 {
-                    //lblStatus.Text = String.Format( "No update is necessary. Build Installed:{0}", update.CurrentBuildNumber );
+                    lblStatus.Text = String.Format( "You must select your xbmc location before you can update." );
+                    logger.Warn( "You must select your xbmc location before you can update." );
                     EnabledButtons();
-                    if( SiletUpdate )
-                    {
-                        ShutDown( 5 );
-                    }
                 }
             }
-            else
+            catch( Exception e )
             {
-                lblStatus.Text = String.Format( "Please select your XBMC location" );
-                logger.Warn( "You must select your xbmc location before you can update." );
-                EnabledButtons();
+                logger.Fatal( "An error has occurred while attempting to update xbmc. {0}", e.ToString() );
+                lblStatus.Text = String.Format( "An error has occurred while attempting to update xbmc." );
             }
         }
 
@@ -311,12 +325,6 @@ namespace XbmcUpdate.Runtime
                 UpdateEvenMessage( message );
 
                 EnabledButtons();
-
-                if( SiletUpdate )
-                {
-                    ShutDown( 5 );
-                }
-                //SwitchButtonToStart();
             }
         }
 
@@ -445,11 +453,6 @@ namespace XbmcUpdate.Runtime
                 UpdateEvenMessage( message );
 
                 EnabledButtons();
-
-                if( SiletUpdate )
-                {
-                    ShutDown( 10 );
-                }
             }
         }
 
@@ -509,6 +512,11 @@ namespace XbmcUpdate.Runtime
             if( mUpdate != null )
             {
                 mUpdate.Enabled = true;
+            }
+
+            if( SiletUpdate )
+            {
+                ShutDown( 5 );
             }
         }
 
@@ -619,7 +627,7 @@ namespace XbmcUpdate.Runtime
             }
             else
             {
-                logger.Info( "Shutdown time is closing the application." );
+                logger.Info( "Shutdown timer is closing the application." );
                 this.Close();
             }
         }
@@ -628,6 +636,11 @@ namespace XbmcUpdate.Runtime
         {
             rtxtLog.SelectionStart = rtxtLog.Text.Length;
             rtxtLog.ScrollToCaret();
+        }
+
+        private void tabPageUpdate_Click( object sender, EventArgs e )
+        {
+
         }
 
 
