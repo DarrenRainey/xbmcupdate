@@ -83,15 +83,18 @@ namespace XbmcUpdate.SelfUpdate
 
             foreach( var currentFile in updateFileInfo )
             {
-                try
+                if( !currentFile.Name.ToLower().Contains("selfupdate") )
                 {
-                    File.Copy( currentFile.ToString(), Application.StartupPath + "\\" + currentFile.Name.ToString(), true );
-                    logger.Info( "File '{0}' Updated successfully", currentFile.Name );
-                }
-                catch( Exception e )
-                {
-                    logger.Fatal( "An error has occurred while copying file {0}. {1}", currentFile, e.ToString() );
-                    throw;
+                    try
+                    {
+                        File.Copy( currentFile.ToString(), Application.StartupPath + "\\" + currentFile.Name.ToString(), true );
+                        logger.Info( "File '{0}' Updated successfully", currentFile.Name );
+                    }
+                    catch( Exception e )
+                    {
+                        logger.Fatal( "An error has occurred while copying file {0}. {1}", currentFile, e.ToString() );
+                        throw;
+                    }
                 }
             }
 

@@ -93,7 +93,7 @@ namespace XbmcUpdate.Runtime
 
         private void UpdateGui_FormClosing( object sender, FormClosingEventArgs e )
         {
-            if( !btnBrows.Enabled )
+            if( UpdateInProgress )
             {
                 var response = MessageBox.Show( "An update is in progress are you sure you want to close XBMC Update?", "Cancel Update", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning );
 

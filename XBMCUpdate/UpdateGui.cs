@@ -251,9 +251,10 @@ namespace XbmcUpdate.Runtime
                 if( SelfUpdate.SelfUpdate.DownloadUpdate() )
                 {
                     UpdateEvenMessage( "Installing Update" );
-                    logger.Info( "Stating xbmcselfupdate.exe" );
+                    logger.Info( "Stating selfupdate.exe" );
+                    UpdateInProgress = false;
                     Process selfUpdateProcess = new Process();
-                    selfUpdateProcess.StartInfo = new ProcessStartInfo( "selfupdate.exe", Program.Arguments );
+                    selfUpdateProcess.StartInfo = new ProcessStartInfo( Application.StartupPath + "\\selfupdate.exe", Program.Arguments );
                     selfUpdateProcess.Start();
                     this.Close();
                 }
@@ -304,7 +305,7 @@ namespace XbmcUpdate.Runtime
                     else
                     {
                         lblStatus.Text = String.Format( "No update is necessary. Build Installed:{0}", update.CurrentBuildNumber );
-                        ShutDown(  );
+                        ShutDown();
                     }
                 }
                 else
@@ -319,7 +320,7 @@ namespace XbmcUpdate.Runtime
                 logger.Fatal( "An error has occurred while attempting to update xbmc. {0}", e.ToString() );
                 lblStatus.Text = String.Format( "An error has occurred while attempting to update xbmc" );
                 UpdateInProgress = false;
-                ShutDown(  );
+                ShutDown();
             }
         }
 
@@ -355,6 +356,11 @@ namespace XbmcUpdate.Runtime
             logger.Info( "Shutdown timer has been initiated. Due in {0} second(s)", Settings.ShutdownCountdown );
             _countDown = Settings.ShutdownCountdown;
             ShutdownTimer.Enabled = true;
+        }
+
+        private void tabPageUpdate_Click( object sender, EventArgs e )
+        {
+
         }
     }
 }

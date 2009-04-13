@@ -75,7 +75,7 @@ namespace XbmcUpdate.SelfUpdate
 
                 ProcessStartInfo pStart = new ProcessStartInfo();
                 pStart.Arguments = arguments.Trim();
-                pStart.FileName = "xbmcupdate.exe";
+                pStart.FileName = Application.StartupPath + "\\xbmcupdate.exe";
 
                 var xbmcUpdate = Process.Start( pStart );
 
