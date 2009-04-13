@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using NLog;
-using System.Diagnostics;
-using System.Threading;
-using System.Configuration;
 using NLog.Config;
 using NLog.Targets;
-using System.IO;
 
 namespace XbmcUpdate.Runtime
 {
@@ -20,6 +17,15 @@ namespace XbmcUpdate.Runtime
         /// </summary>
 
 
+        private static string arguments = "";
+        internal static string Arguments
+        {
+            get
+            {
+                return arguments.Trim();
+            }
+        }
+
         private static void SetupNlog()
         {
             try
@@ -31,20 +37,16 @@ namespace XbmcUpdate.Runtime
                     {
                         File.Delete( "nlog.config" );
                     }
-
                 }
                 catch
                 {
-
                 }
 
                 LoggingConfiguration config = new LoggingConfiguration();
 
                 FileTarget fileTargt = new FileTarget();
                 fileTargt.Layout = "${longdate}-${callsite}|${level}|${message} ${exception:format=ToString}";
-                fileTargt.FileName = "${basedir}\\logs\\${date:format=m}.log";
-
-
+                fileTargt.FileName = "${basedir}\\logs\\${processname:lowerCase=true}.${date:format=yyyy-MM-dd}.log";
 
                 LoggingRule rule1 = new LoggingRule( "*", LogLevel.Trace, fileTargt );
 
@@ -78,20 +80,25 @@ namespace XbmcUpdate.Runtime
                 if( arg.Trim( '/', '-', '-' ).ToLower() == "update" )
                 {
                     silentUpdate = true;
+
+                    arguments += "//update ";
                 }
                 if( arg.Trim( '/', '-', '-' ).ToLower() == "tray" )
                 {
                     tray = true;
+                    arguments += "//tray ";
                 }
             }
 
             try
             {
-                logger.Info( "{0} v{1} Starting up.", Process.GetCurrentProcess().ProcessName, System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() );
-
+                logger.Info( "************************************************************************");
+                logger.Info( "{0} v{1} Starting up", Process.GetCurrentProcess().ProcessName, Settings.ApplicationVersion.ToString() );
+                logger.Info( "************************************************************************" );
+               
                 if( IsAnotherInstanceRunning() )
                 {
-                    MessageBox.Show( "Another instance of XBMCUpdate is already running.", "XBMC Update", MessageBoxButtons.OK, MessageBoxIcon.Information );
+                    MessageBox.Show( "Another instance of XBMCUpdate is already running", "XBMC Update", MessageBoxButtons.OK, MessageBoxIcon.Information );
                 }
                 else
                 {
@@ -122,7 +129,7 @@ namespace XbmcUpdate.Runtime
 
 
 
-        public static bool IsAnotherInstanceRunning()
+        internal static bool IsAnotherInstanceRunning()
         {
             bool result = false;
 

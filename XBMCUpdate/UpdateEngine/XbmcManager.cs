@@ -21,58 +21,57 @@ namespace XbmcUpdate.Managers
         {
             get
             {
-                if (8 == IntPtr.Size
-                    || (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432"))))
+                if( 8 == IntPtr.Size
+                    || ( !String.IsNullOrEmpty( Environment.GetEnvironmentVariable( "PROCESSOR_ARCHITEW6432" ) ) ) )
                 {
-                    return Environment.GetEnvironmentVariable("ProgramFiles(x86)");
+                    return Environment.GetEnvironmentVariable( "ProgramFiles(x86)" );
                 }
-                return Environment.GetEnvironmentVariable("ProgramFiles");
+                return Environment.GetEnvironmentVariable( "ProgramFiles" );
             }
         }
 
-        public static void SaveVersion(VersionInfo version)
+        internal static void SaveVersion( VersionInfo version )
         {
-            logger.Info("Updating your installation status.");
-            string fileContent = Serilizer.SerializeObject<VersionInfo>(version);
-            Serilizer.WriteToFile(string.Format(@"{0}\{1}", Settings.XbmcPath, VERSION_FILE), fileContent, false);
-
+            logger.Info( "Updating your installation status" );
+            string fileContent = Serilizer.SerializeObject<VersionInfo>( version );
+            Serilizer.WriteToFile( string.Format( @"{0}\{1}", Settings.XbmcPath, VERSION_FILE ), fileContent, false );
         }
 
-        public static VersionInfo GerVersion()
+        internal static VersionInfo GerVersion()
         {
 
             VersionInfo installedVersion = new VersionInfo();
 
             try
             {
-                string versionFilePath = string.Format(@"{0}\{1}", Settings.XbmcPath, VERSION_FILE);
+                string versionFilePath = string.Format( @"{0}\{1}", Settings.XbmcPath, VERSION_FILE );
 
-                if (File.Exists(versionFilePath))
+                if( File.Exists( versionFilePath ) )
                 {
-                    string fileContent = Serilizer.ReadFile(versionFilePath);
-                    installedVersion = Serilizer.DeserializeObject(fileContent);
-                    logger.Info("Rev:{0}, Installation Date:{1}, Supplier:{2}", installedVersion.BuildNumber, installedVersion.InstallationDate, installedVersion.Suplier);
+                    string fileContent = Serilizer.ReadFile( versionFilePath );
+                    installedVersion = Serilizer.DeserializeObject( fileContent );
+                    logger.Info( "Rev:{0}, Installation Date:{1}, Supplier:{2}", installedVersion.BuildNumber, installedVersion.InstallationDate, installedVersion.Suplier );
                 }
                 else
                 {
-                    logger.Info("No version files were found. The latest revision will be installed on next update.");
+                    logger.Info( "No version files were found. The latest revision will be installed on next update" );
                 }
             }
-            catch (Exception e)
+            catch( Exception e )
             {
-                logger.Fatal("An error has occurred while getting installed version info. {0}", e.ToString());
+                logger.Fatal( "An error has occurred while getting installed version info. {0}", e.ToString() );
             }
 
             return installedVersion;
         }
 
 
-        public static void StopXbmc()
+        internal static void StopXbmc()
         {
-            logger.Info("Verifying if xbmc is running.");
-            var xbmcProcesses = Process.GetProcessesByName("xbmc");
+            logger.Info( "Verifying if xbmc is running" );
+            var xbmcProcesses = Process.GetProcessesByName( "xbmc" );
 
-            foreach (Process item in xbmcProcesses)
+            foreach( Process item in xbmcProcesses )
             {
                 //logger.Info("An instance of xbmc was found. processId:{0}", item.)
                 item.Kill();

@@ -1,24 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using NLog;
-using System.IO;
-using XbmcUpdate.Managers;
-using System.Threading;
-using System.Diagnostics;
 using NLog.Config;
-using NLog.Win32.Targets;
 using NLog.Targets;
+using XbmcUpdate.Managers;
 
 namespace XbmcUpdate.Runtime
 {
 
 
-    public partial class UpdateGui : Form
+    internal partial class UpdateGui : Form
     {
 
         private static string log;
@@ -89,10 +82,13 @@ namespace XbmcUpdate.Runtime
             mExitApplication.Click += new EventHandler( mExitApplication_Click );
             mContextMenu.Items.Add( mExitApplication );
             mNotifyIcon.DoubleClick += new EventHandler( mNotifyIcon_DoubleClick );
+
+
+            this.components.Add( mNotifyIcon );
         }
 
 
-        public UpdateGui()
+        internal UpdateGui()
         {
             InitializeComponent();
 
@@ -111,6 +107,8 @@ namespace XbmcUpdate.Runtime
 
             update.OnUpdateError += new UpdateEventHandler( update_OnUpdateError );
 
+            this.Text = String.Concat( "XBMCUpdate ", Settings.ApplicationVersion.ToString() );
+
             UpdateVersionStat();
             UpdateUiData();
         }
@@ -119,7 +117,7 @@ namespace XbmcUpdate.Runtime
         private void initNlog()
         {
             RichTextBoxTarget txtTarget = new RichTextBoxTarget();
-          
+
             txtTarget.Layout = "${message}";
 
             txtTarget.ControlName = rtxtLog.Name;
@@ -127,7 +125,7 @@ namespace XbmcUpdate.Runtime
             txtTarget.UseDefaultRowColoringRules = false;
 
             LoggingRule rule1 = new LoggingRule( "*", LogLevel.Trace, txtTarget );
-            
+
             LogManager.Configuration.AddTarget( "guiTarget", txtTarget );
             LogManager.Configuration.LoggingRules.Add( rule1 );
         }
@@ -165,7 +163,7 @@ namespace XbmcUpdate.Runtime
                 }
                 else
                 {
-                    lblStatus.Text = ( "Unknown local build. Latest build will be installed." );
+                    lblStatus.Text = ( "Unknown local build. Latest build will be installed" );
 
                 }
             }
@@ -181,13 +179,13 @@ namespace XbmcUpdate.Runtime
             ChangeXbmcFolder();
         }
 
-        public bool SiletUpdate
+        internal bool SiletUpdate
         {
             get;
             set;
         }
 
-        public bool StartInTray
+        internal bool StartInTray
         {
             get;
             set;
@@ -221,12 +219,12 @@ namespace XbmcUpdate.Runtime
 
             if( String.IsNullOrEmpty( Settings.XbmcPath ) )
             {
-                logger.Info( "XBMC Path has not been set." );
+                logger.Info( "XBMC Path has not been set" );
                 ChangeXbmcFolder();
             }
             else if( !Directory.Exists( Settings.XbmcPath ) )
             {
-                logger.Info( "{0} Doesn't exists. Creating directory.", Settings.XbmcPath );
+                logger.Info( "{0} Doesn't exists. Creating directory", Settings.XbmcPath );
 
                 try
                 {
@@ -257,9 +255,9 @@ namespace XbmcUpdate.Runtime
             StartUpdate();
         }
 
-        public void StartUpdate()
+        internal void StartUpdate()
         {
-            logger.Info( "Initiating Update." );
+            logger.Info( "Initiating Update" );
 
             try
             {
@@ -299,15 +297,15 @@ namespace XbmcUpdate.Runtime
                 }
                 else
                 {
-                    lblStatus.Text = String.Format( "You must select your xbmc location before you can update." );
-                    logger.Warn( "You must select your xbmc location before you can update." );
+                    lblStatus.Text = String.Format( "You must select your xbmc location before you can update" );
+                    logger.Warn( "You must select your xbmc location before you can update" );
                     EnabledButtons();
                 }
             }
             catch( Exception e )
             {
                 logger.Fatal( "An error has occurred while attempting to update xbmc. {0}", e.ToString() );
-                lblStatus.Text = String.Format( "An error has occurred while attempting to update xbmc." );
+                lblStatus.Text = String.Format( "An error has occurred while attempting to update xbmc" );
             }
         }
 
@@ -472,11 +470,12 @@ namespace XbmcUpdate.Runtime
                 }
             }
 
+            this.Refresh();
         }
         #endregion
 
 
-        public static void Log( string message )
+        internal static void Log( string message )
         {
             log = String.Concat( log, message, Environment.NewLine );
         }
@@ -610,11 +609,46 @@ namespace XbmcUpdate.Runtime
             {
                 this.Hide();
             }
+
+            InitiateSelfupdate();
+
+
             if( SiletUpdate )
             {
                 StartUpdate();
             }
         }
+
+        private void InitiateSelfupdate()
+        {
+            UpdateEvenMessage( "Checking for application updates." );
+            try
+            {
+                DisableButtons();
+
+                if( SelfUpdate.SelfUpdate.DownloadUpdate() )
+                {
+                    UpdateEvenMessage( "Installing Update" );
+                    logger.Info( "Stating xbmcselfupdate.exe" );
+                    Process selfUpdateProcess = new Process();
+                    selfUpdateProcess.StartInfo = new ProcessStartInfo( "selfupdate.exe", Program.Arguments );
+                    selfUpdateProcess.Start();
+                    this.Close();
+                }
+                else
+                {
+                    UpdateVersionStat();
+                }
+            }
+            catch( Exception ex )
+            {
+                logger.Error( "An error has occurred while checking for Application update.{0}", ex.ToString() );
+                UpdateEvenMessage( "An error has occurred during selfupdate." );
+            }
+
+            EnabledButtons();
+        }
+
 
         int _countDown = 5;
         private void ShutdownTimer_Tick( object sender, EventArgs e )
@@ -627,7 +661,7 @@ namespace XbmcUpdate.Runtime
             }
             else
             {
-                logger.Info( "Shutdown timer is closing the application." );
+                logger.Info( "Shutdown timer is closing the application" );
                 this.Close();
             }
         }

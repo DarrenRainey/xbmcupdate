@@ -8,7 +8,7 @@ using System.Threading;
 namespace XbmcUpdate.Runtime
 {
 
-    public class UpdateAppContext : ApplicationContext
+    internal class UpdateAppContext : ApplicationContext
     {
         #region Private Members
         private System.ComponentModel.IContainer mComponents;   //List of components
@@ -23,7 +23,7 @@ namespace XbmcUpdate.Runtime
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public UpdateAppContext( bool silentUpdate, bool startInTray )
+        internal UpdateAppContext( bool silentUpdate, bool startInTray )
         {
             try
             {

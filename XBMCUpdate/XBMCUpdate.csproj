@@ -61,8 +61,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="SelfUpdate\SelfUpdate.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Tools\GuiNlogTarget.cs" />
+    <Compile Include="Tools\HtmlClient.cs" />
     <Compile Include="UpdateAppContext.cs" />
     <Compile Include="UpdateGui.cs">
       <SubType>Form</SubType>
@@ -138,6 +140,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SelfUpdate\SelfUpdate.csproj">
+      <Project>{CC5D4D63-62F6-42FB-8617-DCA7859678C0}</Project>
+      <Name>SelfUpdate</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
