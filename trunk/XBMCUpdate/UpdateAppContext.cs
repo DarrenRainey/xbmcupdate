@@ -43,7 +43,7 @@ namespace XbmcUpdate.Runtime
 
                 if( silentUpdate )
                 {
-                    frmUpdate.SiletUpdate = true;
+                    frmUpdate.SilentUpdate = true;
                     frmUpdate.StartUpdate();
                 }
 

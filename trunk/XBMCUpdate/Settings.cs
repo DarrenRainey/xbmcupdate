@@ -20,7 +20,7 @@ namespace XbmcUpdate.Runtime
             config.Save();
         }
 
-        private static string GetConfigValue( string Key )
+        private static string GetConfigValue( string Key, string Default )
         {
             string value = null;
 
@@ -30,7 +30,8 @@ namespace XbmcUpdate.Runtime
             }
             else
             {
-                logger.Warn( "Unable to find config key '{0}'", Key );
+                logger.Warn( "Unable to find config key '{0}' default:'{1}'", Key, Default );
+                value = Default;
             }
 
             return value;
@@ -40,7 +41,7 @@ namespace XbmcUpdate.Runtime
         {
             get
             {
-                return GetConfigValue( "XbmcPath" );
+                return GetConfigValue( "XbmcPath", "" );
             }
             set
             {
@@ -60,7 +61,7 @@ namespace XbmcUpdate.Runtime
         {
             get
             {
-                return GetConfigValue( "ReleaseUrl" );
+                return GetConfigValue( "ReleaseUrl", @"http://danielpatton.com/user-accounts/XBMC-updates/" );
             }
             set
             {
@@ -72,10 +73,20 @@ namespace XbmcUpdate.Runtime
         {
             get
             {
-                return @"http://code.google.com/p/xbmcupdate/downloads";
+                return GetConfigValue( "SelfUpdateUrl", @"http://code.google.com/p/xbmcupdate/downloads" );
             }
 
         }
+
+        internal static int ShutdownCountdown
+        {
+            get
+            {
+                return 5;
+            }
+
+        }
+
 
         internal static Version ApplicationVersion
         {

@@ -8,13 +8,11 @@ using XbmcUpdate.Runtime;
 namespace XbmcUpdate.Tools
 {
 
-    [Target("GuiNlogTarget")]
+    [Target( "GuiNlogTarget" )]
     internal sealed class GuiNlogTarget : TargetWithLayout
     {
-        protected override void Write(LogEventInfo logEvent)
+        protected override void Write( LogEventInfo logEvent )
         {
-            string logMessage = CompiledLayout.GetFormattedMessage(logEvent);
-            UpdateGui.Log(logMessage);
         }
 
     }
