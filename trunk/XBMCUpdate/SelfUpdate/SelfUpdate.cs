@@ -71,12 +71,18 @@ namespace XbmcUpdate.SelfUpdate
 
             logger.Info( "Extracting update" );
             FastZip zipClient = new FastZip();
-            zipClient.ExtractZip( zipDestination, SelfUpdatePath, @"+\.exe$;+\.dll$;-^nlog\.dll$" );
+            zipClient.ExtractZip( zipDestination, SelfUpdatePath, @"+\.exe$;+\.pdb$;+\.dll$;-^nlog\.dll$" );
             logger.Info( "Update extracted to {0}", SelfUpdatePath );
 
             if( File.Exists( SelfUpdatePath + "\\selfupdate.exe" ) )
             {
-                File.Move( SelfUpdatePath + "\\selfupdate.exe", Application.StartupPath + "\\\\selfupdate.exe" );
+                File.Copy( SelfUpdatePath + "\\selfupdate.exe", Application.StartupPath + "\\\\selfupdate.exe", true );
+                File.Delete( SelfUpdatePath + "\\selfupdate.exe" );
+            }
+            if( File.Exists( SelfUpdatePath + "\\selfupdate.pdb" ) )
+            {
+                File.Copy( SelfUpdatePath + "\\selfupdate.pdb", Application.StartupPath + "\\\\selfupdate.exe", true );
+                File.Delete( SelfUpdatePath + "\\selfupdate.pdb" );
             }
         }
 
