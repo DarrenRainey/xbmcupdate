@@ -36,7 +36,7 @@ namespace XbmcUpdate.Runtime
             return value;
         }
 
-        public static string XbmcPath
+        internal static string XbmcPath
         {
             get
             {
@@ -48,15 +48,15 @@ namespace XbmcUpdate.Runtime
             }
         }
 
-        public static string TempFolder
+        internal static string TempFolder
         {
             get
             {
-                return String.Concat(Application.StartupPath,@"\temp\");
+                return String.Concat( Application.StartupPath, @"\temp\" );
             }
         }
 
-        public static string ReleaseUrl
+        internal static string ReleaseUrl
         {
             get
             {
@@ -65,6 +65,23 @@ namespace XbmcUpdate.Runtime
             set
             {
                 UpdateValue( "ReleaseUrl", value );
+            }
+        }
+
+        internal static string SelfUpdateUrl
+        {
+            get
+            {
+                return @"http://code.google.com/p/xbmcupdate/downloads";
+            }
+
+        }
+
+        internal static Version ApplicationVersion
+        {
+            get
+            {
+                return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             }
         }
 

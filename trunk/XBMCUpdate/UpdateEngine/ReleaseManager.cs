@@ -1,77 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Net;
-using System.IO;
 using System.Text.RegularExpressions;
 using NLog;
 using XbmcUpdate.Runtime;
+using XbmcUpdate.Tools;
+
 
 namespace XbmcUpdate.Managers
 {
     class ReleaseManager
     {
-
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private static Dictionary<int, string> releaseUrls = new Dictionary<int, string>();
 
-        private static string GetPage( string strURL )
-        {
 
-            string strResponse = String.Empty;
-            WebResponse myWebResponse = null;
-            StreamReader readStream = null;
-            Stream ReceiveStream = null;
-            try
-            {
-
-                logger.Trace( "Attempting to connect to '{0}'", strURL );
-
-                WebRequest myWebRequest = WebRequest.Create( strURL );
-
-                myWebResponse = myWebRequest.GetResponse();
-
-                ReceiveStream = myWebResponse.GetResponseStream();
-
-                Encoding encode = System.Text.Encoding.GetEncoding( "utf-8" );
-
-                readStream = new StreamReader( ReceiveStream, encode );
-
-                strResponse = readStream.ReadToEnd();
-
-
-                logger.Trace( "Successfully downloaded build list" );
-
-            }
-            catch( System.Net.WebException webEx )
-            {
-                logger.Error( "Unable to connect to remote server on '{0}'. {1}", strURL, webEx.Message );
-                throw;
-            }
-            catch( Exception e )
-            {
-                logger.Fatal( "An error has occurred while downloading build list from the server. {0}", e.Message );
-                throw;
-
-            }
-            finally
-            {
-                myWebResponse.Close();
-                readStream.Close();
-                ReceiveStream.Close();
-            }
-
-            return strResponse;
-        }
 
         internal static List<int> GetBuildList()
         {
             releaseUrls.Clear();
 
-            string page = GetPage( Settings.ReleaseUrl );
+            string page = HtmlClient.GetPage( Settings.ReleaseUrl );
             List<int> buildNumbers = new List<Int32>();
 
-            logger.Info( "Trying to parse out the builds list from HTML string." );
+            logger.Info( "Trying to parse out the builds list from HTML string" );
 
             var matches = Regex.Matches( page, @"XBMC.{0,5}\d{5}.zip", RegexOptions.IgnoreCase );
 

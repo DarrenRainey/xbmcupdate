@@ -19,33 +19,33 @@ namespace XbmcUpdate.Managers
         string compressedBuildPath;
         string uncompressedBuildPath;
 
-        public event UpdateEventHandler OnCheckUpdateStart;
-        public event UpdateEventHandler OnCheckUpdateStop;
+        internal event UpdateEventHandler OnCheckUpdateStart;
+        internal event UpdateEventHandler OnCheckUpdateStop;
 
-        public event UpdateEventHandler OnDownloadStart;
-        public event UpdateEventHandler OnDownloadStop;
+        internal event UpdateEventHandler OnDownloadStart;
+        internal event UpdateEventHandler OnDownloadStop;
 
-        public event UpdateEventHandler OnUnZipStart;
-        public event UpdateEventHandler OnUnZipStop;
+        internal event UpdateEventHandler OnUnZipStart;
+        internal event UpdateEventHandler OnUnZipStop;
 
-        public event UpdateEventHandler OnInstallStart;
-        public event UpdateEventHandler OnInstallStop;
+        internal event UpdateEventHandler OnInstallStart;
+        internal event UpdateEventHandler OnInstallStop;
 
 
-        public event UpdateEventHandler OnUpdateError;
+        internal event UpdateEventHandler OnUpdateError;
 
         private Thread updateThread;
 
 
-        public UpdateManager()
+        internal UpdateManager()
         {
             Directory.CreateDirectory( Settings.TempFolder );
-            logger.Info( "Creating Temporary folder at: {0}", Settings.TempFolder );
+            logger.Info( "Creating temporary folder at: {0}", Settings.TempFolder );
         }
 
 
         private DownloadManager _downloadManager;
-        public DownloadManager Download
+        internal DownloadManager Download
         {
             get
             {
@@ -54,7 +54,7 @@ namespace XbmcUpdate.Managers
         }
 
         int onlineBuildNumber;
-        public int OnlineBuildNumber
+        internal int OnlineBuildNumber
         {
             get
             {
@@ -63,7 +63,7 @@ namespace XbmcUpdate.Managers
         }
 
         int currentBuildNumber;
-        public int CurrentBuildNumber
+        internal int CurrentBuildNumber
         {
             get
             {
@@ -72,14 +72,14 @@ namespace XbmcUpdate.Managers
         }
 
 
-        public bool CheckUpdate()
+        internal bool CheckUpdate()
         {
 
             bool updateAvilable = false;
 
             if( OnCheckUpdateStart != null )
             {
-                OnCheckUpdateStart( this, "Looking for updates." );
+                OnCheckUpdateStart( this, "Looking for updates" );
             }
 
             try
@@ -98,7 +98,7 @@ namespace XbmcUpdate.Managers
 
                     if( onlineBuildNumber <= currentBuildNumber )
                     {
-                        logger.Info( "No updates is necessary." );
+                        logger.Info( "No updates is necessary" );
                     }
 
                     updateAvilable = currentBuildNumber < onlineBuildNumber;
@@ -119,21 +119,21 @@ namespace XbmcUpdate.Managers
             }
             catch( Exception e )
             {
-                logger.FatalException( "An Error has occurred while checking for updates.", e );
+                logger.FatalException( "An Error has occurred while checking for updates", e );
                 if( OnUpdateError != null )
                 {
-                    OnUpdateError( this, "An Error has occurred while checking for updates." );
+                    OnUpdateError( this, "An Error has occurred while checking for updates" );
                 }
             }
 
             return updateAvilable;
         }
 
-        public void ExctractBuild()
+        internal void ExctractBuild()
         {
             if( OnUnZipStart != null )
             {
-                OnUnZipStart( this, "Extracting Build..." );
+                OnUnZipStart( this, "Extracting Build.." );
             }
 
             try
@@ -145,7 +145,7 @@ namespace XbmcUpdate.Managers
                 {
                     if( Directory.Exists( unZipPath ) )
                     {
-                        logger.Info( "Trying to delete previous extracted copy." );
+                        logger.Info( "Trying to delete previous extracted copy" );
                         Directory.Delete( unZipPath, true );
                     }
                 }
@@ -177,7 +177,7 @@ namespace XbmcUpdate.Managers
             }
         }
 
-        public void ApplyUpdate()
+        internal void ApplyUpdate()
         {
             try
             {
@@ -194,7 +194,7 @@ namespace XbmcUpdate.Managers
             {
                 logger.FatalException( "An error has occurred during update", e );
                 if( OnUpdateError != null )
-                    OnUpdateError( this, "An error has occurred during update." + e.Message );
+                    OnUpdateError( this, "An error has occurred during update" + e.Message );
             }
         }
 
@@ -239,7 +239,7 @@ namespace XbmcUpdate.Managers
             {
                 logger.FatalException( "An error has occurred while installing update", e );
                 if( OnUpdateError != null )
-                    OnUpdateError( this, "An error has occurred while installing update." + e.Message );
+                    OnUpdateError( this, "An error has occurred while installing update" + e.Message );
 
             }
 
@@ -247,7 +247,7 @@ namespace XbmcUpdate.Managers
 
         private void CleanTemp()
         {
-            logger.Info( "Cleaning Temp folder." );
+            logger.Info( "Cleaning Temp folder" );
 
             var tempSubfolders = Directory.GetDirectories( Settings.TempFolder );
 
@@ -296,13 +296,13 @@ namespace XbmcUpdate.Managers
             Directory.Delete( path, true );
         }
 
-        public void InstallUpdatesAsync()
+        internal void InstallUpdatesAsync()
         {
             updateThread = new Thread( ApplyUpdate );
             updateThread.Start();
         }
 
-        public void Abort()
+        internal void Abort()
         {
             if( updateThread != null )
             {
@@ -333,21 +333,21 @@ namespace XbmcUpdate.Managers
                     FileInfo localFileInfo = new FileInfo( compressedBuildPath );
                     if( DownloadManager.GetFileSize( buildUrl ) == localFileInfo.Length )
                     {
-                        logger.Info( "File '{0}' with the matching file size exists. skipping download.", localFileInfo.Name );
+                        logger.Info( "File '{0}' with the matching file size exists. skipping download", localFileInfo.Name );
 
                         if( OnDownloadStop != null )
                         {
-                            OnDownloadStop( this, "Already Downloaded Skipping." );
+                            OnDownloadStop( this, "Already Downloaded Skipping" );
                         }
 
                         return;
                     }
 
-                    logger.Info( "Partial file detected. Re-Downloading file." );
+                    logger.Info( "Partial file detected. Re-Downloading file" );
 
                 }
 
-                logger.Info( "Downloading build {0} from the server.", onlineBuildNumber );
+                logger.Info( "Downloading build {0} from the server", onlineBuildNumber );
 
                 _downloadManager = new DownloadManager();
                 _downloadManager.Download( buildUrl, compressedBuildPath );
@@ -385,10 +385,16 @@ namespace XbmcUpdate.Managers
 
             foreach( var file in Directory.GetFiles( source ) )
             {
-                FileInfo currentFile = new FileInfo( file );
-
-                string newFile = ( String.Concat( destination, currentFile.Name ) );
-                File.Copy( currentFile.FullName, newFile, true );
+                if( !file.ToLower().Contains( "keymap.xml" ) )
+                {
+                    FileInfo currentFile = new FileInfo( file );
+                    string newFile = ( String.Concat( destination, currentFile.Name ) );
+                    File.Copy( currentFile.FullName, newFile, true );
+                }
+                else
+                {
+                    logger.Warn( "Skipping file {0}", file );
+                }
             }
         }
 

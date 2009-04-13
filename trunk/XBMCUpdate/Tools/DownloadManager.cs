@@ -1,24 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Net;
 using System.IO;
+using System.Net;
 using NLog;
 
 namespace XbmcUpdate.Tools
 {
     internal class DownloadManager
     {
-
         static Logger logger = LogManager.GetCurrentClassLogger();
 
         //Url for the file to be downloaded
         private string url;
         //location the downloaded file should be saved to
         private string localFile;
-        // The thread inside which the download happens
-        private Thread downloadThread;
         // The stream of data retrieved from the web server
         private Stream dlStream;
         // The stream of data that we write to the hard drive
@@ -30,26 +24,19 @@ namespace XbmcUpdate.Tools
         //Size of the file
         private Int64 fileSize = 0;
 
-        public Int64 BytesRead
+        internal Int64 BytesRead
         {
             get
             {
                 if( localStream != null )
                 {
-                    try
-                    {
-                        return localStream.Length;
-                    }
-                    catch
-                    {
-                    }
-
+                    return localStream.Length;
                 }
                 return 0;
             }
         }
 
-        public Int64 FileSize
+        internal Int64 FileSize
         {
             get
             {
@@ -58,7 +45,7 @@ namespace XbmcUpdate.Tools
         }
 
 
-        public void Download( string fileUrl, string destinationFile )
+        internal void Download( string fileUrl, string destinationFile )
         {
             url = fileUrl;
             localFile = destinationFile;
@@ -67,14 +54,13 @@ namespace XbmcUpdate.Tools
         }
 
 
-        public void Stop()
+        internal void Stop()
         {
             // Close the web response and the streams
             webResponse.Close();
             dlStream.Close();
             localStream.Close();
             // Abort the thread that's downloading
-            downloadThread.Abort();
             //Try to delete the incomplete file
 
             try
@@ -87,7 +73,7 @@ namespace XbmcUpdate.Tools
             }
         }
 
-        public static long GetFileSize( string url )
+        internal static long GetFileSize( string url )
         {
             long remoteSize = 0;
 
