@@ -13,13 +13,13 @@ namespace XbmcUpdate.Runtime
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+        protected override void Dispose( bool disposing )
         {
-            if (disposing && (components != null))
+            if( disposing && ( components != null ) )
             {
                 components.Dispose();
             }
-            base.Dispose(disposing);
+            base.Dispose( disposing );
         }
 
         #region Windows Form Designer generated code
@@ -225,7 +225,6 @@ namespace XbmcUpdate.Runtime
             this.tabPageUpdate.TabIndex = 0;
             this.tabPageUpdate.Text = "Update";
             this.tabPageUpdate.UseVisualStyleBackColor = true;
-            this.tabPageUpdate.Click += new System.EventHandler( this.tabPageUpdate_Click );
             // 
             // grpStatIcons
             // 

@@ -305,7 +305,11 @@ namespace XbmcUpdate.Runtime
                     else
                     {
                         lblStatus.Text = String.Format( "No update is necessary. Build Installed:{0}", update.CurrentBuildNumber );
-                        ShutDown();
+
+                        if( SilentUpdate )
+                        {
+                            ShutDown();
+                        }
                     }
                 }
                 else
@@ -320,7 +324,11 @@ namespace XbmcUpdate.Runtime
                 logger.Fatal( "An error has occurred while attempting to update xbmc. {0}", e.ToString() );
                 lblStatus.Text = String.Format( "An error has occurred while attempting to update xbmc" );
                 UpdateInProgress = false;
-                ShutDown();
+
+                if( SilentUpdate )
+                {
+                    ShutDown();
+                }
             }
         }
 
@@ -353,14 +361,16 @@ namespace XbmcUpdate.Runtime
 
         private void ShutDown()
         {
-            logger.Info( "Shutdown timer has been initiated. Due in {0} second(s)", Settings.ShutdownCountdown );
-            _countDown = Settings.ShutdownCountdown;
-            ShutdownTimer.Enabled = true;
-        }
-
-        private void tabPageUpdate_Click( object sender, EventArgs e )
-        {
-
+            if( SilentUpdate )
+            {
+                logger.Info( "Shutdown timer has been initiated. Due in {0} second(s)", Settings.ShutdownCountdown );
+                _countDown = Settings.ShutdownCountdown;
+                ShutdownTimer.Enabled = true;
+            }
+            else
+            {
+                logger.Warn( "A shutdown countdown was reuqest while the app was not running in silent mode!. Ignoring request." );
+            }
         }
     }
 }
