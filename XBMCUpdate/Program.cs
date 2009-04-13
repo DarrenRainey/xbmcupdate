@@ -107,7 +107,7 @@ namespace XbmcUpdate.Runtime
 
                     UpdateGui frmUpdate = new UpdateGui();
 
-                    frmUpdate.SiletUpdate = silentUpdate;
+                    frmUpdate.SilentUpdate = silentUpdate;
                     frmUpdate.StartInTray = tray;
 
                     if( tray )

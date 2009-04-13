@@ -225,7 +225,6 @@ namespace XbmcUpdate.Runtime
             this.tabPageUpdate.TabIndex = 0;
             this.tabPageUpdate.Text = "Update";
             this.tabPageUpdate.UseVisualStyleBackColor = true;
-            this.tabPageUpdate.Click += new System.EventHandler( this.tabPageUpdate_Click );
             // 
             // grpStatIcons
             // 

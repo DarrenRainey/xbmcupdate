@@ -92,6 +92,12 @@
     <Compile Include="Tools\Serilizer.cs" />
     <Compile Include="UpdateEngine\UpdateManager.cs" />
     <Compile Include="UpdateEngine\XbmcManager.cs" />
+    <Compile Include="UpdateGui\FormEvents.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdateGui\UpdateEvents.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="app.ico" />
