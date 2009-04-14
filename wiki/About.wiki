@@ -1,3 +1,1 @@
-#About XBMCUpdate
-
 == I need your help with populating this wiki, if you are interested to help out please submit an issue and I will add you to the project==
