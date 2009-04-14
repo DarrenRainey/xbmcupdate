@@ -1,16 +1,3 @@
 #About XBMCUpdate
 
-= Introduction =
-
-Add your content here.
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
-
-
-<wiki:gadget url="http://kaptcha.googlecode.com/svn/wiki/adsense3.xml" border="0" width="468" height="60" />
+== I need your help with populating this wiki, if you are interested to help out please submit an issue and I will add you to the project==
