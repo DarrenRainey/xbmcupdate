@@ -15,12 +15,13 @@ namespace XbmcUpdate.Runtime
 
         private static void UpdateValue( string key, string value )
         {
+            logger.Trace( "Writing Setting to file. Key:'{0}' Value:'{1}'", key, value );
             config.AppSettings.Settings.Remove( key );
             config.AppSettings.Settings.Add( key, value );
             config.Save();
         }
 
-        private static string GetConfigValue( string Key, string Default )
+        private static string GetConfigValue( string Key, string Default, bool makePermanent )
         {
             string value = null;
 
@@ -31,6 +32,10 @@ namespace XbmcUpdate.Runtime
             else
             {
                 logger.Warn( "Unable to find config key '{0}' default:'{1}'", Key, Default );
+                if( makePermanent )
+                {
+                    UpdateValue( Key, Default );
+                }
                 value = Default;
             }
 
@@ -41,7 +46,7 @@ namespace XbmcUpdate.Runtime
         {
             get
             {
-                return GetConfigValue( "XbmcPath", "" );
+                return GetConfigValue( "XbmcPath", "", true );
             }
             set
             {
@@ -61,7 +66,7 @@ namespace XbmcUpdate.Runtime
         {
             get
             {
-                return GetConfigValue( "ReleaseUrl", @"http://danielpatton.com/user-accounts/XBMC-updates/" );
+                return GetConfigValue( "ReleaseUrl", @"http://danielpatton.com/user-accounts/XBMC-updates/", true );
             }
             set
             {
@@ -73,7 +78,7 @@ namespace XbmcUpdate.Runtime
         {
             get
             {
-                return GetConfigValue( "SelfUpdateUrl", @"http://code.google.com/p/xbmcupdate/downloads" );
+                return GetConfigValue( "SelfUpdateUrl", @"http://code.google.com/p/xbmcupdate/downloads", false );
             }
 
         }
