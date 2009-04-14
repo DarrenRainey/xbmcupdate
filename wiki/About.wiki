@@ -1,1 +1,5 @@
-== I need your help with populating this wiki, if you are interested to help out please submit an issue and I will add you to the project==
+== I need your help with populating this wiki, if you are interested to help out please [http://code.google.com/p/xbmcupdate/issues/entry?template=Feature%20Request submit an issue] and I will add you to the project==
+
+
+
+[https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4574896 https://www.paypalobjects.com/WEBSCR-570-20090406-1/en_US/i/btn/btn_donate_LG.gif]
