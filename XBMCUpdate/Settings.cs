@@ -1,4 +1,24 @@
-﻿using System;
+﻿/*
+ *   XBMCUpdate: Automatic Update Client for XBMC. (www.xbmc.org)
+ * 
+ *   Copyright (C) 2009  Keivan Beigi
+ * 
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
@@ -13,15 +33,15 @@ namespace XbmcUpdate.Runtime
         static Configuration config = ConfigurationManager.OpenExeConfiguration( ConfigurationUserLevel.None );
         static Logger logger = LogManager.GetCurrentClassLogger();
 
-        private static void UpdateValue( string key, string value )
+        private static void UpdateValue( string key, object value )
         {
             logger.Trace( "Writing Setting to file. Key:'{0}' Value:'{1}'", key, value );
             config.AppSettings.Settings.Remove( key );
-            config.AppSettings.Settings.Add( key, value );
+            config.AppSettings.Settings.Add( key, value.ToString() );
             config.Save();
         }
 
-        private static string GetConfigValue( string Key, string Default, bool makePermanent )
+        private static string GetConfigValue( string Key, object Default, bool makePermanent )
         {
             string value = null;
 
@@ -34,9 +54,9 @@ namespace XbmcUpdate.Runtime
                 logger.Warn( "Unable to find config key '{0}' default:'{1}'", Key, Default );
                 if( makePermanent )
                 {
-                    UpdateValue( Key, Default );
+                    UpdateValue( Key, Default.ToString() );
                 }
-                value = Default;
+                value = Default.ToString();
             }
 
             return value;
@@ -89,15 +109,57 @@ namespace XbmcUpdate.Runtime
             {
                 return 5;
             }
-
         }
 
+        internal static string XbmcExe
+        {
+            get
+            {
+                return "xbmc.exe";
+            }
+        }
 
         internal static Version ApplicationVersion
         {
             get
             {
                 return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            }
+        }
+
+        internal static Int32 XbmcAutostart
+        {
+            get
+            {
+                return Convert.ToInt32( GetConfigValue( "XbmcAutostart", 0, true ) );
+            }
+            set
+            {
+                UpdateValue( "XbmcAutostart", value );
+            }
+        }
+
+        internal static bool XbmcAutoShutdown
+        {
+            get
+            {
+                return Convert.ToBoolean( GetConfigValue( "XbmcAutoShutdown", false, true ) );
+            }
+            set
+            {
+                UpdateValue( "XbmcAutoShutdown", value );
+            }
+        }
+
+        internal static string XbmcStartupArgs
+        {
+            get
+            {
+                return GetConfigValue( "XbmcStartupArgs", "", true );
+            }
+            set
+            {
+                UpdateValue( "XbmcStartupArgs", value );
             }
         }
 
