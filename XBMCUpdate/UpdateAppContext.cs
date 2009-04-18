@@ -69,7 +69,7 @@ namespace XbmcUpdate.Runtime
             //provide it an icon, note, you can embed this resource 
             mNotifyIcon = new NotifyIcon( this.mComponents );
             mNotifyIcon.Icon = XbmcUpdate.Runtime.Properties.Resources.app;
-            mNotifyIcon.Text = "XBMC Update";
+            mNotifyIcon.Text = "XBMCUpdate";
             mNotifyIcon.Visible = true;
 
             //Instantiate the context menu and items

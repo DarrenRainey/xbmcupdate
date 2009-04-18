@@ -33,9 +33,9 @@ namespace XbmcUpdate.Runtime
                 try
                 {
 
-                    if( File.Exists( "nlog.config" ) )
+                    if (File.Exists("nlog.config"))
                     {
-                        File.Delete( "nlog.config" );
+                        File.Delete("nlog.config");
                     }
                 }
                 catch
@@ -48,42 +48,40 @@ namespace XbmcUpdate.Runtime
                 fileTargt.Layout = "${longdate}-${callsite}|${level}|${message} ${exception:format=ToString}";
                 fileTargt.FileName = "${basedir}\\logs\\${processname:lowerCase=true}.${date:format=yyyy-MM-dd}.log";
 
-                LoggingRule rule1 = new LoggingRule( "*", LogLevel.Trace, fileTargt );
+                LoggingRule rule1 = new LoggingRule("*", LogLevel.Trace, fileTargt);
 
-                config.AddTarget( "guiTarget", fileTargt );
-                config.LoggingRules.Add( rule1 );
+                config.AddTarget("guiTarget", fileTargt);
+                config.LoggingRules.Add(rule1);
 
                 LogManager.Configuration = config;
             }
-            catch( Exception e )
+            catch (Exception e)
             {
-                System.Windows.Forms.MessageBox.Show( String.Format( "Fatal Logger Error.{0}{1}", Environment.NewLine, e.ToString() ), "XBMCUpdate Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                System.Windows.Forms.MessageBox.Show(String.Format("Fatal Logger Error.{0}{1}", Environment.NewLine, e.ToString()), "XBMCUpdate Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
         }
 
-
+        static bool tray = false;
+        static bool silentUpdate = false;
 
         [STAThread]
-        static void Main( string[] args )
+        static void Main(string[] args)
         {
             SetupNlog();
             logger = LogManager.GetCurrentClassLogger();
 
-            bool tray = false;
-            bool silentUpdate = false;
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Program_UnhandledException);
 
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( Program_UnhandledException );
-
-            foreach( string arg in args )
+            foreach (string arg in args)
             {
-                if( arg.Trim( '/', '-', '-' ).ToLower() == "update" )
+                if (arg.Trim('/', '-', '-').ToLower() == "update")
                 {
                     silentUpdate = true;
 
                     arguments += "//update ";
                 }
-                if( arg.Trim( '/', '-', '-' ).ToLower() == "tray" )
+                if (arg.Trim('/', '-', '-').ToLower() == "tray")
                 {
                     tray = true;
                     arguments += "//tray ";
@@ -92,37 +90,41 @@ namespace XbmcUpdate.Runtime
 
             try
             {
-                logger.Info( "************************************************************************");
-                logger.Info( "{0} v{1} Starting up", Process.GetCurrentProcess().ProcessName, Settings.ApplicationVersion.ToString() );
-                logger.Info( "************************************************************************" );
-               
-                if( IsAnotherInstanceRunning() )
+                logger.Info("************************************************************************");
+                logger.Info("{0} v{1} Starting up", Process.GetCurrentProcess().ProcessName, Settings.ApplicationVersion.ToString());
+                logger.Info("************************************************************************");
+
+                if (IsAnotherInstanceRunning())
                 {
-                    MessageBox.Show( "Another instance of XBMCUpdate is already running", "XBMC Update", MessageBoxButtons.OK, MessageBoxIcon.Information );
+                    MessageBox.Show("Another instance of XBMCUpdate is already running", "XBMCUpdate", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
                     Application.EnableVisualStyles();
-                    Application.SetCompatibleTextRenderingDefault( false );
+                    Application.SetCompatibleTextRenderingDefault(false);
 
                     UpdateGui frmUpdate = new UpdateGui();
 
                     frmUpdate.SilentUpdate = silentUpdate;
                     frmUpdate.StartInTray = tray;
 
-                    if( tray )
+                    if (tray)
                     {
                         frmUpdate.ShowInTaskbar = false;
                     }
 
                     //frmUpdate.StartUpdate();
 
-                    Application.Run( frmUpdate );
+                    Application.Run(frmUpdate);
                 }
             }
-            catch( System.Exception ex )
+            catch (System.Exception ex)
             {
-                logger.Fatal( "Application Exception on Main.{0}", ex );
+                logger.Fatal("Application Exception on Main.{0}", ex);
+                if (!silentUpdate)
+                {
+                    System.Windows.Forms.MessageBox.Show(String.Format("{0}{1}Please notify the developer.", ex.Message, Environment.NewLine), "XBMCUpdate Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 Application.Exit();
             }
         }
@@ -133,14 +135,14 @@ namespace XbmcUpdate.Runtime
         {
             bool result = false;
 
-            logger.Info( "Checking for another instance of XBMCUpdate" );
+            logger.Info("Checking for another instance of XBMCUpdate");
 
             Process cureentInstance = Process.GetCurrentProcess();
-            Process[] allInstances = Process.GetProcessesByName( cureentInstance.ProcessName );
+            Process[] allInstances = Process.GetProcessesByName(cureentInstance.ProcessName);
 
-            logger.Info( "Instances of XBMCUpdate Detected: {0}", allInstances.Length );
+            logger.Info("Instances of XBMCUpdate Detected: {0}", allInstances.Length);
 
-            if( allInstances.Length > 1 )
+            if (allInstances.Length > 1)
             {
                 result = true;
             }
@@ -148,9 +150,13 @@ namespace XbmcUpdate.Runtime
             return result;
         }
 
-        static void Program_UnhandledException( object sender, UnhandledExceptionEventArgs e )
+        static void Program_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            logger.Fatal( "AppDomain Exception. Sender:{0}. Error:{1}", sender, e.ExceptionObject.ToString() );
+            logger.Fatal("AppDomain Exception. Sender:{0}. Error:{1}", sender, e.ExceptionObject.ToString());
+            if (!silentUpdate)
+            {
+                System.Windows.Forms.MessageBox.Show(String.Format("{0}{1}Please notify the developer.", e.ExceptionObject.ToString(), Environment.NewLine), "XBMCUpdate Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             Application.Exit();
         }
     }
