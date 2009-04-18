@@ -143,7 +143,7 @@ namespace XbmcUpdate.Runtime
         {
             get
             {
-                return Convert.ToBoolean( GetConfigValue( "XbmcAutoShutdown", false, true ) );
+                return Convert.ToBoolean( GetConfigValue( "XbmcAutoShutdown", true, true ) );
             }
             set
             {
