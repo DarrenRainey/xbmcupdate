@@ -95,11 +95,11 @@ namespace XbmcUpdate.SelfUpdate
             if( File.Exists( SelfUpdatePath + "\\selfupdate.exe" ) )
             {
                 File.Copy( SelfUpdatePath + "\\selfupdate.exe", Application.StartupPath + "\\\\selfupdate.exe", true );
-                File.Delete( SelfUpdatePath + "\\selfupdate.exe" );
+                //File.Delete( SelfUpdatePath + "\\selfupdate.exe" );
             }
             if( File.Exists( SelfUpdatePath + "\\selfupdate.pdb" ) )
             {
-                File.Copy( SelfUpdatePath + "\\selfupdate.pdb", Application.StartupPath + "\\\\selfupdate.exe", true );
+                File.Copy( SelfUpdatePath + "\\selfupdate.pdb", Application.StartupPath + "\\\\selfupdate.pdb", true );
                 File.Delete( SelfUpdatePath + "\\selfupdate.pdb" );
             }
         }
