@@ -23,16 +23,13 @@ namespace XbmcUpdate.Tools
         private HttpWebResponse webResponse;
         //Size of the file
         private Int64 fileSize = 0;
+        private Int64 bytesRead = 0;
 
         internal Int64 BytesRead
         {
             get
             {
-                if( localStream != null )
-                {
-                    return localStream.Length;
-                }
-                return 0;
+                return bytesRead;
             }
         }
 
@@ -45,7 +42,7 @@ namespace XbmcUpdate.Tools
         }
 
 
-        internal void Download( string fileUrl, string destinationFile )
+        internal void Download(string fileUrl, string destinationFile)
         {
             url = fileUrl;
             localFile = destinationFile;
@@ -65,26 +62,26 @@ namespace XbmcUpdate.Tools
 
             try
             {
-                File.Delete( localFile );
+                File.Delete(localFile);
             }
-            catch( Exception e )
+            catch (Exception e)
             {
-                logger.Fatal( "Unable to delete incomplete file {0}. {1}", e.Message, localFile );
+                logger.Fatal("Unable to delete incomplete file {0}. {1}", e.Message, localFile);
             }
         }
 
-        internal static long GetFileSize( string url )
+        internal static long GetFileSize(string url)
         {
             long remoteSize = 0;
 
             HttpWebResponse resp = null;
 
-            using( WebClient wcDownload = new WebClient() )
+            using (WebClient wcDownload = new WebClient())
             {
                 try
                 {
                     // Create a request to the file
-                    var req = (HttpWebRequest)WebRequest.Create( url );
+                    var req = (HttpWebRequest)WebRequest.Create(url);
                     // Set default authentication for retrieving the file
                     req.Credentials = CredentialCache.DefaultCredentials;
                     // Retrieve the response from the server
@@ -95,9 +92,9 @@ namespace XbmcUpdate.Tools
                     resp.Close();
 
                 }
-                catch( Exception e )
+                catch (Exception e)
                 {
-                    logger.Fatal( "An error has occurred while retrieving server file size. {0}", e.Message );
+                    logger.Fatal("An error has occurred while retrieving server file size. {0}", e.Message);
                 }
                 finally
                 {
@@ -110,12 +107,14 @@ namespace XbmcUpdate.Tools
 
         private void StartDownload()
         {
-            using( WebClient wcDownload = new WebClient() )
+            using (WebClient wcDownload = new WebClient())
             {
                 try
                 {
+                    bytesRead = 0;
+
                     // Create a request to the file we are downloading
-                    webRequest = (HttpWebRequest)WebRequest.Create( url );
+                    webRequest = (HttpWebRequest)WebRequest.Create(url);
                     // Set default authentication for retrieving the file
                     webRequest.Credentials = CredentialCache.DefaultCredentials;
                     // Retrieve the response from the server
@@ -123,9 +122,9 @@ namespace XbmcUpdate.Tools
                     // Ask the server for the file size and store it
                     fileSize = webResponse.ContentLength;
                     // Open the URL for download 
-                    dlStream = wcDownload.OpenRead( url );
+                    dlStream = wcDownload.OpenRead(url);
                     // Create a new file stream where we will be saving the data (local drive)
-                    localStream = new FileStream( localFile, FileMode.Create, FileAccess.Write, FileShare.None );
+                    localStream = new FileStream(localFile, FileMode.Create, FileAccess.Write, FileShare.None);
 
                     // It will store the current number of bytes we retrieved from the server
                     int bytesSize = 0;
@@ -133,21 +132,23 @@ namespace XbmcUpdate.Tools
                     byte[] downBuffer = new byte[2048];
 
                     // Loop through the buffer until the buffer is empty
-                    while( ( bytesSize = dlStream.Read( downBuffer, 0, downBuffer.Length ) ) > 0 )
+                    while ((bytesSize = dlStream.Read(downBuffer, 0, downBuffer.Length)) > 0)
                     {
                         // Write the data from the buffer to the local hard drive
-                        localStream.Write( downBuffer, 0, bytesSize );
+                        localStream.Write(downBuffer, 0, bytesSize);
+                        bytesRead = localStream.Length;
                         // Invoke the method that updates the form's label and progress bar
                     }
 
-                    logger.Info( "Download completed successfully" );
+                    logger.Info("Download completed successfully");
                 }
-                catch( Exception e )
+                catch (Exception e)
                 {
-                    logger.Fatal( "An error has occurred while downloading file. {0}", e.Message );
+                    logger.Fatal("An error has occurred while downloading file. {0}", e.Message);
                 }
                 finally
                 {
+                    bytesRead = localStream.Length;
                     // When the above code has ended, close the streams
                     localStream.Close();
                     dlStream.Close();
