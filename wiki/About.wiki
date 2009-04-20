@@ -1,7 +1,16 @@
-== I need your help with populating this wiki, if you are interested to help out please [http://code.google.com/p/xbmcupdate/issues/entry?template=Feature%20Request submit an issue] and I will add you to the project==
+=About XBMCUpdate=
+XBMCUpdate is the Automatic Update Client for [www.xbmc.org XBMC]
 
+=Features=
+ * Automatically Downloads, Extracts and Installs the latest community builds or XBMC. New builds are provided up to few time a day.
+ * Configurable to do an update without any user interaction and exit upon completion
+ * Configurable to automatically shutdown XBMC prior to update installation
+ * Configurable to automatically start XBMC after a successful update installation
+ * Can automatically update itself. Think of the irony if it couldn't!!!
 
+=System Requirements=
+ * XBMCUpdate has been tested on Windows XP, Windows Vista 32/64 Bit, Window 7
+ * [http://www.microsoft.com/downloads/details.aspx?FamilyID=0856EACB-4362-4B0D-8EDD-AAB15C5E04F5&displaylang=enMicrosoft Microsoft .NET framework] is required for XBMCUpdate. (Pre-installed on Windows Vista and 7)
 
-[https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4574896 https://www.paypalobjects.com/WEBSCR-570-20090406-1/en_US/i/btn/btn_donate_LG.gif]
 
 <wiki:gadget url="http://danielpatton.com/user-accounts/XBMC-updates/kay.one/adsense3.xml" border="0" width="728" height="90" /> 
