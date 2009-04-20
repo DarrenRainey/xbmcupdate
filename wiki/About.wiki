@@ -2,10 +2,10 @@
 XBMCUpdate is the Fully Automated Update Client for [http://www.xbmc.org XBMC]
 
 =Features=
- * Automatically Downloads, Extracts and Installs the latest community builds or XBMC. New builds are provided up to few time a day.
+ * Automatically Downloads, Extracts and Installs the latest community builds for XBMC. (New builds are provided up to few time a day.)
  * Configurable to do an update without any user interaction and exit upon completion
- * Configurable to automatically shutdown XBMC prior to update installation
- * Configurable to automatically start XBMC after a successful update installation
+ * Configurable to automatically shutdown XBMC prior to update
+ * Configurable to automatically start XBMC after a successful update
  * Can automatically update itself. Think of the irony if it couldn't!!!
 
 =System Requirements=
