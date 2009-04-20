@@ -1,3 +1,6 @@
+#summary General Information About XBMCUpdate
+<wiki:gadget url="http://danielpatton.com/user-accounts/XBMC-updates/kay.one/adsense3.xml" border="0" width="728" height="90" /> 
+------------
 =About XBMCUpdate=
 XBMCUpdate is the Automatic Update Client for [www.xbmc.org XBMC]
 
@@ -11,6 +14,5 @@ XBMCUpdate is the Automatic Update Client for [www.xbmc.org XBMC]
 =System Requirements=
  * XBMCUpdate has been tested on Windows XP, Windows Vista 32/64 Bit, Window 7
  * [http://www.microsoft.com/downloads/details.aspx?FamilyID=0856EACB-4362-4B0D-8EDD-AAB15C5E04F5&displaylang=enMicrosoft Microsoft .NET framework] is required for XBMCUpdate. (Pre-installed on Windows Vista and 7)
-
-
+-----
 <wiki:gadget url="http://danielpatton.com/user-accounts/XBMC-updates/kay.one/adsense3.xml" border="0" width="728" height="90" /> 
