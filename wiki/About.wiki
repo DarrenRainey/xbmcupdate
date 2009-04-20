@@ -1,5 +1,5 @@
 =About XBMCUpdate=
-XBMCUpdate is the Automatic Update Client for [www.xbmc.org XBMC]
+XBMCUpdate is the Automatic Update Client for [http://www.xbmc.org XBMC]
 
 =Features=
  * Automatically Downloads, Extracts and Installs the latest community builds or XBMC. New builds are provided up to few time a day.
