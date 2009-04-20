@@ -3,3 +3,5 @@
 
 
 [https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4574896 https://www.paypalobjects.com/WEBSCR-570-20090406-1/en_US/i/btn/btn_donate_LG.gif]
+
+<wiki:gadget url="http://danielpatton.com/user-accounts/XBMC-updates/kay.one/adsense3.xml" border="0" width="728" height="90" /> 
