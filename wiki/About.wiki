@@ -1,6 +1,3 @@
-#summary General Information About XBMCUpdate
-<wiki:gadget url="http://danielpatton.com/user-accounts/XBMC-updates/kay.one/adsense3.xml" border="0" width="728" height="90" /> 
-------------
 =About XBMCUpdate=
 XBMCUpdate is the Automatic Update Client for [www.xbmc.org XBMC]
 
