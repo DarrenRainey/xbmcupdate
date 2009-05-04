@@ -1,0 +1,4 @@
+-Cleanup of release files
+-Hide button to hide the interface in tray
+-cancel update button
+-fix or remove log tab
