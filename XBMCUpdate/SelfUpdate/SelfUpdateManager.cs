@@ -92,15 +92,18 @@ namespace XbmcUpdate.SelfUpdate
             zipClient.ExtractZip(zipDestination, SelfUpdatePath, @"+\.exe$;+\.pdb$;+\.dll$;-^nlog\.dll$");
             Logger.Info("Update extracted to {0}", SelfUpdatePath);
 
-            if (File.Exists(SelfUpdatePath + "\\selfupdate.exe"))
+            string selfUpdateExe = Path.Combine(SelfUpdatePath, "selfupdate.exe");
+            string selfUpdatePdb = Path.Combine(SelfUpdatePath, "selfupdate.pdb");
+
+            if (File.Exists(selfUpdateExe))
             {
-                File.Copy(SelfUpdatePath + "\\selfupdate.exe", Application.StartupPath + "\\\\selfupdate.exe", true);
-                File.Delete(SelfUpdatePath + "\\selfupdate.exe");
+                File.Copy(selfUpdateExe, Path.Combine(Application.StartupPath, "selfupdate.exe"), true);
+                File.Delete(selfUpdateExe);
             }
-            if (File.Exists(SelfUpdatePath + "\\selfupdate.pdb"))
+            if (File.Exists(selfUpdatePdb))
             {
-                File.Copy(SelfUpdatePath + "\\selfupdate.pdb", Application.StartupPath + "\\\\selfupdate.pdb", true);
-                File.Delete(SelfUpdatePath + "\\selfupdate.pdb");
+                File.Copy(selfUpdatePdb, Path.Combine(Application.StartupPath, "selfupdate.pdb"), true);
+                File.Delete(selfUpdatePdb);
             }
         }
 
