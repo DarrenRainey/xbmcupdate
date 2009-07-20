@@ -149,7 +149,7 @@ namespace XbmcUpdate.UpdateEngine
 
         public string Age()
         {
-            var ts = new TimeSpan(DateTime.UtcNow.Ticks - InstallationDate.Ticks);
+            var ts = new TimeSpan(DateTime.Now.Ticks - InstallationDate.Ticks);
             double delta = ts.TotalSeconds;
 
             const int SECOND = 1;

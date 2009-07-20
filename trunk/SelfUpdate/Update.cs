@@ -30,69 +30,74 @@ namespace XbmcUpdate.SelfUpdate
 {
     internal class Update
     {
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private readonly List<FileInfo> updateFileInfo;
-        private readonly List<string> updateFiles;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly List<FileInfo> _updateFileInfo;
+        private readonly List<string> _updateFiles;
 
         internal Update()
         {
-            updateFiles = new List<string>();
-            updateFileInfo = new List<FileInfo>();
+            _updateFiles = new List<string>();
+            _updateFileInfo = new List<FileInfo>();
 
             foreach (string currentFile in Directory.GetFiles(Program.UpdatePath))
             {
                 var currentFileInfo = new FileInfo(currentFile);
-                updateFiles.Add(currentFileInfo.Name.ToLower());
-                updateFileInfo.Add(currentFileInfo);
+                _updateFiles.Add(currentFileInfo.Name.ToLower());
+                _updateFileInfo.Add(currentFileInfo);
             }
         }
 
 
         internal void ShutDownApp()
         {
-            logger.Info("Verifying if any of the files that need to be updated are being used by other processes");
+            Logger.Info("Verifying if any of the files that need to be updated are being used by other processes");
             Process[] allProcesses = Process.GetProcesses();
 
             foreach (Process currentProcess in allProcesses)
             {
-                try
-                {
-                    if (updateFiles.Contains(currentProcess.MainModule.ModuleName.ToLower()))
-                    {
-                        logger.Info("Process:{0} is associated with file:{1}. Terminating process.",
-                                    currentProcess.ProcessName, currentProcess.MainModule.FileName);
-                        currentProcess.CloseMainWindow();
-                        currentProcess.WaitForExit(2000);
-                        if (!currentProcess.HasExited)
-                        {
-                            logger.Warn("Process {0} failed to exit gracefully. Forcing it to terminate",
-                                        currentProcess.ProcessName);
-                            currentProcess.Kill();
-                            currentProcess.WaitForExit(2000);
-                        }
 
-                        if (!currentProcess.HasExited)
-                        {
-                            logger.Warn("Process STILL Running! WHAT THE HELL! - Kill it with FIRE!. {0}",
-                                        currentProcess.ProcessName);
-                        }
-                        else
-                        {
-                            logger.Info("Process {0} has been terminated successfully", currentProcess.ProcessName);
-                        }
-                    }
-                }
-                catch (Win32Exception e)
+                //Don't kill yourself, there is so much to live for!
+                if (Process.GetCurrentProcess().Id != currentProcess.Id)
                 {
-                    if (e.Message.ToLower() != "access is denied" &&
-                        e.Message.ToLower() != "unable to enumerate the process modules.")
+                    try
                     {
-                        logger.Error(currentProcess + " " + e.Message);
+                        if (_updateFiles.Contains(currentProcess.MainModule.ModuleName.ToLower()))
+                        {
+                            Logger.Info("Process:{0} is associated with file:{1}. Terminating process.",
+                                        currentProcess.ProcessName, currentProcess.MainModule.FileName);
+                            currentProcess.CloseMainWindow();
+                            currentProcess.WaitForExit(2000);
+                            if (!currentProcess.HasExited)
+                            {
+                                Logger.Warn("Process {0} failed to exit gracefully. Forcing it to terminate",
+                                            currentProcess.ProcessName);
+                                currentProcess.Kill();
+                                currentProcess.WaitForExit(2000);
+                            }
+
+                            if (!currentProcess.HasExited)
+                            {
+                                Logger.Warn("Process STILL Running! WHAT THE HELL! - Kill it with FIRE!. {0}",
+                                            currentProcess.ProcessName);
+                            }
+                            else
+                            {
+                                Logger.Info("Process {0} has been terminated successfully", currentProcess.ProcessName);
+                            }
+                        }
                     }
-                }
-                catch (Exception e)
-                {
-                    logger.Error(currentProcess + " " + e.Message);
+                    catch (Win32Exception e)
+                    {
+                        if (e.Message.ToLower() != "access is denied" &&
+                            e.Message.ToLower() != "unable to enumerate the process modules.")
+                        {
+                            Logger.Error(currentProcess + " " + e.Message);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Error(currentProcess + " " + e.Message);
+                    }
                 }
             }
         }
@@ -100,33 +105,30 @@ namespace XbmcUpdate.SelfUpdate
 
         internal void CopyUpdate()
         {
-            logger.Info("Copying update to target directory");
+            Logger.Info("Copying update to target directory");
 
 
-            foreach (FileInfo currentFile in updateFileInfo)
+            foreach (FileInfo currentFile in _updateFileInfo)
             {
                 if (!currentFile.Name.ToLower().Contains("selfupdate"))
                 {
                     try
                     {
                         File.Copy(currentFile.ToString(), Application.StartupPath + "\\" + currentFile.Name, true);
-                        logger.Info("File '{0}' Updated successfully", currentFile.Name);
+                        Logger.Info("File '{0}' Updated successfully", currentFile.Name);
                     }
                     catch (Exception e)
                     {
-                        logger.Fatal("An error has occurred while copying file {0}. {1}", currentFile, e.ToString());
-                        throw;
+                        Logger.Fatal("An error has occurred while copying file {0}. {1}", currentFile, e.ToString());
                     }
                 }
             }
-
-            logger.Info("Total of {0} file(s) have been updated successfully", updateFiles.Count);
         }
 
 
         internal void CleanUp()
         {
-            logger.Info("Cleaning Up {0}", Program.UpdatePath);
+            Logger.Info("Cleaning Up {0}", Program.UpdatePath);
 
             try
             {
@@ -134,7 +136,7 @@ namespace XbmcUpdate.SelfUpdate
             }
             catch (Exception e)
             {
-                logger.Error("An error has occurred while preforming cleanup.{0}", e.ToString());
+                Logger.Error("An error has occurred while preforming cleanup.{0}", e.ToString());
             }
         }
     }
