@@ -19,128 +19,120 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 
-
-namespace XbmcUpdate.Runtime
+namespace XbmcUpdate
 {
     internal partial class UpdateGui : Form
     {
-        void mNotifyIcon_DoubleClick( object sender, EventArgs e )
+        private int _countDown = 5;
+
+        private void mNotifyIcon_DoubleClick(object sender, EventArgs e)
         {
-            this.Show();
-            this.ShowInTaskbar = true;
+            Show();
+            ShowInTaskbar = true;
         }
 
-        void mUpdate_Click( object sender, EventArgs e )
+        private void mUpdate_Click(object sender, EventArgs e)
         {
             StartUpdate();
         }
 
-        void mDisplayForm_Click( object sender, EventArgs e )
+        private void mDisplayForm_Click(object sender, EventArgs e)
         {
             Show();
-            this.ShowInTaskbar = true;
+            ShowInTaskbar = true;
         }
 
-        void mExitApplication_Click( object sender, EventArgs e )
+        private void mExitApplication_Click(object sender, EventArgs e)
         {
             //Call our overridden exit thread core method!
-            this.Close();
+            Close();
         }
 
-        private void btnBrows_Click( object sender, EventArgs e )
+        private void btnBrows_Click(object sender, EventArgs e)
         {
             ChangeXbmcFolder();
         }
 
-        private void txtXbmcPath_TextChanged( object sender, EventArgs e )
+        private void txtXbmcPath_TextChanged(object sender, EventArgs e)
         {
             UpdateVersionStat();
         }
 
 
-        private void btnCheckUpdate_Click( object sender, EventArgs e )
+        private void btnCheckUpdate_Click(object sender, EventArgs e)
         {
             StartUpdate();
         }
 
-        private void rtxtLog_TextChanged( object sender, EventArgs e )
+
+
+        private void downloadRefreshTimer_Tick(object sender, EventArgs e)
         {
-            rtxtLog.SelectionStart = rtxtLog.Text.Length;
-            rtxtLog.ScrollToCaret();
+            double mbDownloaded = _update.Download.BytesRead / 1048576d;
+            double mbSize = _update.Download.FileSize / 1048576d;
+            lblStatus.Text = string.Format("{0} MB / {1} MB", mbDownloaded.ToString("0.00"), mbSize.ToString("0.00"));
         }
 
 
-        private void downloadRefreshTimer_Tick( object sender, EventArgs e )
-        {
-            double mbDownloaded = update.Download.BytesRead / 1048576d;
-            double mbSize = update.Download.FileSize / 1048576d;
-            lblStatus.Text = string.Format( "{0} MB / {1} MB", mbDownloaded.ToString( "0.00" ), mbSize.ToString( "0.00" ) );
-        }
-
-
-        private void btnApply_Click( object sender, EventArgs e )
+        private void btnApply_Click(object sender, EventArgs e)
         {
             Settings.ReleaseUrl = txtReleaseUrl.Text;
             Settings.XbmcStartupArgs = txtXbmcStartArgs.Text;
             Settings.XbmcAutostart = cmbXbmcStart.SelectedIndex;
             Settings.XbmcAutoShutdown = chkUpdateIfXbmcIsRunning.Checked;
+            Settings.PreventStandBy = chkPreventStandby.Checked;
         }
 
-        private void UpdateGui_FormClosing( object sender, FormClosingEventArgs e )
+        private void UpdateGui_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if( UpdateInProgress )
+            if (UpdateInProgress)
             {
-                var response = MessageBox.Show( "An update is in progress are you sure you want to close XBMCUpdate?", "Cancel Update", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning );
+                DialogResult response =
+                    MessageBox.Show("An update is in progress are you sure you want to close XBMCUpdate?",
+                                    "Cancel Update", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
-                if( response != DialogResult.Yes )
+                if (response != DialogResult.Yes)
                 {
                     e.Cancel = true;
                 }
             }
-
         }
 
-        private void UpdateGui_FormClosed( object sender, FormClosedEventArgs e )
+        private void UpdateGui_FormClosed(object sender, FormClosedEventArgs e)
         {
-            update.Abort();
+            _update.Abort();
         }
 
-        private void UpdateGui_Load( object sender, EventArgs e )
+        private void UpdateGui_Load(object sender, EventArgs e)
         {
-            InitNlog();
-
-            if( StartInTray )
+            if (StartInTray)
             {
                 InitTray();
             }
-
         }
 
-        private void UpdateGui_Shown( object sender, EventArgs e )
+        private void UpdateGui_Shown(object sender, EventArgs e)
         {
-            if( StartInTray )
+            if (StartInTray)
             {
-                this.Hide();
+                Hide();
             }
 
             InitiateSelfupdate();
 
 
-            if( SilentUpdate )
+            if (SilentUpdate)
             {
                 StartUpdate();
             }
         }
 
 
-        int _countDown = 5;
-        private void ShutdownTimer_Tick( object sender, EventArgs e )
+        private void ShutdownTimer_Tick(object sender, EventArgs e)
         {
-            if( _countDown >= 0 )
+            if (_countDown >= 0)
             {
                 btnCheckUpdate.Enabled = false;
                 btnCheckUpdate.Text = "Closing in " + _countDown;
@@ -148,8 +140,8 @@ namespace XbmcUpdate.Runtime
             }
             else
             {
-                logger.Info( "Shutdown timer is closing the application" );
-                this.Close();
+                _logger.Info("Shutdown timer is closing the application");
+                Close();
             }
         }
     }

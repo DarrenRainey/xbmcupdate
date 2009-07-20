@@ -26,45 +26,44 @@ namespace XbmcUpdate.SelfUpdate
 {
     public partial class frmSelfUpdate : Form
     {
+        private int countDown = 15;
+
         public frmSelfUpdate()
         {
             InitializeComponent();
         }
 
-
-        int countDown = 15;
-        private void timerShutdown_Tick( object sender, EventArgs e )
+        private void timerShutdown_Tick(object sender, EventArgs e)
         {
-            if( countDown > 0 )
+            if (countDown > 0)
             {
                 btnClose.Visible = true;
-                btnClose.Text = String.Format( "Starting XBMCUpdate. ({0})", countDown );
+                btnClose.Text = String.Format("Starting XBMCUpdate. ({0})", countDown);
                 countDown--;
             }
             else
             {
-                this.Close();
+                Close();
             }
         }
 
-        private void btnClose_Click( object sender, EventArgs e )
+        private void btnClose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
 
-
-        private void frmSelfUpdate_Shown( object sender, EventArgs e )
+        private void frmSelfUpdate_Shown(object sender, EventArgs e)
         {
-            Update selfUpdate = new Update();
+            var selfUpdate = new Update();
 
             lblStat.Text = "Closing XBMCUpdate";
-            this.Refresh();
+            Refresh();
 
             selfUpdate.ShutDownApp();
 
             lblStat.Text = "Installing Updates";
-            this.Refresh();
+            Refresh();
 
             try
             {
@@ -72,14 +71,13 @@ namespace XbmcUpdate.SelfUpdate
                 countDown = 0;
 
                 lblStat.Text = "Update Completed";
-                this.Refresh();
+                Refresh();
 
                 lblStat.Text = "Cleaning Up";
-                this.Refresh();
+                Refresh();
                 selfUpdate.CleanUp();
-
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
                 lblStat.ForeColor = Color.IndianRed;
                 lblStat.Text = ex.Message + " Please review log file for more details.";
@@ -88,9 +86,8 @@ namespace XbmcUpdate.SelfUpdate
             timerShutdown.Enabled = true;
         }
 
-        private void frmSelfUpdate_Load( object sender, EventArgs e )
+        private void frmSelfUpdate_Load(object sender, EventArgs e)
         {
-
         }
     }
 }

@@ -26,52 +26,51 @@ using NLog;
 
 namespace XbmcUpdate.Tools
 {
-    class HtmlClient
+    internal static class HtmlClient
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        internal static string GetPage( string strUrl )
+        internal static string GetPage(string strUrl)
         {
-            string strResponse = String.Empty;
+            string strResponse;
             WebResponse myWebResponse = null;
             StreamReader readStream = null;
-            Stream ReceiveStream = null;
+            Stream receiveStream = null;
 
             try
             {
-                logger.Trace( "Attempting to connect to '{0}'", strUrl );
-                WebRequest myWebRequest = WebRequest.Create( strUrl );
+                Logger.Trace("Attempting to connect to '{0}'", strUrl);
+                WebRequest myWebRequest = WebRequest.Create(strUrl);
 
                 myWebResponse = myWebRequest.GetResponse();
-                ReceiveStream = myWebResponse.GetResponseStream();
+                receiveStream = myWebResponse.GetResponseStream();
 
-                Encoding encode = System.Text.Encoding.GetEncoding( "utf-8" );
+                Encoding encode = Encoding.GetEncoding("utf-8");
 
-                readStream = new StreamReader( ReceiveStream, encode );
+                readStream = new StreamReader(receiveStream, encode);
 
                 strResponse = readStream.ReadToEnd();
 
-                logger.Trace( "Successfully downloaded html page {0}", strUrl );
+                Logger.Trace("Successfully downloaded html page {0}", strUrl);
             }
-            catch( System.Net.WebException webEx )
+            catch (WebException webEx)
             {
-                logger.Error( "Unable to connect to remote server on '{0}'. {1}", strUrl, webEx.Message );
+                Logger.Error("Unable to connect to remote server on '{0}'. {1}", strUrl, webEx.Message);
                 throw;
             }
-            catch( Exception e )
+            catch (Exception e)
             {
-                logger.Fatal( "An error has occurred while downloading build list from the server. {0}", e.Message );
+                Logger.Fatal("An error has occurred while downloading build list from the server. {0}", e.Message);
                 throw;
             }
             finally
             {
-
-                if( myWebResponse != null )
+                if (myWebResponse != null)
                     myWebResponse.Close();
-                if( readStream != null )
+                if (readStream != null)
                     readStream.Close();
-                if( ReceiveStream != null )
-                    ReceiveStream.Close();
+                if (receiveStream != null)
+                    receiveStream.Close();
             }
 
             return strResponse;

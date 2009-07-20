@@ -8,4 +8,9 @@
 // "In Project Suppression File". 
 // You do not need to add suppressions to this file manually. 
 
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider", MessageId = "NLog.Logger.Info(System.String,System.String)", Scope = "member", Target = "XbmcUpdate.Managers.UpdateManager.#GetBuild(System.Boolean)")]
+using System.Diagnostics.CodeAnalysis;
+
+[assembly:
+    SuppressMessage("Microsoft.Globalization", "CA1305:SpecifyIFormatProvider",
+        MessageId = "NLog.Logger.Info(System.String,System.String)", Scope = "member",
+        Target = "XbmcUpdate.Managers.UpdateManager.#GetBuild(System.Boolean)")]
