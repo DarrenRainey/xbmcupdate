@@ -8,7 +8,7 @@
     <ProjectGuid>{52401136-103C-4D04-9315-924C49106068}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>XbmcUpdate.Runtime</RootNamespace>
+    <RootNamespace>XbmcUpdate</RootNamespace>
     <AssemblyName>XBMCUpdate</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -61,11 +61,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="SelfUpdate\SelfUpdate.cs" />
+    <Compile Include="SelfUpdate\SelfUpdateManager.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Tools\GuiNlogTarget.cs" />
     <Compile Include="Tools\HtmlClient.cs" />
-    <Compile Include="UpdateAppContext.cs" />
+    <Compile Include="UpdateEngine\PowerManager.cs" />
     <Compile Include="UpdateGui.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,6 +147,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Campari.Software.Core\Campari.Software.Core.csproj">
+      <Project>{EDF09C0E-A164-4D4D-B6D0-5645B782ECD5}</Project>
+      <Name>Campari.Software.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SelfUpdate\SelfUpdate.csproj">
       <Project>{CC5D4D63-62F6-42FB-8617-DCA7859678C0}</Project>
       <Name>SelfUpdate</Name>

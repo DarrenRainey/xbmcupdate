@@ -1,0 +1,77 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="livetemplates.csharp.usevar">True</setting>
+      <setting name="SolutionAnalysisEnabled">True</setting>
+    </boolean>
+  </SettingsComponent>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="CC5D4D63-62F6-42FB-8617-DCA7859678C0/d:Properties/f:AssemblyInfo.cs" caret="0" fromTop="0" />
+      <File id="EDF09C0E-A164-4D4D-B6D0-5645B782ECD5/d:Environment/f:FrameworkVersion.cs" caret="1832" fromTop="23" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateEngine/f:XbmcManager.cs" caret="6893" fromTop="56" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:Tools/f:Serilizer.cs" caret="3123" fromTop="50" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:GlobalSuppressions.cs" caret="0" fromTop="0" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:Tools/f:HtmlClient.cs" caret="0" fromTop="0" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:Tools/f:DownloadManager.cs" caret="2103" fromTop="59" />
+      <File id="CC5D4D63-62F6-42FB-8617-DCA7859678C0/f:frmSelfUpdate.cs" caret="758" fromTop="16" />
+      <File id="CC5D4D63-62F6-42FB-8617-DCA7859678C0/f:Update.cs" caret="357" fromTop="8" />
+      <File id="CC5D4D63-62F6-42FB-8617-DCA7859678C0/f:Program.cs" caret="2586" fromTop="33" />
+      <File id="EDF09C0E-A164-4D4D-B6D0-5645B782ECD5/d:Environment/f:FrameworkVersionDetection.cs" caret="39275" fromTop="883" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateEngine/f:ReleaseManager.cs" caret="1109" fromTop="30" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateEngine/f:PowerManager.cs" caret="699" fromTop="20" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:Settings.cs" caret="2822" fromTop="24" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.Designer.cs" caret="24772" fromTop="29" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:SelfUpdate/f:SelfUpdateManager.cs" caret="644" fromTop="13" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:Properties/f:AssemblyInfo.cs" caret="1173" fromTop="29" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:Program.cs" caret="3757" fromTop="59" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.cs" caret="8444" fromTop="122" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateGui/f:UpdateEvents.cs" caret="5786" fromTop="40" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateEngine/f:UpdateManager.cs" caret="4467" fromTop="12" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateGui/f:FormEvents.cs" caret="3529" fromTop="29" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateEngine/f:UpdateManager.cs" caret="5633" fromTop="35" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateEngine/f:UpdateManager.cs" caret="7053" fromTop="49" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateEngine/f:PowerManager.cs" caret="931" fromTop="29" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateEngine/f:PowerManager.cs" caret="777" fromTop="24" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateEngine/f:PowerManager.cs" caret="1335" fromTop="38" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateEngine/f:PowerManager.cs" caret="699" fromTop="20" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateEngine/f:PowerManager.cs" caret="1422" fromTop="20" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.Designer.cs" caret="24772" fromTop="29" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.cs" caret="4970" fromTop="14" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateGui/f:FormEvents.cs" caret="2715" fromTop="41" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.cs" caret="0" fromTop="0" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateEngine/f:UpdateManager.cs" caret="14436" fromTop="22" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.cs" caret="11631" fromTop="29" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateGui/f:FormEvents.cs" caret="4374" fromTop="29" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:Program.cs" caret="0" fromTop="0" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateGui/f:FormEvents.cs" caret="1949" fromTop="27" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.cs" caret="4456" fromTop="25" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.cs" caret="4456" fromTop="30" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.cs" caret="4456" fromTop="23" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateGui/f:FormEvents.cs" caret="3499" fromTop="28" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateEngine/f:UpdateManager.cs" caret="6266" fromTop="13" />
+      <File id="52401136-103C-4D04-9315-924C49106068/d:UpdateEngine/f:UpdateManager.cs" caret="4423" fromTop="1" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.cs" caret="9855" fromTop="29" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.cs" caret="912" fromTop="0" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.cs" caret="2433" fromTop="39" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.cs" caret="2276" fromTop="33" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.cs" caret="2536" fromTop="42" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.cs" caret="3143" fromTop="77" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:UpdateGui.cs" caret="8139" fromTop="23" />
+      <File id="52401136-103C-4D04-9315-924C49106068/f:Program.cs" caret="3757" fromTop="59" />
+    </RecentEdits>
+  </RecentFiles>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerMSTest>
+    <UseTestRunConfigFromMetadataFile>False</UseTestRunConfigFromMetadataFile>
+  </UnitTestRunnerMSTest>
+</Configuration>

@@ -27,45 +27,38 @@ namespace XbmcUpdate.Tools
 {
     internal class DownloadManager
     {
-        static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private Int64 _bytesRead;
 
         //Url for the file to be downloaded
-        private string url;
-        //location the downloaded file should be saved to
-        private string localFile;
         // The stream of data retrieved from the web server
-        private Stream dlStream;
+        private Stream _dlStream;
+        private Int64 _fileSize;
+        private string _localFile;
         // The stream of data that we write to the hard drive
-        private Stream localStream;
+        private Stream _localStream;
+        private string _url;
         // The request to the web server for file information
-        private HttpWebRequest webRequest;
+        private HttpWebRequest _webRequest;
         // The response from the web server containing information about the file
-        private HttpWebResponse webResponse;
+        private HttpWebResponse _webResponse;
         //Size of the file
-        private Int64 fileSize = 0;
-        private Int64 bytesRead = 0;
 
         internal Int64 BytesRead
         {
-            get
-            {
-                return bytesRead;
-            }
+            get { return _bytesRead; }
         }
 
         internal Int64 FileSize
         {
-            get
-            {
-                return fileSize;
-            }
+            get { return _fileSize; }
         }
 
 
         internal void Download(string fileUrl, string destinationFile)
         {
-            url = fileUrl;
-            localFile = destinationFile;
+            _url = fileUrl;
+            _localFile = destinationFile;
 
             StartDownload();
         }
@@ -74,19 +67,19 @@ namespace XbmcUpdate.Tools
         internal void Stop()
         {
             // Close the web response and the streams
-            webResponse.Close();
-            dlStream.Close();
-            localStream.Close();
+            _webResponse.Close();
+            _dlStream.Close();
+            _localStream.Close();
             // Abort the thread that's downloading
             //Try to delete the incomplete file
 
             try
             {
-                File.Delete(localFile);
+                File.Delete(_localFile);
             }
             catch (Exception e)
             {
-                logger.Fatal("Unable to delete incomplete file {0}. {1}", e.Message, localFile);
+                Logger.Fatal("Unable to delete incomplete file {0}. {1}", e.Message, _localFile);
             }
         }
 
@@ -96,30 +89,26 @@ namespace XbmcUpdate.Tools
 
             HttpWebResponse resp = null;
 
-            using (WebClient wcDownload = new WebClient())
+            try
             {
-                try
-                {
-                    // Create a request to the file
-                    var req = (HttpWebRequest)WebRequest.Create(url);
-                    // Set default authentication for retrieving the file
-                    req.Credentials = CredentialCache.DefaultCredentials;
-                    // Retrieve the response from the server
-                    resp = (HttpWebResponse)req.GetResponse();
-                    // Ask the server for the file size and store it
-                    remoteSize = resp.ContentLength;
+                // Create a request to the file
+                var req = (HttpWebRequest)WebRequest.Create(url);
+                // Set default authentication for retrieving the file
+                req.Credentials = CredentialCache.DefaultCredentials;
+                // Retrieve the response from the server
+                resp = (HttpWebResponse)req.GetResponse();
+                // Ask the server for the file size and store it
+                remoteSize = resp.ContentLength;
 
-                    resp.Close();
-
-                }
-                catch (Exception e)
-                {
-                    logger.Fatal("An error has occurred while retrieving server file size. {0}", e.Message);
-                }
-                finally
-                {
-                    resp.Close();
-                }
+                resp.Close();
+            }
+            catch (Exception e)
+            {
+                Logger.Fatal("An error has occurred while retrieving server file size. {0}", e.Message);
+            }
+            finally
+            {
+                if (resp != null) resp.Close();
             }
 
             return remoteSize;
@@ -127,52 +116,52 @@ namespace XbmcUpdate.Tools
 
         private void StartDownload()
         {
-            using (WebClient wcDownload = new WebClient())
+            using (var wcDownload = new WebClient())
             {
                 try
                 {
-                    bytesRead = 0;
+                    _bytesRead = 0;
 
                     // Create a request to the file we are downloading
-                    webRequest = (HttpWebRequest)WebRequest.Create(url);
+                    _webRequest = (HttpWebRequest)WebRequest.Create(_url);
                     // Set default authentication for retrieving the file
-                    webRequest.Credentials = CredentialCache.DefaultCredentials;
+                    _webRequest.Credentials = CredentialCache.DefaultCredentials;
                     // Retrieve the response from the server
-                    webResponse = (HttpWebResponse)webRequest.GetResponse();
+                    _webResponse = (HttpWebResponse)_webRequest.GetResponse();
                     // Ask the server for the file size and store it
-                    fileSize = webResponse.ContentLength;
+                    _fileSize = _webResponse.ContentLength;
                     // Open the URL for download 
-                    dlStream = wcDownload.OpenRead(url);
+                    _dlStream = wcDownload.OpenRead(_url);
                     // Create a new file stream where we will be saving the data (local drive)
-                    localStream = new FileStream(localFile, FileMode.Create, FileAccess.Write, FileShare.None);
+                    _localStream = new FileStream(_localFile, FileMode.Create, FileAccess.Write, FileShare.None);
 
                     // It will store the current number of bytes we retrieved from the server
-                    int bytesSize = 0;
+                    int bytesSize;
                     // A buffer for storing and writing the data retrieved from the server
-                    byte[] downBuffer = new byte[2048];
+                    var downBuffer = new byte[2048];
 
                     // Loop through the buffer until the buffer is empty
-                    while ((bytesSize = dlStream.Read(downBuffer, 0, downBuffer.Length)) > 0)
+                    while ((bytesSize = _dlStream.Read(downBuffer, 0, downBuffer.Length)) > 0)
                     {
                         // Write the data from the buffer to the local hard drive
-                        localStream.Write(downBuffer, 0, bytesSize);
-                        bytesRead = localStream.Length;
+                        _localStream.Write(downBuffer, 0, bytesSize);
+                        _bytesRead = _localStream.Length;
                         // Invoke the method that updates the form's label and progress bar
                     }
 
-                    logger.Info("Download completed successfully");
+                    Logger.Info("Download completed successfully");
                 }
                 catch (Exception e)
                 {
-                    logger.Fatal("An error has occurred while downloading file. {0}", e.Message);
+                    Logger.Fatal("An error has occurred while downloading file. {0}", e.Message);
                 }
                 finally
                 {
-                    bytesRead = localStream.Length;
+                    _bytesRead = _localStream.Length;
                     // When the above code has ended, close the streams
-                    localStream.Close();
-                    dlStream.Close();
-                    webResponse.Close();
+                    _localStream.Close();
+                    _dlStream.Close();
+                    _webResponse.Close();
                 }
             }
         }

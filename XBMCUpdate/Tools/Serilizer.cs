@@ -24,7 +24,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using NLog;
-using XbmcUpdate.Managers;
+using XbmcUpdate.UpdateEngine;
 
 /// <summary>
 /// To convert a Byte Array of Unicode values (UTF-8 encoded) to a complete String.
@@ -33,15 +33,15 @@ using XbmcUpdate.Managers;
 /// <returns>String converted from Unicode Byte Array</returns>
 namespace XbmcUpdate.Tools
 {
-    class Serilizer
+    internal static class Serilizer
     {
-        static Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private static string UTF8ByteArrayToString( byte[] characters )
+        private static string UTF8ByteArrayToString(byte[] characters)
         {
-            UTF8Encoding encoding = new UTF8Encoding();
-            string constructedString = encoding.GetString( characters );
-            return ( constructedString );
+            var encoding = new UTF8Encoding();
+            string constructedString = encoding.GetString(characters);
+            return (constructedString);
         }
 
         /// <summary>
@@ -49,10 +49,10 @@ namespace XbmcUpdate.Tools
         /// </summary>
         /// <param name="pXmlString"></param>
         /// <returns></returns>
-        private static Byte[] StringToUTF8ByteArray( string pXmlString )
+        private static Byte[] StringToUTF8ByteArray(string pXmlString)
         {
-            UTF8Encoding encoding = new UTF8Encoding();
-            Byte[] byteArray = encoding.GetBytes( pXmlString );
+            var encoding = new UTF8Encoding();
+            Byte[] byteArray = encoding.GetBytes(pXmlString);
             return byteArray;
         }
 
@@ -62,18 +62,16 @@ namespace XbmcUpdate.Tools
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
-        internal static string SerializeObject<T>( T obj )
+        internal static string SerializeObject<T>(T obj)
         {
             try
             {
-                string xmlString = null;
-                MemoryStream memoryStream = new MemoryStream();
-                XmlSerializer xs = new XmlSerializer( typeof( T ) );
-                XmlTextWriter xmlTextWriter = new XmlTextWriter( memoryStream, Encoding.UTF8 );
-                xs.Serialize( xmlTextWriter, obj );
+                var memoryStream = new MemoryStream();
+                var xs = new XmlSerializer(typeof(T));
+                var xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
+                xs.Serialize(xmlTextWriter, obj);
                 memoryStream = (MemoryStream)xmlTextWriter.BaseStream;
-                xmlString = UTF8ByteArrayToString( memoryStream.ToArray() );
-                return xmlString;
+                return UTF8ByteArrayToString(memoryStream.ToArray());
             }
             catch
             {
@@ -86,22 +84,22 @@ namespace XbmcUpdate.Tools
         /// </summary>
         /// <param name="xml"></param>
         /// <returns></returns>
-        internal static VersionInfo DeserializeObject( string xml )
+        internal static VersionInfo DeserializeObject(string xml)
         {
-            VersionInfo response = new VersionInfo();
+            var response = new VersionInfo();
 
-            if( !string.IsNullOrEmpty( xml ) )
+            if (!string.IsNullOrEmpty(xml))
             {
                 try
                 {
-                    XmlSerializer xs = new XmlSerializer( typeof( VersionInfo ) );
-                    MemoryStream memoryStream = new MemoryStream( StringToUTF8ByteArray( xml ) );
-                    XmlTextWriter xmlTextWriter = new XmlTextWriter( memoryStream, Encoding.UTF8 );
-                    response = (VersionInfo)xs.Deserialize( memoryStream );
+                    var xs = new XmlSerializer(typeof(VersionInfo));
+                    var memoryStream = new MemoryStream(StringToUTF8ByteArray(xml));
+                    new XmlTextWriter(memoryStream, Encoding.UTF8);
+                    response = (VersionInfo)xs.Deserialize(memoryStream);
                 }
-                catch( System.Exception ex )
+                catch (Exception ex)
                 {
-                    logger.Info( "XML file is malformed. {0}", ex.Message );
+                    Logger.Info("XML file is malformed. {0}", ex.Message);
                     response = null;
                 }
             }
@@ -110,45 +108,44 @@ namespace XbmcUpdate.Tools
         }
 
 
-        internal static void WriteToFile( string path, string content, bool append )
+        internal static void WriteToFile(string path, string content, bool append)
         {
             TextWriter tw = null;
             try
             {
-                tw = new StreamWriter( path, append );
-                tw.Write( content );
+                tw = new StreamWriter(path, append);
+                tw.Write(content);
             }
-            catch( Exception e )
+            catch (Exception e)
             {
-                logger.Fatal( "An error has occurred while try to write to '{0}'. {1}", path, e.ToString() );
+                Logger.Fatal("An error has occurred while try to write to '{0}'. {1}", path, e.ToString());
             }
             finally
             {
-                if( tw != null )
+                if (tw != null)
                 {
                     tw.Close();
                 }
             }
-
         }
 
 
-        internal static string ReadFile( string path )
+        internal static string ReadFile(string path)
         {
             TextReader tr = null;
             string content = String.Empty;
             try
             {
-                tr = new StreamReader( path );
+                tr = new StreamReader(path);
                 content = tr.ReadToEnd();
             }
-            catch( Exception e )
+            catch (Exception e)
             {
-                logger.Fatal( "An error has occurred while try to read '{0}'. {1}", path, e.ToString() );
+                Logger.Fatal("An error has occurred while try to read '{0}'. {1}", path, e.ToString());
             }
             finally
             {
-                if( tr != null )
+                if (tr != null)
                 {
                     tr.Close();
                 }

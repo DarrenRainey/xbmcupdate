@@ -19,23 +19,52 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using ICSharpCode.SharpZipLib.Zip;
 using NLog;
-using XbmcUpdate.Runtime;
+using XbmcUpdate;
 using XbmcUpdate.Tools;
 
-namespace XbmcUpdate.Managers
+namespace XbmcUpdate.UpdateEngine
 {
-    internal delegate void UpdateEventHandler( UpdateManager sender, string message );
+    internal delegate void UpdateEventHandler(UpdateManager sender, string message);
 
     internal class UpdateManager
     {
-        static Logger logger = LogManager.GetCurrentClassLogger();
-        FastZip zipClient = new FastZip();
-        string compressedBuildPath;
-        string uncompressedBuildPath;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly DownloadManager _downloadManager;
+        private readonly FastZip _zipClient = new FastZip();
+        private string _compressedBuildPath;
+        private int _currentBuildNumber;
+        private int _onlineBuildNumber;
+        private string _uncompressedBuildPath;
+        private Thread _updateThread;
+
+
+        internal UpdateManager()
+        {
+            _downloadManager = new DownloadManager();
+
+            Directory.CreateDirectory(Settings.TempFolder);
+            Logger.Info("Creating temporary folder at: {0}", Settings.TempFolder);
+        }
+
+        internal DownloadManager Download
+        {
+            get { return _downloadManager; }
+        }
+
+        internal int OnlineBuildNumber
+        {
+            get { return _onlineBuildNumber; }
+        }
+
+        internal int CurrentBuildNumber
+        {
+            get { return _currentBuildNumber; }
+        }
 
         internal event UpdateEventHandler OnCheckUpdateStart;
         internal event UpdateEventHandler OnCheckUpdateStop;
@@ -55,97 +84,58 @@ namespace XbmcUpdate.Managers
         internal event UpdateEventHandler OnUpdateProcessStart;
         internal event UpdateEventHandler OnUpdateProcessStop;
 
-        private Thread updateThread;
-
-
-        internal UpdateManager()
-        {
-            _downloadManager = new DownloadManager();
-
-            Directory.CreateDirectory( Settings.TempFolder );
-            logger.Info( "Creating temporary folder at: {0}", Settings.TempFolder );
-        }
-
-
-        private DownloadManager _downloadManager;
-        internal DownloadManager Download
-        {
-            get
-            {
-                return _downloadManager;
-            }
-        }
-
-        int onlineBuildNumber;
-        internal int OnlineBuildNumber
-        {
-            get
-            {
-                return onlineBuildNumber;
-            }
-        }
-
-        int currentBuildNumber;
-        internal int CurrentBuildNumber
-        {
-            get
-            {
-                return currentBuildNumber;
-            }
-        }
-
 
         internal bool CheckUpdate()
         {
-
             bool updateAvilable = false;
 
-            if( OnCheckUpdateStart != null )
+            if (OnCheckUpdateStart != null)
             {
-                OnCheckUpdateStart( this, "Looking for updates" );
+                OnCheckUpdateStart(this, "Looking for updates");
             }
 
             try
             {
                 //Detecting local Build
-                currentBuildNumber = XbmcManager.GerVersion().BuildNumber;
+                _currentBuildNumber = XbmcManager.GerVersion().BuildNumber;
                 //Getting the latest revision number.
-                var revlist = ReleaseManager.GetBuildList();
+                List<int> revlist = ReleaseManager.GetBuildList();
 
-                if( revlist != null && revlist.Count != 0 )
+                if (revlist != null && revlist.Count != 0)
                 {
                     revlist.Sort();
-                    onlineBuildNumber = revlist[revlist.Count - 1];
+                    _onlineBuildNumber = revlist[revlist.Count - 1];
 
-                    logger.Info( "Latest available build:{0}. Currently installed:{1}", onlineBuildNumber, currentBuildNumber );
+                    Logger.Info("Latest available build:{0}. Currently installed:{1}", _onlineBuildNumber,
+                                _currentBuildNumber);
 
-                    if( onlineBuildNumber <= currentBuildNumber )
+                    if (_onlineBuildNumber <= _currentBuildNumber)
                     {
-                        logger.Info( "No updates is necessary" );
+                        Logger.Info("No updates is necessary");
                     }
 
-                    updateAvilable = currentBuildNumber < onlineBuildNumber;
+                    updateAvilable = _currentBuildNumber < _onlineBuildNumber;
                 }
 
 
-                if( OnCheckUpdateStop != null )
+                if (OnCheckUpdateStop != null)
                 {
-                    if( updateAvilable )
+                    if (updateAvilable)
                     {
-                        OnCheckUpdateStop( this, "Latest Available Build : " + onlineBuildNumber );
+                        OnCheckUpdateStop(this, "Latest Available Build : " + _onlineBuildNumber);
                     }
                     else
                     {
-                        OnCheckUpdateStop( this, "No update is necessary. Build Installed: " + CurrentBuildNumber );
+                        OnCheckUpdateStop(this, "You have the most recent build. No update is necessary.");
                     }
                 }
             }
-            catch( Exception e )
+            catch (Exception e)
             {
-                logger.FatalException( "An Error has occurred while checking for updates", e );
-                if( OnUpdateError != null )
+                Logger.FatalException("An Error has occurred while checking for updates", e);
+                if (OnUpdateError != null)
                 {
-                    OnUpdateError( this, "An Error has occurred while checking for updates" );
+                    OnUpdateError(this, "An Error has occurred while checking for updates");
                 }
             }
 
@@ -154,17 +144,17 @@ namespace XbmcUpdate.Managers
 
         internal void InstallUpdatesAsync()
         {
-            updateThread = new Thread( ApplyUpdate );
-            updateThread.Start();
+            _updateThread = new Thread(ApplyUpdate);
+            _updateThread.Start();
         }
 
         internal void Abort()
         {
-            if( updateThread != null )
+            if (_updateThread != null)
             {
-                if( updateThread.IsAlive )
+                if (_updateThread.IsAlive)
                 {
-                    updateThread.Abort();
+                    _updateThread.Abort();
                 }
             }
         }
@@ -173,89 +163,96 @@ namespace XbmcUpdate.Managers
         {
             try
             {
-                if( OnUpdateProcessStart != null )
-                    OnUpdateProcessStart( this, "Starting update process for build " + OnlineBuildNumber );
+                if (OnUpdateProcessStart != null)
+                    OnUpdateProcessStart(this, "Starting update process for build " + OnlineBuildNumber);
 
-                if( Settings.XbmcAutoShutdown || !XbmcManager.IsXbmcRunning() )
+                if (Settings.PreventStandBy)
+                {
+                    PowerManager.PreventStandBy();
+                }
+
+                if (Settings.XbmcAutoShutdown || !XbmcManager.IsXbmcRunning())
                 {
                     //Download or verify that we have the compressed version of the latest build
-                    DownloadBuild( false );
+                    DownloadBuild(false);
 
                     ExctractBuild();
 
                     InstallBuild();
 
-                    logger.Info( "Successfully updated to build {0}", OnlineBuildNumber );
+                    Logger.Info("Successfully updated to build {0}", OnlineBuildNumber);
 
-                    if( OnUpdateProcessStop != null )
-                        OnUpdateProcessStop( this, "Update Successfully Completed" );
+                    if (OnUpdateProcessStop != null)
+                        OnUpdateProcessStop(this, "Update Successfully Completed");
                 }
                 else
                 {
-                    logger.Info( "An instance of XBMC is detected. Skipping update." );
-                    if( OnUpdateProcessStop != null )
-                        OnUpdateProcessStop( this, "XBMC is running. Unable to proceed with update." );
+                    Logger.Info("An instance of XBMC is detected. Skipping update.");
+                    if (OnUpdateProcessStop != null)
+                        OnUpdateProcessStop(this, "XBMC is running. Unable to proceed with update.");
                 }
             }
-            catch( Exception e )
+            catch (Exception e)
             {
-                logger.FatalException( "An error has occurred during update", e );
-                if( OnUpdateError != null )
-                    OnUpdateError( this, "An error has occurred during update" + e.Message );
+                Logger.FatalException("An error has occurred during update", e);
+                if (OnUpdateError != null)
+                    OnUpdateError(this, "An error has occurred during update" + e.Message);
 
-                if( OnUpdateProcessStop != null )
-                    OnUpdateProcessStop( this, "An error has occurred during update" + e.Message );
+                if (OnUpdateProcessStop != null)
+                    OnUpdateProcessStop(this, "An error has occurred during update" + e.Message);
             }
-
+            finally
+            {
+                PowerManager.Resume();
+            }
         }
 
-        private void DownloadBuild( bool forced )
+        private void DownloadBuild(bool forced)
         {
-            if( OnDownloadStart != null )
+            if (OnDownloadStart != null)
             {
-                OnDownloadStart( this, "Downloading build " + onlineBuildNumber + "..." );
+                OnDownloadStart(this, "Downloading build " + _onlineBuildNumber + "...");
             }
 
             try
             {
-
-                string buildUrl = ReleaseManager.GetBuildUrl( onlineBuildNumber );
-                compressedBuildPath = string.Concat( Settings.TempFolder, @"\XBMC-", onlineBuildNumber, ".zip" );
+                string buildUrl = ReleaseManager.GetBuildUrl(_onlineBuildNumber);
+                _compressedBuildPath = string.Concat(Settings.TempFolder, @"\XBMC-", _onlineBuildNumber, ".zip");
 
                 //If not forced check to see if the file has already been downloaded
-                if( !forced && File.Exists( compressedBuildPath ) )
+                if (!forced && File.Exists(_compressedBuildPath))
                 {
                     //Check the size of the file against server size
-                    FileInfo localFileInfo = new FileInfo( compressedBuildPath );
-                    if( DownloadManager.GetFileSize( buildUrl ) == localFileInfo.Length )
+                    var localFileInfo = new FileInfo(_compressedBuildPath);
+                    if (DownloadManager.GetFileSize(buildUrl) == localFileInfo.Length)
                     {
-                        logger.Info( "File '{0}' with the matching file size exists. skipping download", localFileInfo.Name );
+                        Logger.Info("File '{0}' with the matching file size exists. skipping download",
+                                    localFileInfo.Name);
 
-                        if( OnDownloadStop != null )
+                        if (OnDownloadStop != null)
                         {
-                            OnDownloadStop( this, "Already Downloaded Skipping" );
+                            OnDownloadStop(this, "Already Downloaded Skipping");
                         }
 
                         return;
                     }
 
-                    logger.Info( "Partial file detected. Re-Downloading file" );
-
+                    Logger.Info("Partial file detected. Re-Downloading file");
                 }
 
-                logger.Info( "Downloading build {0} from the server", onlineBuildNumber );
+                Logger.Info("Downloading build {0} from the server", _onlineBuildNumber);
 
 
-                _downloadManager.Download( buildUrl, compressedBuildPath );
+                _downloadManager.Download(buildUrl, _compressedBuildPath);
 
-                if( OnDownloadStop != null )
+                if (OnDownloadStop != null)
                 {
-                    OnDownloadStop( this, String.Format( "Build {0} Installed", onlineBuildNumber ) );
+                    OnDownloadStop(this, String.Format("Build {0} Installed", _onlineBuildNumber));
                 }
             }
-            catch( Exception e )
+            catch (Exception e)
             {
-                logger.FatalException( "An error has occurred while downloading the latest build", e );
+                Logger.FatalException("An error has occurred while downloading the latest build", e);
                 throw;
             }
         }
@@ -263,56 +260,54 @@ namespace XbmcUpdate.Managers
 
         private void ExctractBuild()
         {
-            if( OnUnZipStart != null )
+            if (OnUnZipStart != null)
             {
-                OnUnZipStart( this, "Extracting Build.." );
+                OnUnZipStart(this, "Extracting Build..");
             }
 
             try
             {
-
-                string unZipPath = compressedBuildPath.Replace( ".zip", @"\" );
+                string unZipPath = _compressedBuildPath.Replace(".zip", @"\");
 
                 try
                 {
-                    if( Directory.Exists( unZipPath ) )
+                    if (Directory.Exists(unZipPath))
                     {
-                        logger.Info( "Trying to delete previous extracted copy" );
-                        Directory.Delete( unZipPath, true );
+                        Logger.Info("Trying to delete previous extracted copy");
+                        Directory.Delete(unZipPath, true);
                     }
                 }
-                catch( Exception e )
+                catch (Exception e)
                 {
-                    logger.Warn( "Unable to delete old extracted files. {0}", e.ToString() );
+                    Logger.Warn("Unable to delete old extracted files. {0}", e.ToString());
                 }
 
-                Directory.CreateDirectory( unZipPath );
+                Directory.CreateDirectory(unZipPath);
 
-                uncompressedBuildPath = String.Concat( unZipPath, @"\xbmc\" );
-                logger.Info( "Extracting Build {0} to {1}", onlineBuildNumber, uncompressedBuildPath );
+                _uncompressedBuildPath = String.Concat(unZipPath, @"\xbmc\");
+                Logger.Info("Extracting Build {0} to {1}", _onlineBuildNumber, _uncompressedBuildPath);
 
-                zipClient.ExtractZip( compressedBuildPath, unZipPath, "" );
-                logger.Info( "All files extracted successfully" );
+                _zipClient.ExtractZip(_compressedBuildPath, unZipPath, "");
+                Logger.Info("All files extracted successfully");
 
 
-
-                if( OnUnZipStop != null )
+                if (OnUnZipStop != null)
                 {
-                    OnUnZipStop( this, "All Files Extracted Successfully" );
+                    OnUnZipStop(this, "All Files Extracted Successfully");
                 }
             }
-            catch( Exception e )
+            catch (Exception e)
             {
-                logger.FatalException( "An error has occurred while extracting build", e );
+                Logger.FatalException("An error has occurred while extracting build", e);
                 throw;
             }
         }
 
         private void InstallBuild()
         {
-            if( OnInstallStart != null )
+            if (OnInstallStart != null)
             {
-                OnInstallStart( this, "Killing XBMC" );
+                OnInstallStart(this, "Killing XBMC");
             }
 
             try
@@ -320,124 +315,118 @@ namespace XbmcUpdate.Managers
                 XbmcManager.StopXbmc();
 
                 //Sleeping for 1 seconds. just to make sure all file locks are released
-                Thread.Sleep( 1000 );
+                Thread.Sleep(1000);
 
 
-
-                if( OnInstallStart != null )
+                if (OnInstallStart != null)
                 {
-                    OnInstallStart( this, "Installing Build..." );
+                    OnInstallStart(this, "Installing Build...");
                 }
 
-                CopyFolder( uncompressedBuildPath, Settings.XbmcPath );
+                CopyFolder(_uncompressedBuildPath, Settings.XbmcPath);
 
                 //Register Build
-                VersionInfo verInfo = new VersionInfo();
-                verInfo.BuildNumber = onlineBuildNumber;
+                var verInfo = new VersionInfo();
+                verInfo.BuildNumber = _onlineBuildNumber;
                 verInfo.InstallationDate = DateTime.Now;
 
-                XbmcManager.SaveVersion( verInfo );
+                XbmcManager.SaveVersion(verInfo);
 
                 CleanTemp();
 
-                if( OnInstallStop != null )
+                if (OnInstallStop != null)
                 {
-                    OnInstallStop( this, "Successfully Installed Build " + onlineBuildNumber );
+                    OnInstallStop(this, "Successfully Installed Build " + _onlineBuildNumber);
                 }
             }
-            catch( Exception e )
+            catch (Exception e)
             {
-                logger.FatalException( "An error has occurred while installing update", e );
+                Logger.FatalException("An error has occurred while installing update", e);
                 throw;
-
             }
-
         }
 
-        private void CleanTemp()
+        private static void CleanTemp()
         {
-            logger.Info( "Cleaning Temp folder" );
+            Logger.Info("Cleaning Temp folder");
 
-            var tempSubfolders = Directory.GetDirectories( Settings.TempFolder );
+            string[] tempSubfolders = Directory.GetDirectories(Settings.TempFolder);
 
-            foreach( var folder in tempSubfolders )
+            foreach (string folder in tempSubfolders)
             {
                 try
                 {
-                    DeleteFolder( folder );
+                    DeleteFolder(folder);
                 }
-                catch( Exception e )
+                catch (Exception e)
                 {
-                    logger.Info( "Unable to delete '{0}'. {1}", folder, e.Message );
+                    Logger.Info("Unable to delete '{0}'. {1}", folder, e.Message);
                 }
             }
         }
 
 
-        private void CopyFolder( string source, string destination )
+        private static void CopyFolder(string source, string destination)
         {
             destination += @"\";
 
-            logger.Info( "Copying folder '{0}'", source );
+            Logger.Info("Copying folder '{0}'", source);
 
-            if( !Directory.Exists( destination ) )
-                Directory.CreateDirectory( destination );
+            if (!Directory.Exists(destination))
+                Directory.CreateDirectory(destination);
 
-            foreach( var subDirectory in Directory.GetDirectories( source ) )
+            foreach (string subDirectory in Directory.GetDirectories(source))
             {
-                if( !subDirectory.Contains( "userdata" ) )
+                if (!subDirectory.Contains("userdata"))
                 {
-                    CopyFolder( subDirectory, subDirectory.Replace( source, destination ) );
+                    CopyFolder(subDirectory, subDirectory.Replace(source, destination));
                 }
             }
 
-            foreach( var file in Directory.GetFiles( source ) )
+            foreach (string file in Directory.GetFiles(source))
             {
-                if( !file.ToLower().Contains( "keymap.xml" ) )
+                if (!file.ToLower().Contains("keymap.xml"))
                 {
-                    FileInfo currentFile = new FileInfo( file );
-                    string newFile = ( String.Concat( destination, currentFile.Name ) );
-                    File.Copy( currentFile.FullName, newFile, true );
+                    var currentFile = new FileInfo(file);
+                    string newFile = (String.Concat(destination, currentFile.Name));
+                    File.Copy(currentFile.FullName, newFile, true);
                 }
                 else
                 {
-                    logger.Warn( "Skipping file {0}", file );
+                    Logger.Warn("Skipping file {0}", file);
                 }
             }
         }
 
 
-
-        private void DeleteFolder( string path )
+        private static void DeleteFolder(string path)
         {
-            foreach( var file in Directory.GetFiles( path ) )
+            foreach (string file in Directory.GetFiles(path))
             {
                 try
                 {
-                    File.Delete( file );
+                    File.Delete(file);
                 }
-                catch( Exception e )
+                catch (Exception e)
                 {
-                    logger.Error( "Failed to delete file '{0}'. {1}", file, e.Message );
+                    Logger.Error("Failed to delete file '{0}'. {1}", file, e.Message);
                 }
             }
-            string[] subDir = Directory.GetDirectories( path );
+            string[] subDir = Directory.GetDirectories(path);
 
-            foreach( var folder in subDir )
+            foreach (string folder in subDir)
             {
                 try
                 {
-                    DeleteFolder( folder );
-
+                    DeleteFolder(folder);
                 }
-                catch( Exception e )
+                catch (Exception e)
                 {
-                    logger.Error( "Failed to delete folder '{0}'. {1}", folder, e.Message );
+                    Logger.Error("Failed to delete folder '{0}'. {1}", folder, e.Message);
                 }
             }
 
-            Directory.Delete( path, true );
+            Directory.Delete(path, true);
         }
-
     }
 }

@@ -22,62 +22,60 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using NLog;
-using XbmcUpdate.Runtime;
 using XbmcUpdate.Tools;
 
-
-namespace XbmcUpdate.Managers
+namespace XbmcUpdate.UpdateEngine
 {
-    class XbmcManager
+    internal static class XbmcManager
     {
-        private static readonly string VERSION_FILE = "update.xml";
-        internal static bool XbmcTerminated = false;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private const string VersionFile = "update.xml";
+        internal static bool _xbmcTerminated;
 
-        static Logger logger = LogManager.GetCurrentClassLogger();
         //Return path to program files folder.
-        private string ProgramFilesPath
+        private static string ProgramFilesPath
         {
             get
             {
-                if( 8 == IntPtr.Size
-                    || ( !String.IsNullOrEmpty( Environment.GetEnvironmentVariable( "PROCESSOR_ARCHITEW6432" ) ) ) )
+                if (8 == IntPtr.Size
+                    || (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432"))))
                 {
-                    return Environment.GetEnvironmentVariable( "ProgramFiles(x86)" );
+                    return Environment.GetEnvironmentVariable("ProgramFiles(x86)");
                 }
-                return Environment.GetEnvironmentVariable( "ProgramFiles" );
+                return Environment.GetEnvironmentVariable("ProgramFiles");
             }
         }
 
-        internal static void SaveVersion( VersionInfo version )
+        internal static void SaveVersion(VersionInfo version)
         {
-            logger.Info( "Updating your installation status" );
-            string fileContent = Serilizer.SerializeObject<VersionInfo>( version );
-            Serilizer.WriteToFile( string.Format( @"{0}\{1}", Settings.XbmcPath, VERSION_FILE ), fileContent, false );
+            Logger.Info("Updating your installation status");
+            string fileContent = Serilizer.SerializeObject(version);
+            Serilizer.WriteToFile(string.Format(@"{0}\{1}", Settings.XbmcPath, VersionFile), fileContent, false);
         }
 
         internal static VersionInfo GerVersion()
         {
-
-            VersionInfo installedVersion = new VersionInfo();
+            var installedVersion = new VersionInfo();
 
             try
             {
-                string versionFilePath = string.Format( @"{0}\{1}", Settings.XbmcPath, VERSION_FILE );
+                string versionFilePath = string.Format(@"{0}\{1}", Settings.XbmcPath, VersionFile);
 
-                if( File.Exists( versionFilePath ) )
+                if (File.Exists(versionFilePath))
                 {
-                    string fileContent = Serilizer.ReadFile( versionFilePath );
-                    installedVersion = Serilizer.DeserializeObject( fileContent );
-                    logger.Info( "Rev:{0}, Installation Date:{1}, Supplier:{2}", installedVersion.BuildNumber, installedVersion.InstallationDate, installedVersion.Suplier );
+                    string fileContent = Serilizer.ReadFile(versionFilePath);
+                    installedVersion = Serilizer.DeserializeObject(fileContent);
+                    Logger.Info("Rev:{0}, Installation Date:{1}, Supplier:{2}", installedVersion.BuildNumber,
+                                installedVersion.InstallationDate, installedVersion.Suplier);
                 }
                 else
                 {
-                    logger.Info( "No version files were found. The latest revision will be installed on next update" );
+                    Logger.Info("No version files were found. The latest revision will be installed on next update");
                 }
             }
-            catch( Exception e )
+            catch (Exception e)
             {
-                logger.Fatal( "An error has occurred while getting installed version info. {0}", e.ToString() );
+                Logger.Fatal("An error has occurred while getting installed version info. {0}", e.ToString());
             }
 
             return installedVersion;
@@ -86,33 +84,33 @@ namespace XbmcUpdate.Managers
 
         internal static void StopXbmc()
         {
-            logger.Info( "Closing all instances of XBMC" );
-            var xbmcProcesses = Process.GetProcessesByName( "xbmc" );
+            Logger.Info("Closing all instances of XBMC");
+            Process[] xbmcProcesses = Process.GetProcessesByName("xbmc");
 
-            foreach( Process item in xbmcProcesses )
+            foreach (Process item in xbmcProcesses)
             {
                 //logger.Info("An instance of xbmc was found. processId:{0}", item.)
                 item.Kill();
-                XbmcTerminated = true;
+                _xbmcTerminated = true;
             }
         }
 
 
         internal static bool IsXbmcRunning()
         {
-            bool result = false;
-            logger.Info( "Verifying if xbmc is running" );
-            var xbmcProcesses = Process.GetProcessesByName( "xbmc" );
+            bool result;
+            Logger.Info("Verifying if xbmc is running");
+            Process[] xbmcProcesses = Process.GetProcessesByName("xbmc");
 
-            if( xbmcProcesses.Length != 0 )
+            if (xbmcProcesses.Length != 0)
             {
                 result = true;
-                logger.Info( "An Instance of XBMC was detected." );
+                Logger.Info("An Instance of XBMC was detected.");
             }
             else
             {
                 result = false;
-                logger.Info( "No Instances of XBMC were detected." );
+                Logger.Info("No Instances of XBMC were detected.");
             }
 
             return result;
@@ -120,46 +118,85 @@ namespace XbmcUpdate.Managers
 
         internal static void StartXbmc()
         {
-            string xbmcStartFileName = string.Format( "{0}\\{1}", Settings.XbmcPath, Settings.XbmcExe );
+            string xbmcStartFileName = string.Format("{0}\\{1}", Settings.XbmcPath, Settings.XbmcExe);
 
-            logger.Info( "Attempting to start XBMC '{0} {1}'", xbmcStartFileName, Settings.XbmcStartupArgs );
+            Logger.Info("Attempting to start XBMC '{0} {1}'", xbmcStartFileName, Settings.XbmcStartupArgs);
 
             try
             {
-                ProcessStartInfo xbmcStartInfo = new ProcessStartInfo();
+                var xbmcStartInfo = new ProcessStartInfo();
                 xbmcStartInfo.FileName = xbmcStartFileName;
                 xbmcStartInfo.Arguments = Settings.XbmcStartupArgs;
 
-                Process xbmcProcess = new Process();
+                var xbmcProcess = new Process();
                 xbmcProcess.StartInfo = xbmcStartInfo;
 
                 xbmcProcess.Start();
-                logger.Info( "XBMC Started Successfully" );
+                Logger.Info("XBMC Started Successfully");
             }
-            catch( Exception e )
+            catch (Exception e)
             {
-                logger.Error( "An error has occurred while trying to start XBMC. {0}", e.Message );
+                Logger.Error("An error has occurred while trying to start XBMC. {0}", e.Message);
             }
         }
     }
 
     public class VersionInfo
     {
+        public int BuildNumber { get; set; }
+        public string Suplier { get;  set; }
+        public DateTime InstallationDate { get; set; }
 
-        public int BuildNumber
+        public string Age()
         {
-            get;
-            set;
-        }
-        public string Suplier
-        {
-            get;
-            set;
-        }
-        public DateTime InstallationDate
-        {
-            get;
-            set;
+            var ts = new TimeSpan(DateTime.UtcNow.Ticks - InstallationDate.Ticks);
+            double delta = ts.TotalSeconds;
+
+            const int SECOND = 1;
+            const int MINUTE = 60 * SECOND;
+            const int HOUR = 60 * MINUTE;
+            const int DAY = 24 * HOUR;
+            const int MONTH = 30 * DAY;
+
+            if (delta < 1 * MINUTE)
+            {
+                return ts.Seconds == 1 ? "One Second ago" : ts.Seconds + " Seconds ago";
+            }
+            if (delta < 2 * MINUTE)
+            {
+                return "a Minute ago";
+            }
+            if (delta < 45 * MINUTE)
+            {
+                return ts.Minutes + " Minutes ago";
+            }
+            if (delta < 90 * MINUTE)
+            {
+                return "an Hour ago";
+            }
+            if (delta < 24 * HOUR)
+            {
+                return ts.Hours + " Hours ago";
+            }
+            if (delta < 48 * HOUR)
+            {
+                return "Yesterday";
+            }
+            if (delta < 30 * DAY)
+            {
+                return ts.Days + " Days ago";
+            }
+            if (delta < 12 * MONTH)
+            {
+                int months = Convert.ToInt32(Math.Floor((double)ts.Days / 30));
+                return months <= 1 ? "One Month ago" : months + " Months ago";
+            }
+            else
+            {
+                int years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
+                return years <= 1 ? "One year ago" : years + " Years ago";
+            }
+
         }
     }
 }

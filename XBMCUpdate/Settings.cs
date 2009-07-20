@@ -19,149 +19,108 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Configuration;
-using NLog;
+using System.Reflection;
 using System.Windows.Forms;
+using NLog;
 
-namespace XbmcUpdate.Runtime
+namespace XbmcUpdate
 {
-    class Settings
+    internal static class Settings
     {
+        private static readonly Configuration Config =
+            ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
-        static Configuration config = ConfigurationManager.OpenExeConfiguration( ConfigurationUserLevel.None );
-        static Logger logger = LogManager.GetCurrentClassLogger();
-
-        private static void UpdateValue( string key, object value )
-        {
-            logger.Trace( "Writing Setting to file. Key:'{0}' Value:'{1}'", key, value );
-            config.AppSettings.Settings.Remove( key );
-            config.AppSettings.Settings.Add( key, value.ToString() );
-            config.Save();
-        }
-
-        private static string GetConfigValue( string Key, object Default, bool makePermanent )
-        {
-            string value = null;
-
-            if( config.AppSettings.Settings[Key] != null )
-            {
-                value = config.AppSettings.Settings[Key].Value;
-            }
-            else
-            {
-                logger.Warn( "Unable to find config key '{0}' default:'{1}'", Key, Default );
-                if( makePermanent )
-                {
-                    UpdateValue( Key, Default.ToString() );
-                }
-                value = Default.ToString();
-            }
-
-            return value;
-        }
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         internal static string XbmcPath
         {
-            get
-            {
-                return GetConfigValue( "XbmcPath", "", true );
-            }
-            set
-            {
-                UpdateValue( "XbmcPath", value );
-            }
+            get { return GetConfigValue("XbmcPath", "", true); }
+            set { UpdateValue("XbmcPath", value); }
         }
 
         internal static string TempFolder
         {
-            get
-            {
-                return String.Concat( Application.StartupPath, @"\temp\" );
-            }
+            get { return String.Concat(Application.StartupPath, @"\temp\"); }
         }
 
         internal static string ReleaseUrl
         {
-            get
-            {
-                return GetConfigValue( "ReleaseUrl", @"http://danielpatton.com/user-accounts/XBMC-updates/", true );
-            }
-            set
-            {
-                UpdateValue( "ReleaseUrl", value );
-            }
+            get { return GetConfigValue("ReleaseUrl", @"http://danielpatton.com/user-accounts/XBMC-updates/", true); }
+            set { UpdateValue("ReleaseUrl", value); }
         }
 
         internal static string SelfUpdateUrl
         {
-            get
-            {
-                return GetConfigValue( "SelfUpdateUrl", @"http://code.google.com/p/xbmcupdate/downloads", false );
-            }
-
+            get { return GetConfigValue("SelfUpdateUrl", @"http://code.google.com/p/xbmcupdate/downloads", false); }
         }
 
         internal static int ShutdownCountdown
         {
-            get
-            {
-                return 5;
-            }
+            get { return 5; }
         }
 
         internal static string XbmcExe
         {
-            get
-            {
-                return "xbmc.exe";
-            }
+            get { return "xbmc.exe"; }
         }
 
         internal static Version ApplicationVersion
         {
-            get
-            {
-                return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            }
+            get { return Assembly.GetExecutingAssembly().GetName().Version; }
         }
 
         internal static Int32 XbmcAutostart
         {
-            get
-            {
-                return Convert.ToInt32( GetConfigValue( "XbmcAutostart", 0, true ) );
-            }
-            set
-            {
-                UpdateValue( "XbmcAutostart", value );
-            }
+            get { return Convert.ToInt32(GetConfigValue("XbmcAutostart", 0, true)); }
+            set { UpdateValue("XbmcAutostart", value); }
         }
 
         internal static bool XbmcAutoShutdown
         {
-            get
-            {
-                return Convert.ToBoolean( GetConfigValue( "XbmcAutoShutdown", true, true ) );
-            }
-            set
-            {
-                UpdateValue( "XbmcAutoShutdown", value );
-            }
+            get { return Convert.ToBoolean(GetConfigValue("XbmcAutoShutdown", true, true)); }
+            set { UpdateValue("XbmcAutoShutdown", value); }
+        }
+
+        internal static bool PreventStandBy
+        {
+            get { return Convert.ToBoolean(GetConfigValue("PreventStandBy", true, true)); }
+            set { UpdateValue("PreventStandBy", value); }
         }
 
         internal static string XbmcStartupArgs
         {
-            get
-            {
-                return GetConfigValue( "XbmcStartupArgs", "", true );
-            }
-            set
-            {
-                UpdateValue( "XbmcStartupArgs", value );
-            }
+            get { return GetConfigValue("XbmcStartupArgs", "", true); }
+            set { UpdateValue("XbmcStartupArgs", value); }
         }
 
+        private static void UpdateValue(string key, object value)
+        {
+            Logger.Trace("Writing Setting to file. Key:'{0}' Value:'{1}'", key, value);
+            Config.AppSettings.Settings.Remove(key);
+            Config.AppSettings.Settings.Add(key, value.ToString());
+            Config.Save();
+        }
+
+        private static string GetConfigValue(string key, object defaultValue, bool makePermanent)
+        {
+            string value;
+
+            if (Config.AppSettings.Settings[key] != null)
+            {
+                value = Config.AppSettings.Settings[key].Value;
+            }
+            else
+            {
+                Logger.Warn("Unable to find config key '{0}' defaultValue:'{1}'", key, defaultValue);
+                if (makePermanent)
+                {
+                    UpdateValue(key, defaultValue.ToString());
+                }
+                value = defaultValue.ToString();
+            }
+
+            return value;
+        }
     }
 }
