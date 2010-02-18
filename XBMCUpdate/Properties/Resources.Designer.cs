@@ -130,6 +130,13 @@ namespace XbmcUpdate.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap logo {
+            get {
+                object obj = ResourceManager.GetObject("logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap unzip_blue {
             get {
                 object obj = ResourceManager.GetObject("unzip_blue", resourceCulture);

@@ -19,12 +19,14 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using NLog;
 using XbmcUpdate.Properties;
 using XbmcUpdate.UpdateEngine;
+using XbmcUpdate.UpdateEngine.Source;
 
 namespace XbmcUpdate
 {
@@ -129,9 +131,9 @@ namespace XbmcUpdate
 
         private void UpdateBindedUi()
         {
-            if (String.IsNullOrEmpty(txtReleaseUrl.Text.Trim()))
+            //if (String.IsNullOrEmpty(txtReleaseUrl.Text.Trim()))
             {
-                txtReleaseUrl.Text = Settings.ReleaseUrl;
+                //  txtReleaseUrl.Text = Settings.ReleaseUrl;
             }
 
             txtXbmcPath.Text = Settings.XbmcPath;
@@ -140,22 +142,34 @@ namespace XbmcUpdate
             chkUpdateIfXbmcIsRunning.Checked = Settings.XbmcAutoShutdown;
             txtXbmcStartArgs.Text = Settings.XbmcStartupArgs;
             chkPreventStandby.Checked = Settings.PreventStandBy;
+
+
+
+            cmbSources.Items.Clear();
+
+            foreach (var source in SourceManager.SourceManifest.Sources)
+            {
+                cmbSources.Items.Insert(source.Index, source.SourceName);
+            }
+
+            cmbSources.SelectedIndex = SourceManager.GetSource().Index;
+
         }
 
         private void UpdateVersionStat()
         {
             try
             {
-                VersionInfo currentBuild = XbmcManager.GerVersion();
+                XbmcVersionInfo currentBuild = XbmcManager.GerVersion();
 
                 if (currentBuild.BuildNumber != 0)
                 {
-                    lblXbmcVersion.Text = String.Format("Current Build:{0}{1}Installed: {2}", currentBuild.BuildNumber,
+                    lblXbmcVersion.Text = String.Format("Current Rev.{0}{1}Installed: {2}", currentBuild.BuildNumber,
                                                                   Environment.NewLine, currentBuild.Age());
                 }
                 else
                 {
-                    lblXbmcVersion.Text = ("Unknown local build. Latest build will be installed");
+                    lblXbmcVersion.Text = ("Unknown local version. Rev." + _update.OnlineBuildNumber + " will be installed.");
                 }
             }
             catch (Exception e)
@@ -211,7 +225,7 @@ namespace XbmcUpdate
 
         private void InitiateSelfupdate()
         {
-            UpdateEvenMessage("Checking for application updates.");
+            UpdateEventMessage("Checking for application updates.");
             try
             {
                 UpdateInProgress = true;
@@ -220,7 +234,7 @@ namespace XbmcUpdate
 
                 if (selfUpdate.DownloadUpdate())
                 {
-                    UpdateEvenMessage("Installing Update");
+                    UpdateEventMessage("Installing Update");
                     _logger.Info("Stating selfupdate.exe");
                     UpdateInProgress = false;
                     var selfUpdateProcess = new Process();
@@ -237,7 +251,7 @@ namespace XbmcUpdate
             catch (Exception ex)
             {
                 _logger.Error("An error has occurred while checking for Application update.{0}", ex.Message);
-                UpdateEvenMessage("An error has occurred during selfupdate.");
+                UpdateEventMessage("An error has occurred during selfupdate.");
             }
 
             UpdateInProgress = false;
@@ -259,7 +273,7 @@ namespace XbmcUpdate
                 {
                     if (_update.CheckUpdate())
                     {
-                        UpdateEvenMessage("Update Available. Build:" + _update.OnlineBuildNumber);
+                        UpdateEventMessage("Update Available. Rev." + _update.OnlineBuildNumber);
 
                         DialogResult dialogResult = DialogResult.Cancel;
 
@@ -318,17 +332,9 @@ namespace XbmcUpdate
             }
         }
 
-        private void cmbXbmcStart_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cmbXbmcStart.SelectedIndex == 0)
-            {
-                txtXbmcStartArgs.Enabled = false;
-            }
-            else
-            {
-                txtXbmcStartArgs.Enabled = true;
-            }
-        }
+
+
+
 
 
     }

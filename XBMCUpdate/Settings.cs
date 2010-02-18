@@ -20,6 +20,7 @@
 
 using System;
 using System.Configuration;
+using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using NLog;
@@ -33,6 +34,12 @@ namespace XbmcUpdate
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+
+        static Settings()
+        {
+            CleanUp();
+        }
+
         internal static string XbmcPath
         {
             get { return GetConfigValue("XbmcPath", "", true); }
@@ -44,15 +51,20 @@ namespace XbmcUpdate
             get { return String.Concat(Application.StartupPath, @"\temp\"); }
         }
 
-        internal static string ReleaseUrl
+        internal static string SourceName
         {
-            get { return GetConfigValue("ReleaseUrl", @"http://danielpatton.com/user-accounts/XBMC-updates/", true); }
-            set { UpdateValue("ReleaseUrl", value); }
+            get { return GetConfigValue("SourceName", @"", true); }
+            set { UpdateValue("SourceName", value); }
         }
 
         internal static string SelfUpdateUrl
         {
             get { return GetConfigValue("SelfUpdateUrl", @"http://code.google.com/p/xbmcupdate/downloads", false); }
+        }
+
+        internal static string SourceManifest
+        {
+            get { return GetConfigValue("Manifest", Path.Combine(Application.StartupPath, @"sources.xml"), false); }
         }
 
         internal static int ShutdownCountdown
@@ -121,6 +133,12 @@ namespace XbmcUpdate
             }
 
             return value;
+        }
+
+
+        private static void CleanUp()
+        {
+            Config.AppSettings.Settings.Remove("ReleaseUrl");
         }
     }
 }

@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using NLog;
 using XbmcUpdate.Tools;
+using XbmcUpdate.UpdateEngine.Source;
 
 namespace XbmcUpdate.UpdateEngine
 {
@@ -36,12 +37,12 @@ namespace XbmcUpdate.UpdateEngine
         {
             ReleaseUrls.Clear();
 
-            string page = HtmlClient.GetPage(Settings.ReleaseUrl);
+            string page = HtmlClient.GetPage(SourceManager.GetSource().Url);
             var buildNumbers = new List<Int32>();
 
             Logger.Info("Trying to parse out the builds list from HTML string");
 
-            MatchCollection matches = Regex.Matches(page, @"XBMC.{0,5}\d{5}.zip", RegexOptions.IgnoreCase);
+            MatchCollection matches = Regex.Matches(page, SourceManager.GetSource().RegEx, RegexOptions.IgnoreCase);
 
             foreach (object buildFileName in matches)
             {
@@ -54,7 +55,7 @@ namespace XbmcUpdate.UpdateEngine
                     if (!buildNumbers.Contains(buildNum))
                     {
                         buildNumbers.Add(buildNum);
-                        ReleaseUrls.Add(buildNum, string.Format(@"{0}/{1}", Settings.ReleaseUrl, buildFileName));
+                        ReleaseUrls.Add(buildNum, string.Format(@"{0}/{1}", SourceManager.GetSource().Url, buildFileName));
                     }
                 }
             }
