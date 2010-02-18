@@ -37,7 +37,7 @@ namespace XbmcUpdate
             else
             {
                 picInstall.Image = Resources.install_green;
-                UpdateEvenMessage(message);
+                UpdateEventMessage(message);
             }
         }
 
@@ -51,7 +51,7 @@ namespace XbmcUpdate
             else
             {
                 picInstall.Image = Resources.install_orange;
-                UpdateEvenMessage(message);
+                UpdateEventMessage(message);
             }
         }
 
@@ -65,7 +65,7 @@ namespace XbmcUpdate
             else
             {
                 picUnzip.Image = Resources.unzip_green;
-                UpdateEvenMessage(message);
+                UpdateEventMessage(message);
             }
         }
 
@@ -79,7 +79,7 @@ namespace XbmcUpdate
             else
             {
                 picUnzip.Image = Resources.unzip_orange;
-                UpdateEvenMessage(message);
+                UpdateEventMessage(message);
             }
         }
 
@@ -94,7 +94,7 @@ namespace XbmcUpdate
             {
                 downloadRefreshTimer.Enabled = false;
                 picDownload.Image = Resources.download_green;
-                UpdateEvenMessage(message);
+                UpdateEventMessage(message);
             }
         }
 
@@ -109,7 +109,7 @@ namespace XbmcUpdate
             {
                 downloadRefreshTimer.Enabled = true;
                 picDownload.Image = Resources.download_orange;
-                UpdateEvenMessage(message);
+                UpdateEventMessage(message);
             }
         }
 
@@ -123,7 +123,7 @@ namespace XbmcUpdate
             else
             {
                 picUpdateCheck.Image = Resources.feed_green;
-                UpdateEvenMessage(message);
+                UpdateEventMessage(message);
             }
         }
 
@@ -137,7 +137,7 @@ namespace XbmcUpdate
             else
             {
                 picUpdateCheck.Image = Resources.feed_orange;
-                UpdateEvenMessage(message);
+                UpdateEventMessage(message);
             }
         }
 
@@ -150,7 +150,7 @@ namespace XbmcUpdate
             }
             else
             {
-                UpdateEvenMessage(message);
+                UpdateEventMessage(message);
                 UpdateInProgress = false;
 
                 if (SilentUpdate)
@@ -171,7 +171,7 @@ namespace XbmcUpdate
             else
             {
                 UpdateInProgress = false;
-                UpdateEvenMessage(message);
+                UpdateEventMessage(message);
 
                 switch (Settings.XbmcAutostart)
                 {
@@ -215,11 +215,11 @@ namespace XbmcUpdate
             else
             {
                 UpdateInProgress = true;
-                UpdateEvenMessage(message);
+                UpdateEventMessage(message);
             }
         }
 
-        private void UpdateEvenMessage(string message)
+        private void UpdateEventMessage(string message)
         {
             lblStatus.Text = String.IsNullOrEmpty(message) ? "" : message.Trim();
             UpdateVersionStat();

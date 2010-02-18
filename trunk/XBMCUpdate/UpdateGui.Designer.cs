@@ -48,8 +48,11 @@ namespace XbmcUpdate
             this.txtXbmcStartArgs = new System.Windows.Forms.TextBox();
             this.cmbXbmcStart = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txtReleaseUrl = new System.Windows.Forms.TextBox();
+            this.grpSource = new System.Windows.Forms.GroupBox();
+            this.txtSrcRegex = new System.Windows.Forms.TextBox();
+            this.lblSrcRegex = new System.Windows.Forms.Label();
+            this.lnkSource = new System.Windows.Forms.LinkLabel();
+            this.cmbSources = new System.Windows.Forms.ComboBox();
             this.btnApply = new System.Windows.Forms.Button();
             this.tabPageUpdate = new System.Windows.Forms.TabPage();
             this.grpStatIcons = new System.Windows.Forms.GroupBox();
@@ -68,7 +71,7 @@ namespace XbmcUpdate
             ((System.ComponentModel.ISupportInitialize)(this.picInstall)).BeginInit();
             this.tabSettings.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.grpSource.SuspendLayout();
             this.tabPageUpdate.SuspendLayout();
             this.grpStatIcons.SuspendLayout();
             this.grpXbmcVersion.SuspendLayout();
@@ -160,7 +163,7 @@ namespace XbmcUpdate
             // 
             this.tabSettings.Controls.Add(this.chkPreventStandby);
             this.tabSettings.Controls.Add(this.groupBox2);
-            this.tabSettings.Controls.Add(this.groupBox1);
+            this.tabSettings.Controls.Add(this.grpSource);
             this.tabSettings.Controls.Add(this.btnApply);
             this.tabSettings.Location = new System.Drawing.Point(4, 22);
             this.tabSettings.Name = "tabSettings";
@@ -172,7 +175,7 @@ namespace XbmcUpdate
             // chkPreventStandby
             // 
             this.chkPreventStandby.AutoSize = true;
-            this.chkPreventStandby.Location = new System.Drawing.Point(23, 192);
+            this.chkPreventStandby.Location = new System.Drawing.Point(16, 231);
             this.chkPreventStandby.Name = "chkPreventStandby";
             this.chkPreventStandby.Size = new System.Drawing.Size(176, 17);
             this.chkPreventStandby.TabIndex = 6;
@@ -191,7 +194,7 @@ namespace XbmcUpdate
             this.groupBox2.Size = new System.Drawing.Size(280, 101);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "XBMC Shutdown";
+            this.groupBox2.Text = "XBMC";
             // 
             // label1
             // 
@@ -232,29 +235,63 @@ namespace XbmcUpdate
             this.label2.TabIndex = 1;
             this.label2.Text = "label2";
             // 
-            // groupBox1
+            // grpSource
             // 
-            this.groupBox1.Controls.Add(this.txtReleaseUrl);
-            this.groupBox1.Location = new System.Drawing.Point(16, 122);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(280, 63);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Release URL";
+            this.grpSource.Controls.Add(this.txtSrcRegex);
+            this.grpSource.Controls.Add(this.lblSrcRegex);
+            this.grpSource.Controls.Add(this.lnkSource);
+            this.grpSource.Controls.Add(this.cmbSources);
+            this.grpSource.Location = new System.Drawing.Point(16, 122);
+            this.grpSource.Name = "grpSource";
+            this.grpSource.Size = new System.Drawing.Size(280, 103);
+            this.grpSource.TabIndex = 4;
+            this.grpSource.TabStop = false;
+            this.grpSource.Text = "Update Source";
             // 
-            // txtReleaseUrl
+            // txtSrcRegex
             // 
-            this.txtReleaseUrl.Location = new System.Drawing.Point(7, 18);
-            this.txtReleaseUrl.Multiline = true;
-            this.txtReleaseUrl.Name = "txtReleaseUrl";
-            this.txtReleaseUrl.Size = new System.Drawing.Size(267, 36);
-            this.txtReleaseUrl.TabIndex = 0;
+            this.txtSrcRegex.BackColor = System.Drawing.SystemColors.Window;
+            this.txtSrcRegex.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtSrcRegex.Location = new System.Drawing.Point(62, 73);
+            this.txtSrcRegex.Name = "txtSrcRegex";
+            this.txtSrcRegex.ReadOnly = true;
+            this.txtSrcRegex.Size = new System.Drawing.Size(208, 14);
+            this.txtSrcRegex.TabIndex = 8;
+            // 
+            // lblSrcRegex
+            // 
+            this.lblSrcRegex.AutoSize = true;
+            this.lblSrcRegex.Location = new System.Drawing.Point(9, 74);
+            this.lblSrcRegex.Name = "lblSrcRegex";
+            this.lblSrcRegex.Size = new System.Drawing.Size(47, 13);
+            this.lblSrcRegex.TabIndex = 7;
+            this.lblSrcRegex.Text = "Pattern:";
+            // 
+            // lnkSource
+            // 
+            this.lnkSource.AutoSize = true;
+            this.lnkSource.Location = new System.Drawing.Point(9, 51);
+            this.lnkSource.Name = "lnkSource";
+            this.lnkSource.Size = new System.Drawing.Size(53, 13);
+            this.lnkSource.TabIndex = 5;
+            this.lnkSource.TabStop = true;
+            this.lnkSource.Text = "linkLabel1";
+            // 
+            // cmbSources
+            // 
+            this.cmbSources.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSources.FormattingEnabled = true;
+            this.cmbSources.Location = new System.Drawing.Point(10, 20);
+            this.cmbSources.Name = "cmbSources";
+            this.cmbSources.Size = new System.Drawing.Size(262, 21);
+            this.cmbSources.TabIndex = 4;
+            this.cmbSources.SelectedIndexChanged += new System.EventHandler(this.cmbSources_SelectedIndexChanged);
             // 
             // btnApply
             // 
-            this.btnApply.Location = new System.Drawing.Point(94, 289);
+            this.btnApply.Location = new System.Drawing.Point(114, 322);
             this.btnApply.Name = "btnApply";
-            this.btnApply.Size = new System.Drawing.Size(124, 32);
+            this.btnApply.Size = new System.Drawing.Size(85, 26);
             this.btnApply.TabIndex = 1;
             this.btnApply.Text = "Apply";
             this.btnApply.UseVisualStyleBackColor = true;
@@ -348,9 +385,10 @@ namespace XbmcUpdate
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(36, 8);
+            this.pictureBox1.Location = new System.Drawing.Point(16, 8);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(241, 101);
+            this.pictureBox1.Size = new System.Drawing.Size(280, 101);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 17;
             this.pictureBox1.TabStop = false;
             // 
@@ -404,8 +442,8 @@ namespace XbmcUpdate
             // 
             // UpdateGui
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(320, 392);
             this.Controls.Add(this.tabMain);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -427,8 +465,8 @@ namespace XbmcUpdate
             this.tabSettings.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.grpSource.ResumeLayout(false);
+            this.grpSource.PerformLayout();
             this.tabPageUpdate.ResumeLayout(false);
             this.grpStatIcons.ResumeLayout(false);
             this.grpStatIcons.PerformLayout();
@@ -455,8 +493,7 @@ namespace XbmcUpdate
         private ComboBox cmbXbmcStart;
         private CheckBox chkUpdateIfXbmcIsRunning;
         private Label label2;
-        private GroupBox groupBox1;
-        private TextBox txtReleaseUrl;
+        private GroupBox grpSource;
         private Button btnApply;
         private TabPage tabPageUpdate;
         private GroupBox grpStatIcons;
@@ -473,6 +510,10 @@ namespace XbmcUpdate
         private Button btnBrows;
         private TextBox txtXbmcPath;
         private TabControl tabMain;
+        private ComboBox cmbSources;
+        private TextBox txtSrcRegex;
+        private Label lblSrcRegex;
+        private LinkLabel lnkSource;
     }
 }
 

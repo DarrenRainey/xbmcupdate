@@ -1,4 +1,4 @@
-﻿/*
+/*
  *   XBMCUpdate: Automatic Update Client for XBMC. (www.xbmc.org)
  * 
  *   Copyright (C) 2009  Keivan Beigi
@@ -101,6 +101,8 @@ namespace XbmcUpdate.UpdateEngine
                 //Getting the latest revision number.
                 List<int> revlist = ReleaseManager.GetBuildList();
 
+                string message ="You have the most recent version. No update is necessary.";
+
                 if (revlist != null && revlist.Count != 0)
                 {
                     revlist.Sort();
@@ -115,19 +117,21 @@ namespace XbmcUpdate.UpdateEngine
                     }
 
                     updateAvilable = _currentBuildNumber < _onlineBuildNumber;
-                }
 
+                    if (updateAvilable)
+                    {
+                        message = "Latest Available Rev. " + _onlineBuildNumber;
+                    }
+                }
+                else
+                {
+                    message = "Could not find any release. Try another update source.";
+                }
+                               
 
                 if (OnCheckUpdateStop != null)
                 {
-                    if (updateAvilable)
-                    {
-                        OnCheckUpdateStop(this, "Latest Available Build : " + _onlineBuildNumber);
-                    }
-                    else
-                    {
-                        OnCheckUpdateStop(this, "You have the most recent build. No update is necessary.");
-                    }
+                    OnCheckUpdateStop(this, message);
                 }
             }
             catch (Exception e)
@@ -164,7 +168,7 @@ namespace XbmcUpdate.UpdateEngine
             try
             {
                 if (OnUpdateProcessStart != null)
-                    OnUpdateProcessStart(this, "Starting update process for build " + OnlineBuildNumber);
+                    OnUpdateProcessStart(this, "Starting update process for Rev. " + OnlineBuildNumber);
 
                 if (Settings.PreventStandBy)
                 {
@@ -211,7 +215,7 @@ namespace XbmcUpdate.UpdateEngine
         {
             if (OnDownloadStart != null)
             {
-                OnDownloadStart(this, "Downloading build " + _onlineBuildNumber + "...");
+                OnDownloadStart(this, "Downloading Rev. " + _onlineBuildNumber + "...");
             }
 
             try
@@ -247,7 +251,7 @@ namespace XbmcUpdate.UpdateEngine
 
                 if (OnDownloadStop != null)
                 {
-                    OnDownloadStop(this, String.Format("Build {0} Installed", _onlineBuildNumber));
+                    OnDownloadStop(this, String.Format("Rev. {0} Installed", _onlineBuildNumber));
                 }
             }
             catch (Exception e)
@@ -262,7 +266,7 @@ namespace XbmcUpdate.UpdateEngine
         {
             if (OnUnZipStart != null)
             {
-                OnUnZipStart(this, "Extracting Build..");
+                OnUnZipStart(this, "Extracting Update..");
             }
 
             try
@@ -285,7 +289,7 @@ namespace XbmcUpdate.UpdateEngine
                 Directory.CreateDirectory(unZipPath);
 
                 _uncompressedBuildPath = String.Concat(unZipPath, @"\xbmc\");
-                Logger.Info("Extracting Build {0} to {1}", _onlineBuildNumber, _uncompressedBuildPath);
+                Logger.Info("Extracting Update {0} to {1}", _onlineBuildNumber, _uncompressedBuildPath);
 
                 _zipClient.ExtractZip(_compressedBuildPath, unZipPath, "");
                 Logger.Info("All files extracted successfully");
@@ -320,13 +324,13 @@ namespace XbmcUpdate.UpdateEngine
 
                 if (OnInstallStart != null)
                 {
-                    OnInstallStart(this, "Installing Build...");
+                    OnInstallStart(this, "Installing Update...");
                 }
 
                 CopyFolder(_uncompressedBuildPath, Settings.XbmcPath);
 
                 //Register Build
-                var verInfo = new VersionInfo();
+                var verInfo = new XbmcVersionInfo();
                 verInfo.BuildNumber = _onlineBuildNumber;
                 verInfo.InstallationDate = DateTime.Now;
 
@@ -336,7 +340,7 @@ namespace XbmcUpdate.UpdateEngine
 
                 if (OnInstallStop != null)
                 {
-                    OnInstallStop(this, "Successfully Installed Build " + _onlineBuildNumber);
+                    OnInstallStop(this, "Successfully Installed XBMC " + _onlineBuildNumber);
                 }
             }
             catch (Exception e)

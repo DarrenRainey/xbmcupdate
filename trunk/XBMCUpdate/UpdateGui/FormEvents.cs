@@ -19,7 +19,9 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
+using XbmcUpdate.UpdateEngine.Source;
 
 namespace XbmcUpdate
 {
@@ -78,11 +80,12 @@ namespace XbmcUpdate
 
         private void btnApply_Click(object sender, EventArgs e)
         {
-            Settings.ReleaseUrl = txtReleaseUrl.Text;
+            //Settings.ReleaseUrl = txtReleaseUrl.Text;
             Settings.XbmcStartupArgs = txtXbmcStartArgs.Text;
             Settings.XbmcAutostart = cmbXbmcStart.SelectedIndex;
             Settings.XbmcAutoShutdown = chkUpdateIfXbmcIsRunning.Checked;
             Settings.PreventStandBy = chkPreventStandby.Checked;
+            Settings.SourceName = cmbSources.SelectedItem.ToString();
         }
 
         private void UpdateGui_FormClosing(object sender, FormClosingEventArgs e)
@@ -143,6 +146,32 @@ namespace XbmcUpdate
                 _logger.Info("Shutdown timer is closing the application");
                 Close();
             }
+        }
+
+
+        private void cmbXbmcStart_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbXbmcStart.SelectedIndex == 0)
+            {
+                txtXbmcStartArgs.Enabled = false;
+            }
+            else
+            {
+                txtXbmcStartArgs.Enabled = true;
+            }
+        }
+
+        private void cmbSources_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var source = SourceManager.GetSource(cmbSources.SelectedIndex);
+
+            lnkSource.Text = source.Url;
+            txtSrcRegex.Text = source.RegEx;
+        }
+
+        private void lnkSource_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(lnkSource.Text);
         }
     }
 }

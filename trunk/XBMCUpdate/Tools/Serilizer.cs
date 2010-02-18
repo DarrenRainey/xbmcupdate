@@ -1,4 +1,4 @@
-﻿/*
+/*
  *   XBMCUpdate: Automatic Update Client for XBMC. (www.xbmc.org)
  * 
  *   Copyright (C) 2009  Keivan Beigi
@@ -67,8 +67,11 @@ namespace XbmcUpdate.Tools
             try
             {
                 var memoryStream = new MemoryStream();
-                var xs = new XmlSerializer(typeof(T));
+                var xs = new XmlSerializer(obj.GetType());
+
                 var xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
+
+                xmlTextWriter.Formatting = Formatting.Indented;
                 xs.Serialize(xmlTextWriter, obj);
                 memoryStream = (MemoryStream)xmlTextWriter.BaseStream;
                 return UTF8ByteArrayToString(memoryStream.ToArray());
@@ -84,23 +87,23 @@ namespace XbmcUpdate.Tools
         /// </summary>
         /// <param name="xml"></param>
         /// <returns></returns>
-        internal static VersionInfo DeserializeObject(string xml)
+        internal static T DeserializeObject<T>(string xml) where T : class
         {
-            var response = new VersionInfo();
+
+            T response = null;
 
             if (!string.IsNullOrEmpty(xml))
             {
                 try
                 {
-                    var xs = new XmlSerializer(typeof(VersionInfo));
+                    var xs = new XmlSerializer(typeof(T));
                     var memoryStream = new MemoryStream(StringToUTF8ByteArray(xml));
                     new XmlTextWriter(memoryStream, Encoding.UTF8);
-                    response = (VersionInfo)xs.Deserialize(memoryStream);
+                    response = xs.Deserialize(memoryStream) as T;
                 }
                 catch (Exception ex)
                 {
                     Logger.Info("XML file is malformed. {0}", ex.Message);
-                    response = null;
                 }
             }
 

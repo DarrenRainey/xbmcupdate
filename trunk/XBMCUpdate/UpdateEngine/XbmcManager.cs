@@ -5,8 +5,8 @@
  * 
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation, either version 3 of the License, or
- *   (at your option) any later version.
+ *   the Free Software Foundation, either xbmcVersion 3 of the License, or
+ *   (at your option) any later xbmcVersion.
  *
  *   This program is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -46,16 +46,16 @@ namespace XbmcUpdate.UpdateEngine
             }
         }
 
-        internal static void SaveVersion(VersionInfo version)
+        internal static void SaveVersion(XbmcVersionInfo xbmcVersion)
         {
             Logger.Info("Updating your installation status");
-            string fileContent = Serilizer.SerializeObject(version);
+            string fileContent = Serilizer.SerializeObject(xbmcVersion);
             Serilizer.WriteToFile(string.Format(@"{0}\{1}", Settings.XbmcPath, VersionFile), fileContent, false);
         }
 
-        internal static VersionInfo GerVersion()
+        internal static XbmcVersionInfo GerVersion()
         {
-            var installedVersion = new VersionInfo();
+            var installedVersion = new XbmcVersionInfo();
 
             try
             {
@@ -64,18 +64,29 @@ namespace XbmcUpdate.UpdateEngine
                 if (File.Exists(versionFilePath))
                 {
                     string fileContent = Serilizer.ReadFile(versionFilePath);
-                    installedVersion = Serilizer.DeserializeObject(fileContent);
-                    Logger.Info("Rev:{0}, Installation Date:{1}, Supplier:{2}", installedVersion.BuildNumber,
-                                installedVersion.InstallationDate, installedVersion.Suplier);
+                    installedVersion = Serilizer.DeserializeObject<XbmcVersionInfo>(fileContent);
+
+                    if (installedVersion != null)
+                    {
+                        Logger.Info("Rev:{0}, Installation Date:{1}, Supplier:{2}", installedVersion.BuildNumber,
+                                    installedVersion.InstallationDate, installedVersion.Suplier);
+                    }
+                    // if deserilization failes installedVersion will be set to null,
+                    // this will reset the installed version to version 0.0
+                    else
+                    {
+                        installedVersion = new XbmcVersionInfo();
+                    }
                 }
                 else
                 {
-                    Logger.Info("No version files were found. The latest revision will be installed on next update");
+                    Logger.Info("No xbmcVersion files were found. The latest revision will be installed on next update");
                 }
             }
             catch (Exception e)
             {
-                Logger.Fatal("An error has occurred while getting installed version info. {0}", e.ToString());
+                Logger.Fatal("An error has occurred while getting installed xbmcVersion info. {0}", e.ToString());
+                installedVersion = new XbmcVersionInfo();
             }
 
             return installedVersion;
@@ -141,62 +152,4 @@ namespace XbmcUpdate.UpdateEngine
         }
     }
 
-    public class VersionInfo
-    {
-        public int BuildNumber { get; set; }
-        public string Suplier { get;  set; }
-        public DateTime InstallationDate { get; set; }
-
-        public string Age()
-        {
-            var ts = new TimeSpan(DateTime.Now.Ticks - InstallationDate.Ticks);
-            double delta = ts.TotalSeconds;
-
-            const int SECOND = 1;
-            const int MINUTE = 60 * SECOND;
-            const int HOUR = 60 * MINUTE;
-            const int DAY = 24 * HOUR;
-            const int MONTH = 30 * DAY;
-
-            if (delta < 1 * MINUTE)
-            {
-                return ts.Seconds == 1 ? "One Second ago" : ts.Seconds + " Seconds ago";
-            }
-            if (delta < 2 * MINUTE)
-            {
-                return "a Minute ago";
-            }
-            if (delta < 45 * MINUTE)
-            {
-                return ts.Minutes + " Minutes ago";
-            }
-            if (delta < 90 * MINUTE)
-            {
-                return "an Hour ago";
-            }
-            if (delta < 24 * HOUR)
-            {
-                return ts.Hours + " Hours ago";
-            }
-            if (delta < 48 * HOUR)
-            {
-                return "Yesterday";
-            }
-            if (delta < 30 * DAY)
-            {
-                return ts.Days + " Days ago";
-            }
-            if (delta < 12 * MONTH)
-            {
-                int months = Convert.ToInt32(Math.Floor((double)ts.Days / 30));
-                return months <= 1 ? "One Month ago" : months + " Months ago";
-            }
-            else
-            {
-                int years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
-                return years <= 1 ? "One year ago" : years + " Years ago";
-            }
-
-        }
-    }
 }

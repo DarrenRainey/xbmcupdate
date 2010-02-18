@@ -4,6 +4,31 @@
         <name>Campari.Software.Core</name>
     </assembly>
     <members>
+        <member name="T:Campari.Software.WindowsFoundationLibrary">
+            <summary>
+            Specifies the .NET 3.0 Windows Foundation Library
+            </summary>
+        </member>
+        <member name="F:Campari.Software.WindowsFoundationLibrary.WCF">
+            <summary>
+            Windows Communication Foundation
+            </summary>
+        </member>
+        <member name="F:Campari.Software.WindowsFoundationLibrary.WPF">
+            <summary>
+            Windows Presentation Foundation
+            </summary>
+        </member>
+        <member name="F:Campari.Software.WindowsFoundationLibrary.WF">
+            <summary>
+            Windows Workflow Foundation
+            </summary>
+        </member>
+        <member name="F:Campari.Software.WindowsFoundationLibrary.CardSpace">
+            <summary>
+            Windows CardSpace
+            </summary>
+        </member>
         <member name="T:Campari.Software.FrameworkVersionDetection">
             <summary>
             Provides support for determining if a specific version of the .NET
@@ -432,31 +457,6 @@
         <member name="P:Campari.Software.Properties.Resources.MDA_InvalidFormatForUtc">
             <summary>
               Looks up a localized string similar to Cannot apply format &quot;{0}&quot; to the date &quot;{1}&quot; as the date is already in universal time..
-            </summary>
-        </member>
-        <member name="T:Campari.Software.WindowsFoundationLibrary">
-            <summary>
-            Specifies the .NET 3.0 Windows Foundation Library
-            </summary>
-        </member>
-        <member name="F:Campari.Software.WindowsFoundationLibrary.WCF">
-            <summary>
-            Windows Communication Foundation
-            </summary>
-        </member>
-        <member name="F:Campari.Software.WindowsFoundationLibrary.WPF">
-            <summary>
-            Windows Presentation Foundation
-            </summary>
-        </member>
-        <member name="F:Campari.Software.WindowsFoundationLibrary.WF">
-            <summary>
-            Windows Workflow Foundation
-            </summary>
-        </member>
-        <member name="F:Campari.Software.WindowsFoundationLibrary.CardSpace">
-            <summary>
-            Windows CardSpace
             </summary>
         </member>
         <member name="T:Campari.Software.InteropServices.SystemMetric">
