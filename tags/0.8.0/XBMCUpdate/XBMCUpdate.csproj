@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{52401136-103C-4D04-9315-924C49106068}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>XbmcUpdate</RootNamespace>
+    <AssemblyName>XBMCUpdate</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="NLog, Version=1.0.0.505, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="SelfUpdate\SelfUpdateManager.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Tools\HtmlClient.cs" />
+    <Compile Include="UpdateEngine\Source\SourceInfo.cs" />
+    <Compile Include="UpdateEngine\Source\Manifest.cs" />
+    <Compile Include="UpdateEngine\Source\SourceManager.cs" />
+    <Compile Include="UpdateEngine\XbmcVersionInfo.cs" />
+    <Compile Include="UpdateEngine\PowerManager.cs" />
+    <Compile Include="UpdateGui.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdateGui.Designer.cs">
+      <DependentUpon>UpdateGui.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="UpdateGui.resx">
+      <DependentUpon>UpdateGui.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="UpdateEngine\ReleaseManager.cs" />
+    <Compile Include="Tools\DownloadManager.cs" />
+    <Compile Include="Tools\Serilizer.cs" />
+    <Compile Include="UpdateEngine\UpdateManager.cs" />
+    <Compile Include="UpdateEngine\XbmcManager.cs" />
+    <Compile Include="UpdateGui\FormEvents.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdateGui\UpdateEvents.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app.ico" />
+    <Content Include="ExternalAssemblies\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="ExternalAssemblies\NLog.dll" />
+    <None Include="Images\download_blue.png" />
+    <None Include="Images\download_green.png" />
+    <None Include="Images\download_orange.png" />
+    <None Include="Images\feed_blue.png" />
+    <None Include="Images\feed_green.png" />
+    <None Include="Images\feed_orange.png" />
+    <None Include="Images\install_blue.png" />
+    <None Include="Images\install_green.png" />
+    <None Include="Images\install_orange.png" />
+    <None Include="Images\logo.png" />
+    <None Include="Images\unzip_blue.png" />
+    <None Include="Images\unzip_green.png" />
+    <None Include="Images\unzip_orange.png" />
+    <Content Include="Pics\logo.png" />
+    <Content Include="Pics\app.ico" />
+    <None Include="app.config">
+    </None>
+    <None Include="Pics\install_blue.png" />
+    <None Include="Pics\unzip_blue.png" />
+    <None Include="Pics\download_blue.png" />
+    <None Include="Pics\unzip_orange.png" />
+    <None Include="Pics\unzip_green.png" />
+    <None Include="Pics\install_orange.png" />
+    <None Include="Pics\install_green.png" />
+    <None Include="Pics\feed_orange.png" />
+    <None Include="Pics\feed_green.png" />
+    <None Include="Pics\feed_blue.png" />
+    <None Include="Pics\download_orange.png" />
+    <None Include="Pics\download_green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Campari.Software.Core\Campari.Software.Core.csproj">
+      <Project>{EDF09C0E-A164-4D4D-B6D0-5645B782ECD5}</Project>
+      <Name>Campari.Software.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfUpdate\SelfUpdate.csproj">
+      <Project>{CC5D4D63-62F6-42FB-8617-DCA7859678C0}</Project>
+      <Name>SelfUpdate</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="XBMCUpdate">
+</Property><Property Name="Solution File" Value="D:\OpenSource\xbmcupdate\trunk\XBMCUpdate.sln">
+</Property><Property Name="User Options File" Value="D:\OpenSource\xbmcupdate\trunk\XBMCUpdate.suo">
+</Property><Property Name="Date" Value="May-26-09">
+</Property><Property Name="Time" Value="12:50 PM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="XBMCUpdate.sln" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate.sln">
+</Event><Event ErrorLevel="0" Project="" Source="XBMCUpdate.suo" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate.suo">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\XBMCUpdate.csproj" Description="Project file successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\XBMCUpdate.csproj">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\XBMCUpdate.csproj.user" Description="Project user file successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\XBMCUpdate.csproj.user">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\GlobalSuppressions.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\GlobalSuppressions.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\SelfUpdate\SelfUpdate.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\SelfUpdate\SelfUpdate.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Settings.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Settings.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Tools\GuiNlogTarget.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Tools\GuiNlogTarget.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Tools\HtmlClient.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Tools\HtmlClient.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\UpdateAppContext.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\UpdateAppContext.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\UpdateGui.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\UpdateGui.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\UpdateGui.Designer.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\UpdateGui.Designer.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Program.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Program.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Properties\AssemblyInfo.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Properties\Resources.Designer.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Properties\Resources.Designer.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\UpdateEngine\ReleaseManager.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\UpdateEngine\ReleaseManager.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Tools\DownloadManager.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Tools\DownloadManager.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Tools\Serilizer.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Tools\Serilizer.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\UpdateEngine\UpdateManager.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\UpdateEngine\UpdateManager.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\UpdateEngine\XbmcManager.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\UpdateEngine\XbmcManager.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\UpdateGui\FormEvents.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\UpdateGui\FormEvents.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\UpdateGui\UpdateEvents.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\UpdateGui\UpdateEvents.cs">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\app.config" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\app.config">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Pics\install_blue.png" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Pics\install_blue.png">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Pics\unzip_blue.png" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Pics\unzip_blue.png">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Pics\download_blue.png" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Pics\download_blue.png">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Pics\unzip_orange.png" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Pics\unzip_orange.png">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Pics\unzip_green.png" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Pics\unzip_green.png">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Pics\install_orange.png" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Pics\install_orange.png">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Pics\install_green.png" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Pics\install_green.png">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Pics\feed_orange.png" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Pics\feed_orange.png">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Pics\feed_green.png" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Pics\feed_green.png">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Pics\feed_blue.png" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Pics\feed_blue.png">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Pics\download_orange.png" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Pics\download_orange.png">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Pics\download_green.png" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Pics\download_green.png">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\app.ico" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\app.ico">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\ExternalAssemblies\ICSharpCode.SharpZipLib.dll" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\ExternalAssemblies\ICSharpCode.SharpZipLib.dll">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\ExternalAssemblies\NLog.dll" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\ExternalAssemblies\NLog.dll">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Pics\logo.png" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Pics\logo.png">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Pics\app.ico" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Pics\app.ico">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\UpdateGui.resx" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\UpdateGui.resx">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\Properties\Resources.resx" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\XBMCUpdate\Properties\Resources.resx">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\XBMCUpdate.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="XBMCUpdate" Source="XBMCUpdate\XBMCUpdate.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="SelfUpdate" Source="SelfUpdate\SelfUpdate.csproj" Description="Project file successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\SelfUpdate\SelfUpdate.csproj">
+</Event><Event ErrorLevel="0" Project="SelfUpdate" Source="SelfUpdate\SelfUpdate.csproj.user" Description="Project user file successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\SelfUpdate\SelfUpdate.csproj.user">
+</Event><Event ErrorLevel="0" Project="SelfUpdate" Source="SelfUpdate\frmSelfUpdate.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\SelfUpdate\frmSelfUpdate.cs">
+</Event><Event ErrorLevel="0" Project="SelfUpdate" Source="SelfUpdate\frmSelfUpdate.Designer.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\SelfUpdate\frmSelfUpdate.Designer.cs">
+</Event><Event ErrorLevel="0" Project="SelfUpdate" Source="SelfUpdate\Program.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\SelfUpdate\Program.cs">
+</Event><Event ErrorLevel="0" Project="SelfUpdate" Source="SelfUpdate\Properties\AssemblyInfo.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\SelfUpdate\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="SelfUpdate" Source="SelfUpdate\Properties\Resources.Designer.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\SelfUpdate\Properties\Resources.Designer.cs">
+</Event><Event ErrorLevel="0" Project="SelfUpdate" Source="SelfUpdate\Properties\Settings.Designer.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\SelfUpdate\Properties\Settings.Designer.cs">
+</Event><Event ErrorLevel="0" Project="SelfUpdate" Source="SelfUpdate\Update.cs" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\SelfUpdate\Update.cs">
+</Event><Event ErrorLevel="0" Project="SelfUpdate" Source="SelfUpdate\Properties\Settings.settings" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\SelfUpdate\Properties\Settings.settings">
+</Event><Event ErrorLevel="0" Project="SelfUpdate" Source="SelfUpdate\app.ico" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\SelfUpdate\app.ico">
+</Event><Event ErrorLevel="0" Project="SelfUpdate" Source="SelfUpdate\frmSelfUpdate.resx" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\SelfUpdate\frmSelfUpdate.resx">
+</Event><Event ErrorLevel="0" Project="SelfUpdate" Source="SelfUpdate\Properties\Resources.resx" Description="File successfully backed up as D:\OpenSource\xbmcupdate\trunk\Backup\SelfUpdate\Properties\Resources.resx">
+</Event><Event ErrorLevel="0" Project="SelfUpdate" Source="SelfUpdate\SelfUpdate.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="SelfUpdate" Source="SelfUpdate\SelfUpdate.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="XBMCUpdate.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="XBMCUpdate.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="XBMCUpdate" Source="XBMCUpdate\XBMCUpdate.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="SelfUpdate" Source="SelfUpdate\SelfUpdate.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>
