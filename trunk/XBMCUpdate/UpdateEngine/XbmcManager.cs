@@ -30,7 +30,7 @@ namespace XbmcUpdate.UpdateEngine
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string VersionFile = "update.xml";
-        internal static bool _xbmcTerminated;
+        internal static bool XbmcTerminated;
 
         //Return path to program files folder.
         private static string ProgramFilesPath
@@ -102,7 +102,7 @@ namespace XbmcUpdate.UpdateEngine
             {
                 //logger.Info("An instance of xbmc was found. processId:{0}", item.)
                 item.Kill();
-                _xbmcTerminated = true;
+                XbmcTerminated = true;
             }
         }
 
@@ -135,12 +135,13 @@ namespace XbmcUpdate.UpdateEngine
 
             try
             {
-                var xbmcStartInfo = new ProcessStartInfo();
-                xbmcStartInfo.FileName = xbmcStartFileName;
-                xbmcStartInfo.Arguments = Settings.XbmcStartupArgs;
+                var xbmcStartInfo = new ProcessStartInfo
+                                        {
+                                            FileName = xbmcStartFileName,
+                                            Arguments = Settings.XbmcStartupArgs
+                                        };
 
-                var xbmcProcess = new Process();
-                xbmcProcess.StartInfo = xbmcStartInfo;
+                var xbmcProcess = new Process {StartInfo = xbmcStartInfo};
 
                 xbmcProcess.Start();
                 Logger.Info("XBMC Started Successfully");

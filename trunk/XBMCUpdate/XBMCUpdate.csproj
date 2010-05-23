@@ -53,6 +53,10 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <StartupObject>XbmcUpdate.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualBasic" />
@@ -88,7 +92,7 @@
       <DependentUpon>UpdateGui.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -113,35 +117,22 @@
     <Content Include="app.ico" />
     <Content Include="ExternalAssemblies\ICSharpCode.SharpZipLib.dll" />
     <Content Include="ExternalAssemblies\NLog.dll" />
-    <None Include="Images\download_blue.png" />
-    <None Include="Images\download_green.png" />
-    <None Include="Images\download_orange.png" />
-    <None Include="Images\feed_blue.png" />
-    <None Include="Images\feed_green.png" />
-    <None Include="Images\feed_orange.png" />
-    <None Include="Images\install_blue.png" />
-    <None Include="Images\install_green.png" />
-    <None Include="Images\install_orange.png" />
-    <None Include="Images\logo.png" />
-    <None Include="Images\unzip_blue.png" />
-    <None Include="Images\unzip_green.png" />
-    <None Include="Images\unzip_orange.png" />
-    <Content Include="Pics\logo.png" />
-    <Content Include="Pics\app.ico" />
+    <Content Include="images\logo.png" />
+    <Content Include="images\app.ico" />
     <None Include="app.config">
     </None>
-    <None Include="Pics\install_blue.png" />
-    <None Include="Pics\unzip_blue.png" />
-    <None Include="Pics\download_blue.png" />
-    <None Include="Pics\unzip_orange.png" />
-    <None Include="Pics\unzip_green.png" />
-    <None Include="Pics\install_orange.png" />
-    <None Include="Pics\install_green.png" />
-    <None Include="Pics\feed_orange.png" />
-    <None Include="Pics\feed_green.png" />
-    <None Include="Pics\feed_blue.png" />
-    <None Include="Pics\download_orange.png" />
-    <None Include="Pics\download_green.png" />
+    <None Include="images\install_blue.png" />
+    <None Include="images\unzip_blue.png" />
+    <None Include="images\download_blue.png" />
+    <None Include="images\unzip_orange.png" />
+    <None Include="images\unzip_green.png" />
+    <None Include="images\install_orange.png" />
+    <None Include="images\install_green.png" />
+    <None Include="images\feed_orange.png" />
+    <None Include="images\feed_green.png" />
+    <None Include="images\feed_blue.png" />
+    <None Include="images\download_orange.png" />
+    <None Include="images\download_green.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

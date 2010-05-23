@@ -128,10 +128,7 @@ namespace XbmcUpdate
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
 
-                    var frmUpdate = new UpdateGui();
-
-                    frmUpdate.SilentUpdate = _silentUpdate;
-                    frmUpdate.StartInTray = _tray;
+                    var frmUpdate = new UpdateGui {SilentUpdate = _silentUpdate, StartInTray = _tray};
 
                     if (_tray)
                     {
@@ -158,13 +155,13 @@ namespace XbmcUpdate
 
         private static void WriteSourceManifest()
         {
-            var krickerDx = new SourceInfo() { RegEx = @"(XBMC|xbmc)*?.{5,6}\d.*?.zip", SourceName = "Kricker-DirectX", Url = @"http://xbmc.shadowprojects.net/dx/", Default = true };
-            var krickerGl = new SourceInfo() { RegEx = @"(XBMC|xbmc)*?.{5,6}\d.*?.zip", SourceName = "Kricker-OpenGL", Url = @"http://xbmc.shadowprojects.net/gl/" };
-            var kricker1 = new SourceInfo() { RegEx = @"(XBMC|xbmc)*?.{5,6}\d.*?.zip", SourceName = "Kricker-1", Url = @"http://xbmc.shadowprojects.net/gl/" };
-            var kricker2 = new SourceInfo() { RegEx = @"(XBMC|xbmc)*?.{5,6}\d.*?.zip", SourceName = "Kricker-2", Url = @"http://xbmc.shadowprojects.net/gl/" };
+            var krickerDx = new SourceInfo { RegEx = @"(XBMC|xbmc)*?.{5,6}\d.*?.zip", SourceName = "Kricker-DirectX", Url = @"http://xbmc.shadowprojects.net/dx/", Default = true };
+            var krickerGl = new SourceInfo { RegEx = @"(XBMC|xbmc)*?.{5,6}\d.*?.zip", SourceName = "Kricker-OpenGL", Url = @"http://xbmc.shadowprojects.net/gl/" };
+            var kricker1 = new SourceInfo { RegEx = @"(XBMC|xbmc)*?.{5,6}\d.*?.zip", SourceName = "Kricker-1", Url = @"http://xbmc.shadowprojects.net/gl/" };
+            var kricker2 = new SourceInfo { RegEx = @"(XBMC|xbmc)*?.{5,6}\d.*?.zip", SourceName = "Kricker-2", Url = @"http://xbmc.shadowprojects.net/gl/" };
 
 
-            Manifest mani = new Manifest() { LastUpdated = DateTime.Now, AltManifest = new List<string>() { "http://xbmc.shadowprojects.net/kay.one/sources.xml" }, Sources = new List<SourceInfo> { krickerDx, krickerGl } };
+            var mani = new Manifest { LastUpdated = DateTime.Now, AltManifest = new List<string> { "http://xbmc.shadowprojects.net/kay.one/sources.xml" }, Sources = new List<SourceInfo> { krickerDx, krickerGl } };
 
             string man = Tools.Serilizer.SerializeObject(mani);
             Tools.Serilizer.WriteToFile(Settings.SourceManifest, man, false);

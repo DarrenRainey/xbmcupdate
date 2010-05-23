@@ -19,7 +19,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -95,10 +94,7 @@ namespace XbmcUpdate
         {
             //Instantiate the NotifyIcon attaching it to the components container and 
             //provide it an icon, note, you can embed this resource 
-            _mNotifyIcon = new NotifyIcon(components);
-            _mNotifyIcon.Icon = Resources.app;
-            _mNotifyIcon.Text = "XBMCUpdate";
-            _mNotifyIcon.Visible = true;
+            _mNotifyIcon = new NotifyIcon(components) {Icon = Resources.app_icon, Text = "XBMCUpdate", Visible = true};
 
             //Instantiate the context menu and items
             _mContextMenu = new ContextMenuStrip();

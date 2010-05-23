@@ -25,7 +25,7 @@ using XbmcUpdate.UpdateEngine.Source;
 
 namespace XbmcUpdate
 {
-    internal partial class UpdateGui : Form
+    internal partial class UpdateGui
     {
         private int _countDown = 5;
 
@@ -151,14 +151,7 @@ namespace XbmcUpdate
 
         private void cmbXbmcStart_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbXbmcStart.SelectedIndex == 0)
-            {
-                txtXbmcStartArgs.Enabled = false;
-            }
-            else
-            {
-                txtXbmcStartArgs.Enabled = true;
-            }
+            txtXbmcStartArgs.Enabled = cmbXbmcStart.SelectedIndex != 0;
         }
 
         private void cmbSources_SelectedIndexChanged(object sender, EventArgs e)
