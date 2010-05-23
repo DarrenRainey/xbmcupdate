@@ -4,461 +4,6 @@
         <name>Campari.Software.Core</name>
     </assembly>
     <members>
-        <member name="T:Campari.Software.WindowsFoundationLibrary">
-            <summary>
-            Specifies the .NET 3.0 Windows Foundation Library
-            </summary>
-        </member>
-        <member name="F:Campari.Software.WindowsFoundationLibrary.WCF">
-            <summary>
-            Windows Communication Foundation
-            </summary>
-        </member>
-        <member name="F:Campari.Software.WindowsFoundationLibrary.WPF">
-            <summary>
-            Windows Presentation Foundation
-            </summary>
-        </member>
-        <member name="F:Campari.Software.WindowsFoundationLibrary.WF">
-            <summary>
-            Windows Workflow Foundation
-            </summary>
-        </member>
-        <member name="F:Campari.Software.WindowsFoundationLibrary.CardSpace">
-            <summary>
-            Windows CardSpace
-            </summary>
-        </member>
-        <member name="T:Campari.Software.FrameworkVersionDetection">
-            <summary>
-            Provides support for determining if a specific version of the .NET
-            Framework runtime is installed and the service pack level for the
-            runtime version.
-            </summary>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.CheckFxVersion(Campari.Software.FrameworkVersion)">
-            <summary>
-            Retrieves the .NET Framework version number from the registry
-            and validates that it is not a pre-release version number.
-            </summary>
-            <param name="frameworkVersion"></param>
-            <returns><see langword="true"/> if the build number is greater than the 
-            requested version; otherwise <see langword="false"/>.
-            </returns>
-            <remarks>If mscorwks.dll can be found the version number of the DLL (looking
-            at the ProductVersion field) is also used.
-            </remarks>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.GetInstallRoot">
-            <summary>
-            Gets the installation root path for the .NET Framework.
-            </summary>
-            <returns>A <see cref="T:System.String"/> representing the installation root 
-            path for the .NET Framework.</returns>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.GetMscorwksPath(Campari.Software.FrameworkVersion)">
-            <summary>
-            Gets the path to the Mscorwks.DLL file.
-            </summary>
-            <param name="frameworkVersion"></param>
-            <returns>The fully qualified path to the Mscorwks.DLL for the specified .NET
-            Framework.
-            </returns>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.GetNetfx10SPLevel">
-            <summary>
-            Detects the service pack level for the .NET Framework 1.0.
-            </summary>
-            <returns>An <see cref="T:System.Int32"/> representing the service pack 
-            level for the .NET Framework.</returns>
-            <remarks>Uses the detection method recommended at
-            http://blogs.msdn.com/astebner/archive/2004/09/14/229802.aspx 
-            to determine what service pack for the .NET Framework 1.0 is 
-            installed on the machine.
-            </remarks>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.GetNetfxSPLevel(System.String,System.String)">
-            <summary>
-            Detects the service pack level for a version of .NET Framework.
-            </summary>
-            <param name="key">The registry key name.</param>
-            <param name="value">The registry value name.</param>
-            <returns>An <see cref="T:System.Int32"/> representing the service pack 
-            level for the .NET Framework.</returns>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.GetNetfxExactVersion(System.String,System.String)">
-            <summary>
-            Retrieves the .NET Framework version number from the registry.
-            </summary>
-            <param name="key">The registry key name.</param>
-            <param name="value">The registry value name.</param>
-            <returns>A <see cref="T:System.Version"/> that represents the .NET 
-            Framework version.</returns>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.IsNetfx10Installed">
-            <summary>
-            Detects if the .NET 1.0 Framework is installed.
-            </summary>
-            <returns><see langword="true"/> if the .NET Framework 1.0 is 
-            installed; otherwise <see langword="false"/></returns>
-            <remarks>Uses the detection method recommended at
-            http://msdn.microsoft.com/library/ms994349.aspx to determine
-            whether the .NET Framework 1.0 is installed on the machine.
-            </remarks>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.IsNetfx11Installed">
-            <summary>
-            Detects if the .NET 1.1 Framework is installed.
-            </summary>
-            <returns><see langword="true"/> if the .NET Framework 1.1 is 
-            installed; otherwise <see langword="false"/></returns>
-            <remarks>Uses the detection method recommended at
-            http://msdn.microsoft.com/library/ms994339.aspx to determine
-            whether the .NET Framework 1.1 is installed on the machine.
-            </remarks>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.IsNetfx20Installed">
-            <summary>
-            Detects if the .NET 2.0 Framework is installed.
-            </summary>
-            <returns><see langword="true"/> if the .NET Framework 2.0 is 
-            installed; otherwise <see langword="false"/></returns>
-            <remarks>Uses the detection method recommended at
-            http://msdn.microsoft.com/library/aa480243.aspx to determine
-            whether the .NET Framework 2.0 is installed on the machine.
-            </remarks>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.IsNetfx30Installed">
-            <summary>
-            Detects if the .NET 3.0 Framework is installed.
-            </summary>
-            <returns><see langword="true"/> if the .NET Framework 3.0 is 
-            installed; otherwise <see langword="false"/></returns>
-            <remarks>Uses the detection method recommended at
-            http://msdn.microsoft.com/library/aa964979.aspx to determine
-            whether the .NET Framework 3.0 is installed on the machine.
-            </remarks>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.IsNetfx35Installed">
-            <summary>
-            Detects if the .NET 3.5 Framework is installed.
-            </summary>
-            <returns><see langword="true"/> if the .NET Framework 3.5 is 
-            installed; otherwise <see langword="false"/></returns>
-            <remarks>Uses the detection method recommended at
-            http://msdn.microsoft.com/library/cc160716.aspx to determine
-            whether the .NET Framework 3.5 is installed on the machine.
-            Also uses the method described at 
-            http://blogs.msdn.com/astebner/archive/2008/07/13/8729636.aspx.
-            </remarks>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.IsInstalled(Campari.Software.FrameworkVersion)">
-            <overloads>
-             Determines if the specified .NET Framework or Foundation Library is 
-             installed on the local computer.
-            </overloads>
-             <summary>
-             Determines if the specified .NET Framework version is installed
-             on the local computer.
-             </summary>
-             <param name="frameworkVersion">The version of the .NET Framework to test.
-             </param>
-             <returns><see langword="true"/> if the specified .NET Framework
-             version is installed; otherwise <see langword="false"/>.</returns>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.IsInstalled(Campari.Software.WindowsFoundationLibrary)">
-            <summary>
-            Determines if the specified .NET Framework Foundation Library is
-            installed on the local computer.
-            </summary>
-            <param name="foundationLibrary">The Foundation Library to test.
-            </param>
-            <returns><see langword="true"/> if the specified .NET Framework
-            Foundation Library is installed; otherwise <see langword="false"/>.</returns>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.GetServicePackLevel(Campari.Software.FrameworkVersion)">
-            <overloads>
-             Retrieves the service pack level for the specified .NET Framework or  
-             Foundation Library.
-            </overloads>
-             <summary>
-             Retrieves the service pack level for the specified .NET Framework
-             version.
-             </summary>
-             <param name="frameworkVersion">The .NET Framework whose service pack 
-             level should be retrieved.</param>
-             <returns>An <see cref="T:System.Int32">integer</see> value representing
-             the service pack level for the specified .NET Framework version. If
-             the specified .NET Frameowrk version is not found, -1 is returned.
-             </returns>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.GetServicePackLevel(Campari.Software.WindowsFoundationLibrary)">
-            <summary>
-            Retrieves the service pack level for the specified .NET Framework
-            Foundation Library.
-            </summary>
-            <param name="foundationLibrary">The Foundation Library whose service pack 
-            level should be retrieved.</param>
-            <returns>An <see cref="T:System.Int32">integer</see> value representing
-            the service pack level for the specified .NET Framework Foundation
-            Library. If the specified .NET Frameowrk Foundation Library is not
-            found, -1 is returned.
-            </returns>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.GetExactVersion(Campari.Software.FrameworkVersion)">
-            <overloads>
-             Retrieves the exact version number for the specified .NET Framework or
-             Foundation Library.
-            </overloads>
-             <summary>
-             Retrieves the exact version number for the specified .NET Framework
-             version.
-             </summary>
-             <param name="frameworkVersion">The .NET Framework whose version should be 
-             retrieved.</param>
-             <returns>A <see cref="T:System.Version">version</see> representing
-             the exact version number for the specified .NET Framework version.
-             If the specified .NET Frameowrk version is not found, a 
-             <see cref="T:System.Version"/> is returned that represents a 0.0.0.0 version
-             number.
-             </returns>
-        </member>
-        <member name="M:Campari.Software.FrameworkVersionDetection.GetExactVersion(Campari.Software.WindowsFoundationLibrary)">
-            <summary>
-            Retrieves the exact version number for the specified .NET Framework
-            Foundation Library.
-            </summary>
-            <param name="foundationLibrary">The Foundation Library whose version
-            should be retrieved.</param>
-            <returns>A <see cref="T:System.Version">version</see> representing
-            the exact version number for the specified .NET Framework Foundation
-            Library. If the specified .NET Frameowrk Foundation Library is not
-            found, a <see cref="T:System.Version"/> is returned that represents a 
-            0.0.0.0 version number.
-            </returns>
-        </member>
-        <member name="P:Campari.Software.FrameworkVersionDetection.InstalledFrameworkVersions">
-            <summary>
-            Gets an <see cref="T:System.Collections.IEnumerable"/> list of the installed .NET Framework 
-            versions.
-            </summary>
-        </member>
-        <member name="P:Campari.Software.FrameworkVersionDetection.LatestVersion">
-            <summary>
-            returns the latest version of the framework installed on the machine
-            </summary>
-        </member>
-        <member name="T:Campari.Software.Properties.Resources">
-            <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.ResourceManager">
-            <summary>
-              Returns the cached ResourceManager instance used by this class.
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Culture">
-            <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.ApplicationExcpetion_UnableToDetermineInstallRoot">
-            <summary>
-              Looks up a localized string similar to Unable to determine the install root path for the .NET Framework..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Argument_EnumIllegalVal">
-            <summary>
-              Looks up a localized string similar to Illegal enum value: {0}..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Argument_InvalidEnumValue">
-            <summary>
-              Looks up a localized string similar to The value &apos;{0}&apos; is not valid for this usage of the type {1}..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Argument_InvalidFlag">
-            <summary>
-              Looks up a localized string similar to Value of flags is invalid..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Argument_InvalidIndexValuesString">
-            <summary>
-              Looks up a localized string similar to The starting index and ending index refer to the same location in the string..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Argument_MustBeAttribute">
-            <summary>
-              Looks up a localized string similar to Argument must be an Attribute or derived from an Attribute..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Argument_MustBeDateTime">
-            <summary>
-              Looks up a localized string similar to Object must be of type DateTime..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Argument_MustBeIsoDateTime">
-            <summary>
-              Looks up a localized string similar to Argument must be an IsoDateTime..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Argument_MustBeString">
-            <summary>
-              Looks up a localized string similar to Object must be of type String..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Argument_NotSerializable">
-            <summary>
-              Looks up a localized string similar to Argument passed in is not serializable..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Argument_StartIndexGreaterThanEndIndexString">
-            <summary>
-              Looks up a localized string similar to The starting index refers to a location in the string that is after the ending index..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Argument_StringZeroLength">
-            <summary>
-              Looks up a localized string similar to String cannot be of zero length..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.ArgumentNull_String">
-            <summary>
-              Looks up a localized string similar to String reference not set to an instance of a String..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.ArgumentOutOfRange_IndexLessThanLength">
-            <summary>
-              Looks up a localized string similar to Index must be less than the length of string..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.ArgumentOutOfRange_IndexLessThanZero">
-            <summary>
-              Looks up a localized string similar to Index must be non-negative..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.ArgumentOutOfRange_IndexString">
-            <summary>
-              Looks up a localized string similar to Index was out of range. Must be non-negative and less than the length of the string..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.DownloadInfoConnectionClosed">
-            <summary>
-              Looks up a localized string similar to Could not download {0} - FTP server closed the connection..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.DownloadInfoInvalidResponseReceived">
-            <summary>
-              Looks up a localized string similar to Could not download {0} - a web page was returned from the web server..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.FileDownloaderCancelled">
-            <summary>
-              Looks up a localized string similar to Download was cancelled..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.FileDownloaderDownloadLocation">
-            <summary>
-              Looks up a localized string similar to Downloading file to {0}..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_BadDatePattern">
-            <summary>
-              Looks up a localized string similar to Could not determine the order of year, month, and date from &apos;{0}&apos;..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_BadDateTime">
-            <summary>
-              Looks up a localized string similar to String was not recognized as a valid DateTime..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_BadDateTimeCalendar">
-            <summary>
-              Looks up a localized string similar to The DateTime represented by the string is not supported in calendar {0}..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_BadDayOfWeek">
-            <summary>
-              Looks up a localized string similar to String was not recognized as a valid DateTime because the day of week was incorrect..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_BadFormatSpecifier">
-            <summary>
-              Looks up a localized string similar to Format specifier was invalid..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_BadQuote">
-            <summary>
-              Looks up a localized string similar to Cannot find a matching quote character for the character &apos;{0}&apos;..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_DateOutOfRange">
-            <summary>
-              Looks up a localized string similar to The DateTime represented by the string is out of range..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_Dns_Bad_Ip_Address">
-            <summary>
-              Looks up a localized string similar to An invalid IP address was specified..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_EmptyInputString">
-            <summary>
-              Looks up a localized string similar to Input string was either empty or contained only white space..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_ExtraJunkAtEnd">
-            <summary>
-              Looks up a localized string similar to Additional non-parsable characters are at the end of the string..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_InvalidLen">
-            <summary>
-              Looks up a localized string similar to String was not of correct length..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_InvalidString">
-            <summary>
-              Looks up a localized string similar to Input string was not in a correct format..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_NeedSingleChar">
-            <summary>
-              Looks up a localized string similar to String must be exactly one character long..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_RepeatDateTimePattern">
-            <summary>
-              Looks up a localized string similar to DateTime pattern &apos;{0}&apos; appears more than once with different values..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_TwoTimeZoneSpecifiers">
-            <summary>
-              Looks up a localized string similar to The String being parsed cannot contain two TimeZone specifiers..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.Format_UnknowDateTimeWord">
-            <summary>
-              Looks up a localized string similar to The string was not recognized as a valid DateTime. There is a unknown word starting at index {0}..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.InvalidCast_FromTo">
-            <summary>
-              Looks up a localized string similar to Invalid cast from &apos;{0}&apos; to &apos;{1}&apos;..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.MDA_InvalidFormatForLocal">
-            <summary>
-              Looks up a localized string similar to Cannot apply format &quot;{0}&quot; to the date &quot;{1}&quot; as the date is already in local time..
-            </summary>
-        </member>
-        <member name="P:Campari.Software.Properties.Resources.MDA_InvalidFormatForUtc">
-            <summary>
-              Looks up a localized string similar to Cannot apply format &quot;{0}&quot; to the date &quot;{1}&quot; as the date is already in universal time..
-            </summary>
-        </member>
         <member name="T:Campari.Software.InteropServices.SystemMetric">
             <summary>
             Flags used with the Windows API GetSystemMetrics(SystemMetric smIndex)
@@ -1076,6 +621,461 @@
         <member name="F:Campari.Software.FrameworkVersion.Fx35">
             <summary>
             .NET Framework 3.5
+            </summary>
+        </member>
+        <member name="T:Campari.Software.FrameworkVersionDetection">
+            <summary>
+            Provides support for determining if a specific version of the .NET
+            Framework runtime is installed and the service pack level for the
+            runtime version.
+            </summary>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.CheckFxVersion(Campari.Software.FrameworkVersion)">
+            <summary>
+            Retrieves the .NET Framework version number from the registry
+            and validates that it is not a pre-release version number.
+            </summary>
+            <param name="frameworkVersion"></param>
+            <returns><see langword="true"/> if the build number is greater than the 
+            requested version; otherwise <see langword="false"/>.
+            </returns>
+            <remarks>If mscorwks.dll can be found the version number of the DLL (looking
+            at the ProductVersion field) is also used.
+            </remarks>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.GetInstallRoot">
+            <summary>
+            Gets the installation root path for the .NET Framework.
+            </summary>
+            <returns>A <see cref="T:System.String"/> representing the installation root 
+            path for the .NET Framework.</returns>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.GetMscorwksPath(Campari.Software.FrameworkVersion)">
+            <summary>
+            Gets the path to the Mscorwks.DLL file.
+            </summary>
+            <param name="frameworkVersion"></param>
+            <returns>The fully qualified path to the Mscorwks.DLL for the specified .NET
+            Framework.
+            </returns>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.GetNetfx10SPLevel">
+            <summary>
+            Detects the service pack level for the .NET Framework 1.0.
+            </summary>
+            <returns>An <see cref="T:System.Int32"/> representing the service pack 
+            level for the .NET Framework.</returns>
+            <remarks>Uses the detection method recommended at
+            http://blogs.msdn.com/astebner/archive/2004/09/14/229802.aspx 
+            to determine what service pack for the .NET Framework 1.0 is 
+            installed on the machine.
+            </remarks>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.GetNetfxSPLevel(System.String,System.String)">
+            <summary>
+            Detects the service pack level for a version of .NET Framework.
+            </summary>
+            <param name="key">The registry key name.</param>
+            <param name="value">The registry value name.</param>
+            <returns>An <see cref="T:System.Int32"/> representing the service pack 
+            level for the .NET Framework.</returns>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.GetNetfxExactVersion(System.String,System.String)">
+            <summary>
+            Retrieves the .NET Framework version number from the registry.
+            </summary>
+            <param name="key">The registry key name.</param>
+            <param name="value">The registry value name.</param>
+            <returns>A <see cref="T:System.Version"/> that represents the .NET 
+            Framework version.</returns>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.IsNetfx10Installed">
+            <summary>
+            Detects if the .NET 1.0 Framework is installed.
+            </summary>
+            <returns><see langword="true"/> if the .NET Framework 1.0 is 
+            installed; otherwise <see langword="false"/></returns>
+            <remarks>Uses the detection method recommended at
+            http://msdn.microsoft.com/library/ms994349.aspx to determine
+            whether the .NET Framework 1.0 is installed on the machine.
+            </remarks>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.IsNetfx11Installed">
+            <summary>
+            Detects if the .NET 1.1 Framework is installed.
+            </summary>
+            <returns><see langword="true"/> if the .NET Framework 1.1 is 
+            installed; otherwise <see langword="false"/></returns>
+            <remarks>Uses the detection method recommended at
+            http://msdn.microsoft.com/library/ms994339.aspx to determine
+            whether the .NET Framework 1.1 is installed on the machine.
+            </remarks>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.IsNetfx20Installed">
+            <summary>
+            Detects if the .NET 2.0 Framework is installed.
+            </summary>
+            <returns><see langword="true"/> if the .NET Framework 2.0 is 
+            installed; otherwise <see langword="false"/></returns>
+            <remarks>Uses the detection method recommended at
+            http://msdn.microsoft.com/library/aa480243.aspx to determine
+            whether the .NET Framework 2.0 is installed on the machine.
+            </remarks>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.IsNetfx30Installed">
+            <summary>
+            Detects if the .NET 3.0 Framework is installed.
+            </summary>
+            <returns><see langword="true"/> if the .NET Framework 3.0 is 
+            installed; otherwise <see langword="false"/></returns>
+            <remarks>Uses the detection method recommended at
+            http://msdn.microsoft.com/library/aa964979.aspx to determine
+            whether the .NET Framework 3.0 is installed on the machine.
+            </remarks>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.IsNetfx35Installed">
+            <summary>
+            Detects if the .NET 3.5 Framework is installed.
+            </summary>
+            <returns><see langword="true"/> if the .NET Framework 3.5 is 
+            installed; otherwise <see langword="false"/></returns>
+            <remarks>Uses the detection method recommended at
+            http://msdn.microsoft.com/library/cc160716.aspx to determine
+            whether the .NET Framework 3.5 is installed on the machine.
+            Also uses the method described at 
+            http://blogs.msdn.com/astebner/archive/2008/07/13/8729636.aspx.
+            </remarks>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.IsInstalled(Campari.Software.FrameworkVersion)">
+            <overloads>
+             Determines if the specified .NET Framework or Foundation Library is 
+             installed on the local computer.
+            </overloads>
+             <summary>
+             Determines if the specified .NET Framework version is installed
+             on the local computer.
+             </summary>
+             <param name="frameworkVersion">The version of the .NET Framework to test.
+             </param>
+             <returns><see langword="true"/> if the specified .NET Framework
+             version is installed; otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.IsInstalled(Campari.Software.WindowsFoundationLibrary)">
+            <summary>
+            Determines if the specified .NET Framework Foundation Library is
+            installed on the local computer.
+            </summary>
+            <param name="foundationLibrary">The Foundation Library to test.
+            </param>
+            <returns><see langword="true"/> if the specified .NET Framework
+            Foundation Library is installed; otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.GetServicePackLevel(Campari.Software.FrameworkVersion)">
+            <overloads>
+             Retrieves the service pack level for the specified .NET Framework or  
+             Foundation Library.
+            </overloads>
+             <summary>
+             Retrieves the service pack level for the specified .NET Framework
+             version.
+             </summary>
+             <param name="frameworkVersion">The .NET Framework whose service pack 
+             level should be retrieved.</param>
+             <returns>An <see cref="T:System.Int32">integer</see> value representing
+             the service pack level for the specified .NET Framework version. If
+             the specified .NET Frameowrk version is not found, -1 is returned.
+             </returns>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.GetServicePackLevel(Campari.Software.WindowsFoundationLibrary)">
+            <summary>
+            Retrieves the service pack level for the specified .NET Framework
+            Foundation Library.
+            </summary>
+            <param name="foundationLibrary">The Foundation Library whose service pack 
+            level should be retrieved.</param>
+            <returns>An <see cref="T:System.Int32">integer</see> value representing
+            the service pack level for the specified .NET Framework Foundation
+            Library. If the specified .NET Frameowrk Foundation Library is not
+            found, -1 is returned.
+            </returns>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.GetExactVersion(Campari.Software.FrameworkVersion)">
+            <overloads>
+             Retrieves the exact version number for the specified .NET Framework or
+             Foundation Library.
+            </overloads>
+             <summary>
+             Retrieves the exact version number for the specified .NET Framework
+             version.
+             </summary>
+             <param name="frameworkVersion">The .NET Framework whose version should be 
+             retrieved.</param>
+             <returns>A <see cref="T:System.Version">version</see> representing
+             the exact version number for the specified .NET Framework version.
+             If the specified .NET Frameowrk version is not found, a 
+             <see cref="T:System.Version"/> is returned that represents a 0.0.0.0 version
+             number.
+             </returns>
+        </member>
+        <member name="M:Campari.Software.FrameworkVersionDetection.GetExactVersion(Campari.Software.WindowsFoundationLibrary)">
+            <summary>
+            Retrieves the exact version number for the specified .NET Framework
+            Foundation Library.
+            </summary>
+            <param name="foundationLibrary">The Foundation Library whose version
+            should be retrieved.</param>
+            <returns>A <see cref="T:System.Version">version</see> representing
+            the exact version number for the specified .NET Framework Foundation
+            Library. If the specified .NET Frameowrk Foundation Library is not
+            found, a <see cref="T:System.Version"/> is returned that represents a 
+            0.0.0.0 version number.
+            </returns>
+        </member>
+        <member name="P:Campari.Software.FrameworkVersionDetection.InstalledFrameworkVersions">
+            <summary>
+            Gets an <see cref="T:System.Collections.IEnumerable"/> list of the installed .NET Framework 
+            versions.
+            </summary>
+        </member>
+        <member name="P:Campari.Software.FrameworkVersionDetection.LatestVersion">
+            <summary>
+            returns the latest version of the framework installed on the machine
+            </summary>
+        </member>
+        <member name="T:Campari.Software.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.ApplicationExcpetion_UnableToDetermineInstallRoot">
+            <summary>
+              Looks up a localized string similar to Unable to determine the install root path for the .NET Framework..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Argument_EnumIllegalVal">
+            <summary>
+              Looks up a localized string similar to Illegal enum value: {0}..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Argument_InvalidEnumValue">
+            <summary>
+              Looks up a localized string similar to The value &apos;{0}&apos; is not valid for this usage of the type {1}..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Argument_InvalidFlag">
+            <summary>
+              Looks up a localized string similar to Value of flags is invalid..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Argument_InvalidIndexValuesString">
+            <summary>
+              Looks up a localized string similar to The starting index and ending index refer to the same location in the string..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Argument_MustBeAttribute">
+            <summary>
+              Looks up a localized string similar to Argument must be an Attribute or derived from an Attribute..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Argument_MustBeDateTime">
+            <summary>
+              Looks up a localized string similar to Object must be of type DateTime..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Argument_MustBeIsoDateTime">
+            <summary>
+              Looks up a localized string similar to Argument must be an IsoDateTime..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Argument_MustBeString">
+            <summary>
+              Looks up a localized string similar to Object must be of type String..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Argument_NotSerializable">
+            <summary>
+              Looks up a localized string similar to Argument passed in is not serializable..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Argument_StartIndexGreaterThanEndIndexString">
+            <summary>
+              Looks up a localized string similar to The starting index refers to a location in the string that is after the ending index..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Argument_StringZeroLength">
+            <summary>
+              Looks up a localized string similar to String cannot be of zero length..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.ArgumentNull_String">
+            <summary>
+              Looks up a localized string similar to String reference not set to an instance of a String..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.ArgumentOutOfRange_IndexLessThanLength">
+            <summary>
+              Looks up a localized string similar to Index must be less than the length of string..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.ArgumentOutOfRange_IndexLessThanZero">
+            <summary>
+              Looks up a localized string similar to Index must be non-negative..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.ArgumentOutOfRange_IndexString">
+            <summary>
+              Looks up a localized string similar to Index was out of range. Must be non-negative and less than the length of the string..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.DownloadInfoConnectionClosed">
+            <summary>
+              Looks up a localized string similar to Could not download {0} - FTP server closed the connection..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.DownloadInfoInvalidResponseReceived">
+            <summary>
+              Looks up a localized string similar to Could not download {0} - a web page was returned from the web server..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.FileDownloaderCancelled">
+            <summary>
+              Looks up a localized string similar to Download was cancelled..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.FileDownloaderDownloadLocation">
+            <summary>
+              Looks up a localized string similar to Downloading file to {0}..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_BadDatePattern">
+            <summary>
+              Looks up a localized string similar to Could not determine the order of year, month, and date from &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_BadDateTime">
+            <summary>
+              Looks up a localized string similar to String was not recognized as a valid DateTime..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_BadDateTimeCalendar">
+            <summary>
+              Looks up a localized string similar to The DateTime represented by the string is not supported in calendar {0}..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_BadDayOfWeek">
+            <summary>
+              Looks up a localized string similar to String was not recognized as a valid DateTime because the day of week was incorrect..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_BadFormatSpecifier">
+            <summary>
+              Looks up a localized string similar to Format specifier was invalid..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_BadQuote">
+            <summary>
+              Looks up a localized string similar to Cannot find a matching quote character for the character &apos;{0}&apos;..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_DateOutOfRange">
+            <summary>
+              Looks up a localized string similar to The DateTime represented by the string is out of range..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_Dns_Bad_Ip_Address">
+            <summary>
+              Looks up a localized string similar to An invalid IP address was specified..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_EmptyInputString">
+            <summary>
+              Looks up a localized string similar to Input string was either empty or contained only white space..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_ExtraJunkAtEnd">
+            <summary>
+              Looks up a localized string similar to Additional non-parsable characters are at the end of the string..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_InvalidLen">
+            <summary>
+              Looks up a localized string similar to String was not of correct length..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_InvalidString">
+            <summary>
+              Looks up a localized string similar to Input string was not in a correct format..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_NeedSingleChar">
+            <summary>
+              Looks up a localized string similar to String must be exactly one character long..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_RepeatDateTimePattern">
+            <summary>
+              Looks up a localized string similar to DateTime pattern &apos;{0}&apos; appears more than once with different values..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_TwoTimeZoneSpecifiers">
+            <summary>
+              Looks up a localized string similar to The String being parsed cannot contain two TimeZone specifiers..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.Format_UnknowDateTimeWord">
+            <summary>
+              Looks up a localized string similar to The string was not recognized as a valid DateTime. There is a unknown word starting at index {0}..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.InvalidCast_FromTo">
+            <summary>
+              Looks up a localized string similar to Invalid cast from &apos;{0}&apos; to &apos;{1}&apos;..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.MDA_InvalidFormatForLocal">
+            <summary>
+              Looks up a localized string similar to Cannot apply format &quot;{0}&quot; to the date &quot;{1}&quot; as the date is already in local time..
+            </summary>
+        </member>
+        <member name="P:Campari.Software.Properties.Resources.MDA_InvalidFormatForUtc">
+            <summary>
+              Looks up a localized string similar to Cannot apply format &quot;{0}&quot; to the date &quot;{1}&quot; as the date is already in universal time..
+            </summary>
+        </member>
+        <member name="T:Campari.Software.WindowsFoundationLibrary">
+            <summary>
+            Specifies the .NET 3.0 Windows Foundation Library
+            </summary>
+        </member>
+        <member name="F:Campari.Software.WindowsFoundationLibrary.WCF">
+            <summary>
+            Windows Communication Foundation
+            </summary>
+        </member>
+        <member name="F:Campari.Software.WindowsFoundationLibrary.WPF">
+            <summary>
+            Windows Presentation Foundation
+            </summary>
+        </member>
+        <member name="F:Campari.Software.WindowsFoundationLibrary.WF">
+            <summary>
+            Windows Workflow Foundation
+            </summary>
+        </member>
+        <member name="F:Campari.Software.WindowsFoundationLibrary.CardSpace">
+            <summary>
+            Windows CardSpace
             </summary>
         </member>
     </members>

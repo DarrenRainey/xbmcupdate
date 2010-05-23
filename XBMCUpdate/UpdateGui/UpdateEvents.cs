@@ -1,4 +1,4 @@
-﻿/*
+/*
  *   XBMCUpdate: Automatic Update Client for XBMC. (www.xbmc.org)
  * 
  *   Copyright (C) 2009  Keivan Beigi
@@ -188,7 +188,7 @@ namespace XbmcUpdate
                     case 2:
                         {
                             _logger.Info("XBMC is set to auto start only if it was closed.");
-                            if (XbmcManager._xbmcTerminated)
+                            if (XbmcManager.XbmcTerminated)
                             {
                                 _logger.Info("XBMC was terminated during this session");
                                 XbmcManager.StartXbmc();

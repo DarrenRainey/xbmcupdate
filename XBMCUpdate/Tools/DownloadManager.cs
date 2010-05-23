@@ -28,12 +28,10 @@ namespace XbmcUpdate.Tools
     internal class DownloadManager
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private Int64 _bytesRead;
 
         //Url for the file to be downloaded
         // The stream of data retrieved from the web server
         private Stream _dlStream;
-        private Int64 _fileSize;
         private string _localFile;
         // The stream of data that we write to the hard drive
         private Stream _localStream;
@@ -44,15 +42,9 @@ namespace XbmcUpdate.Tools
         private HttpWebResponse _webResponse;
         //Size of the file
 
-        internal Int64 BytesRead
-        {
-            get { return _bytesRead; }
-        }
+        internal long BytesRead { get; private set; }
 
-        internal Int64 FileSize
-        {
-            get { return _fileSize; }
-        }
+        internal long FileSize { get; private set; }
 
 
         internal void Download(string fileUrl, string destinationFile)
@@ -120,7 +112,7 @@ namespace XbmcUpdate.Tools
             {
                 try
                 {
-                    _bytesRead = 0;
+                    BytesRead = 0;
 
                     // Create a request to the file we are downloading
                     _webRequest = (HttpWebRequest)WebRequest.Create(_url);
@@ -129,7 +121,7 @@ namespace XbmcUpdate.Tools
                     // Retrieve the response from the server
                     _webResponse = (HttpWebResponse)_webRequest.GetResponse();
                     // Ask the server for the file size and store it
-                    _fileSize = _webResponse.ContentLength;
+                    FileSize = _webResponse.ContentLength;
                     // Open the URL for download 
                     _dlStream = wcDownload.OpenRead(_url);
                     // Create a new file stream where we will be saving the data (local drive)
@@ -145,7 +137,7 @@ namespace XbmcUpdate.Tools
                     {
                         // Write the data from the buffer to the local hard drive
                         _localStream.Write(downBuffer, 0, bytesSize);
-                        _bytesRead = _localStream.Length;
+                        BytesRead = _localStream.Length;
                         // Invoke the method that updates the form's label and progress bar
                     }
 
@@ -157,7 +149,7 @@ namespace XbmcUpdate.Tools
                 }
                 finally
                 {
-                    _bytesRead = _localStream.Length;
+                    BytesRead = _localStream.Length;
                     // When the above code has ended, close the streams
                     _localStream.Close();
                     _dlStream.Close();

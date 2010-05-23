@@ -38,7 +38,6 @@ namespace XbmcUpdate.UpdateEngine
         private readonly FastZip _zipClient = new FastZip();
         private string _compressedBuildPath;
         private int _currentBuildNumber;
-        private int _onlineBuildNumber;
         private string _uncompressedBuildPath;
         private Thread _updateThread;
 
@@ -56,15 +55,7 @@ namespace XbmcUpdate.UpdateEngine
             get { return _downloadManager; }
         }
 
-        internal int OnlineBuildNumber
-        {
-            get { return _onlineBuildNumber; }
-        }
-
-        internal int CurrentBuildNumber
-        {
-            get { return _currentBuildNumber; }
-        }
+        internal int OnlineBuildNumber { get; private set; }
 
         internal event UpdateEventHandler OnCheckUpdateStart;
         internal event UpdateEventHandler OnCheckUpdateStop;
@@ -106,21 +97,21 @@ namespace XbmcUpdate.UpdateEngine
                 if (revlist != null && revlist.Count != 0)
                 {
                     revlist.Sort();
-                    _onlineBuildNumber = revlist[revlist.Count - 1];
+                    OnlineBuildNumber = revlist[revlist.Count - 1];
 
-                    Logger.Info("Latest available build:{0}. Currently installed:{1}", _onlineBuildNumber,
+                    Logger.Info("Latest available build:{0}. Currently installed:{1}", OnlineBuildNumber,
                                 _currentBuildNumber);
 
-                    if (_onlineBuildNumber <= _currentBuildNumber)
+                    if (OnlineBuildNumber <= _currentBuildNumber)
                     {
                         Logger.Info("No updates is necessary");
                     }
 
-                    updateAvilable = _currentBuildNumber < _onlineBuildNumber;
+                    updateAvilable = _currentBuildNumber < OnlineBuildNumber;
 
                     if (updateAvilable)
                     {
-                        message = "Latest Available Rev. " + _onlineBuildNumber;
+                        message = "Latest Available Rev. " + OnlineBuildNumber;
                     }
                 }
                 else
@@ -215,13 +206,13 @@ namespace XbmcUpdate.UpdateEngine
         {
             if (OnDownloadStart != null)
             {
-                OnDownloadStart(this, "Downloading Rev. " + _onlineBuildNumber + "...");
+                OnDownloadStart(this, "Downloading Rev. " + OnlineBuildNumber + "...");
             }
 
             try
             {
-                string buildUrl = ReleaseManager.GetBuildUrl(_onlineBuildNumber);
-                _compressedBuildPath = string.Concat(Settings.TempFolder, @"\XBMC-", _onlineBuildNumber, ".zip");
+                string buildUrl = ReleaseManager.GetBuildUrl(OnlineBuildNumber);
+                _compressedBuildPath = string.Concat(Settings.TempFolder, @"\XBMC-", OnlineBuildNumber, ".zip");
 
                 //If not forced check to see if the file has already been downloaded
                 if (!forced && File.Exists(_compressedBuildPath))
@@ -244,14 +235,14 @@ namespace XbmcUpdate.UpdateEngine
                     Logger.Info("Partial file detected. Re-Downloading file");
                 }
 
-                Logger.Info("Downloading build {0} from the server", _onlineBuildNumber);
+                Logger.Info("Downloading build {0} from the server", OnlineBuildNumber);
 
 
                 _downloadManager.Download(buildUrl, _compressedBuildPath);
 
                 if (OnDownloadStop != null)
                 {
-                    OnDownloadStop(this, String.Format("Rev. {0} Installed", _onlineBuildNumber));
+                    OnDownloadStop(this, String.Format("Rev. {0} Installed", OnlineBuildNumber));
                 }
             }
             catch (Exception e)
@@ -289,7 +280,7 @@ namespace XbmcUpdate.UpdateEngine
                 Directory.CreateDirectory(unZipPath);
 
                 _uncompressedBuildPath = String.Concat(unZipPath, @"\xbmc\");
-                Logger.Info("Extracting Update {0} to {1}", _onlineBuildNumber, _uncompressedBuildPath);
+                Logger.Info("Extracting Update {0} to {1}", OnlineBuildNumber, _uncompressedBuildPath);
 
                 _zipClient.ExtractZip(_compressedBuildPath, unZipPath, "");
                 Logger.Info("All files extracted successfully");
@@ -330,9 +321,7 @@ namespace XbmcUpdate.UpdateEngine
                 CopyFolder(_uncompressedBuildPath, Settings.XbmcPath);
 
                 //Register Build
-                var verInfo = new XbmcVersionInfo();
-                verInfo.BuildNumber = _onlineBuildNumber;
-                verInfo.InstallationDate = DateTime.Now;
+                var verInfo = new XbmcVersionInfo {BuildNumber = OnlineBuildNumber, InstallationDate = DateTime.Now};
 
                 XbmcManager.SaveVersion(verInfo);
 
@@ -340,7 +329,7 @@ namespace XbmcUpdate.UpdateEngine
 
                 if (OnInstallStop != null)
                 {
-                    OnInstallStop(this, "Successfully Installed XBMC " + _onlineBuildNumber);
+                    OnInstallStop(this, "Successfully Installed XBMC " + OnlineBuildNumber);
                 }
             }
             catch (Exception e)
@@ -387,7 +376,7 @@ namespace XbmcUpdate.UpdateEngine
                 }
             }
 
-            foreach (string file in Directory.GetFiles(source))
+            foreach (var file in Directory.GetFiles(source))
             {
                 if (!file.ToLower().Contains("keymap.xml"))
                 {
